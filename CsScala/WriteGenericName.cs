@@ -7,24 +7,24 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteGenericName
-	{
-		public static void Go(ScalaWriter writer, GenericNameSyntax name)
-		{
-			writer.Write(WriteIdentifierName.TransformIdentifier(name.Identifier.ValueText));
-			writer.Write("[");
+    static class WriteGenericName
+    {
+        public static void Go(ScalaWriter writer, GenericNameSyntax name)
+        {
+            writer.Write(WriteIdentifierName.TransformIdentifier(name.Identifier.ValueText));
+            writer.Write("[");
 
-			bool first = true;
-			foreach (var gen in name.TypeArgumentList.Arguments)
-			{
-				if (first)
-					first = false;
-				else
-					writer.Write(", ");
+            bool first = true;
+            foreach (var gen in name.TypeArgumentList.Arguments)
+            {
+                if (first)
+                    first = false;
+                else
+                    writer.Write(", ");
 
-				writer.Write(TypeProcessor.ConvertType(gen));
-			}
-			writer.Write("]");
-		}
-	}
+                writer.Write(TypeProcessor.ConvertType(gen));
+            }
+            writer.Write("]");
+        }
+    }
 }

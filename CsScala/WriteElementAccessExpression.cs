@@ -7,26 +7,26 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteElementAccessExpression
-	{
-		public static void Go(ScalaWriter writer, ElementAccessExpressionSyntax expression)
-		{
-			Core.Write(writer, expression.Expression);
+    static class WriteElementAccessExpression
+    {
+        public static void Go(ScalaWriter writer, ElementAccessExpressionSyntax expression)
+        {
+            Core.Write(writer, expression.Expression);
 
-			writer.Write("(");
+            writer.Write("(");
 
-			bool first = true;
-			foreach(var argument in expression.ArgumentList.Arguments)
-			{
-				if (first)
-					first = false;
-				else
-					writer.Write(", ");
+            bool first = true;
+            foreach (var argument in expression.ArgumentList.Arguments)
+            {
+                if (first)
+                    first = false;
+                else
+                    writer.Write(", ");
 
-				Core.Write(writer, argument.Expression);
-			}
-			writer.Write(")");
+                Core.Write(writer, argument.Expression);
+            }
+            writer.Write(")");
 
-		}
-	}
+        }
+    }
 }

@@ -10,63 +10,63 @@ namespace CsScala.Translations
 {
     class MethodTranslation
     {
-		public static MethodTranslation Get(MethodSymbol origMethodSymbol)
-		{
-			var methodSymbol = origMethodSymbol.OriginalDefinition.As<MethodSymbol>().UnReduce();
+        public static MethodTranslation Get(MethodSymbol origMethodSymbol)
+        {
+            var methodSymbol = origMethodSymbol.OriginalDefinition.As<MethodSymbol>().UnReduce();
 
-			var sourceName = methodSymbol.ContainingNamespace.FullNameWithDot() + methodSymbol.ContainingType.Name;
-			var arguments = string.Join(" ", methodSymbol.Parameters.ToList().Select(o => o.Type.ToString()));
+            var sourceName = methodSymbol.ContainingNamespace.FullNameWithDot() + methodSymbol.ContainingType.Name;
+            var arguments = string.Join(" ", methodSymbol.Parameters.ToList().Select(o => o.Type.ToString()));
 
-			var matches = TranslationManager.Methods.Where(o => o.Match == methodSymbol.Name)
-				.Where(o => o.SourceObject == sourceName || o.SourceObject == null || o.SourceObject == "*")
-				.Where(o => o.ArgumentTypes == null || o.ArgumentTypes == arguments)
-				.Where(o => o.TypeParametersMatch(origMethodSymbol))
-				.ToList();
+            var matches = TranslationManager.Methods.Where(o => o.Match == methodSymbol.Name)
+                .Where(o => o.SourceObject == sourceName || o.SourceObject == null || o.SourceObject == "*")
+                .Where(o => o.ArgumentTypes == null || o.ArgumentTypes == arguments)
+                .Where(o => o.TypeParametersMatch(origMethodSymbol))
+                .ToList();
 
-			if (matches.Count > 1)
-			{
-				var matches2 = matches.Where(o => o.ArgumentTypes == arguments).ToList();
+            if (matches.Count > 1)
+            {
+                var matches2 = matches.Where(o => o.ArgumentTypes == arguments).ToList();
 
-				if (matches2.Count > 0)
-					matches = matches2;
-				else
-					matches = matches.Where(o => o.ArgumentTypes == null).ToList();
+                if (matches2.Count > 0)
+                    matches = matches2;
+                else
+                    matches = matches.Where(o => o.ArgumentTypes == null).ToList();
 
-				if (matches.Count > 1)
-					matches = matches.Except(matches.Where(o => o.SourceObject == "*")).ToList();
-			}
+                if (matches.Count > 1)
+                    matches = matches.Except(matches.Where(o => o.SourceObject == "*")).ToList();
+            }
 
-			if (matches.Count == 0)
-				return null;
+            if (matches.Count == 0)
+                return null;
 
-			return matches.SingleOrDefault();
-		}
+            return matches.SingleOrDefault();
+        }
 
-		private bool TypeParametersMatch(MethodSymbol methodSymbol)
-		{
-			foreach (var match in this.MatchTypeParameters)
-				if (methodSymbol.TypeArguments[match.TypeParameterIndex].ToString() != match.Match)
-					return false;
+        private bool TypeParametersMatch(MethodSymbol methodSymbol)
+        {
+            foreach (var match in this.MatchTypeParameters)
+                if (methodSymbol.TypeArguments[match.TypeParameterIndex].ToString() != match.Match)
+                    return false;
 
-			return true;
+            return true;
 
-		}
+        }
 
-		public string SourceObject { get; set; }
-		public string Match { get; set; }
+        public string SourceObject { get; set; }
+        public string Match { get; set; }
         public string ReplaceWith { get; set; }
         public string ExtensionNamespace { get; set; }
         public bool SkipExtensionParameter { get; set; }
-		public string ArgumentTypes { get; set; }
-		private List<ArgumentModifier> Arguments;
-		private List<MatchTypeParameter> MatchTypeParameters;
-		private List<AddTypeParameter> AddTypeParameters;
+        public string ArgumentTypes { get; set; }
+        private List<ArgumentModifier> Arguments;
+        private List<MatchTypeParameter> MatchTypeParameters;
+        private List<AddTypeParameter> AddTypeParameters;
 
-		public bool HasComplexReplaceWith
-		{
-			get { return DoComplexReplaceWith != null; }
-		}
-		public Action<ScalaWriter, MemberAccessExpressionSyntax> DoComplexReplaceWith;
+        public bool HasComplexReplaceWith
+        {
+            get { return DoComplexReplaceWith != null; }
+        }
+        public Action<ScalaWriter, MemberAccessExpressionSyntax> DoComplexReplaceWith;
 
         public bool IsExtensionMethod
         {
@@ -78,163 +78,163 @@ namespace CsScala.Translations
 
         public MethodTranslation(XElement data)
         {
-			TranslationManager.InitProperties(this, data);
+            TranslationManager.InitProperties(this, data);
 
             Arguments = data.Elements("Argument").Select(o => TranslationManager.InitProperties(new ArgumentModifier(), o)).ToList();
-			MatchTypeParameters = data.Elements("MatchTypeParameter").Select(o => TranslationManager.InitProperties(new MatchTypeParameter(), o)).ToList();
-			AddTypeParameters = data.Elements("AddTypeParameter").Select(o => TranslationManager.InitProperties(new AddTypeParameter(), o)).ToList();
+            MatchTypeParameters = data.Elements("MatchTypeParameter").Select(o => TranslationManager.InitProperties(new MatchTypeParameter(), o)).ToList();
+            AddTypeParameters = data.Elements("AddTypeParameter").Select(o => TranslationManager.InitProperties(new AddTypeParameter(), o)).ToList();
 
-			if (data.Element("ReplaceWith") != null)
-			{
-				DoComplexReplaceWith = (writer, expression) =>
-					{
-						foreach (var element in data.Element("ReplaceWith").Elements())
-						{
-							switch (element.Name.LocalName)
-							{
-								case "String":
-									writer.Write(ReplaceSpecialIndicators(element.Value, expression));
-									break;
-								case "Expression":
-									Core.Write(writer, expression.Expression);
-									break;
-								case "TypeParameter":
-									var type = expression.Name.As<GenericNameSyntax>().TypeArgumentList.Arguments[int.Parse(element.Attribute("Index").Value)];
+            if (data.Element("ReplaceWith") != null)
+            {
+                DoComplexReplaceWith = (writer, expression) =>
+                    {
+                        foreach (var element in data.Element("ReplaceWith").Elements())
+                        {
+                            switch (element.Name.LocalName)
+                            {
+                                case "String":
+                                    writer.Write(ReplaceSpecialIndicators(element.Value, expression));
+                                    break;
+                                case "Expression":
+                                    Core.Write(writer, expression.Expression);
+                                    break;
+                                case "TypeParameter":
+                                    var type = expression.Name.As<GenericNameSyntax>().TypeArgumentList.Arguments[int.Parse(element.Attribute("Index").Value)];
 
-									writer.Write(TypeProcessor.ConvertType(type));
-									break;
-								default:
-									throw new Exception("Unexpected element name " + element.Name);
-							}
-						}
-					};
-			}
+                                    writer.Write(TypeProcessor.ConvertType(type));
+                                    break;
+                                default:
+                                    throw new Exception("Unexpected element name " + element.Name);
+                            }
+                        }
+                    };
+            }
         }
 
-		private string ReplaceSpecialIndicators(string rawString, ExpressionSyntax expression)
-		{
-			if (rawString.Contains("{genericType}"))
-				rawString = ReplaceGenericVar(rawString, expression);
+        private string ReplaceSpecialIndicators(string rawString, ExpressionSyntax expression)
+        {
+            if (rawString.Contains("{genericType}"))
+                rawString = ReplaceGenericVar(rawString, expression);
 
-			return rawString;
-		}
+            return rawString;
+        }
 
-		private string ReplaceGenericVar(string rawString, ExpressionSyntax expression)
-		{
-			var name = expression.As<MemberAccessExpressionSyntax>().Name.As<GenericNameSyntax>();
+        private string ReplaceGenericVar(string rawString, ExpressionSyntax expression)
+        {
+            var name = expression.As<MemberAccessExpressionSyntax>().Name.As<GenericNameSyntax>();
 
-			var genericVar = TypeProcessor.ConvertType(name.TypeArgumentList.Arguments.Single());
+            var genericVar = TypeProcessor.ConvertType(name.TypeArgumentList.Arguments.Single());
 
-			return rawString.Replace("{genericType}", genericVar);
-		}
+            return rawString.Replace("{genericType}", genericVar);
+        }
 
 
-		internal IEnumerable<TransformedArgument> TranslateParameters(IEnumerable<ArgumentSyntax> args, ExpressionSyntax expression)
-		{
-			//Copy it
-			var list = args.Select(o => new TransformedArgument(o)).ToList();
+        internal IEnumerable<TransformedArgument> TranslateParameters(IEnumerable<ArgumentSyntax> args, ExpressionSyntax expression)
+        {
+            //Copy it
+            var list = args.Select(o => new TransformedArgument(o)).ToList();
 
-			foreach (var arg in Arguments)
-			{
-				if (arg.Action == "Delete")
-					list.RemoveAt(arg.Location);
-				else if (arg.Action == "DeleteIfPresent")
-				{
-					if (list.Count > arg.Location)
-						list.RemoveAt(arg.Location);
-				}
-				else if (arg.Action.StartsWith("MoveTo "))
-				{
-					var item = list[arg.Location];
-					list.RemoveAt(arg.Location);
-					list.Insert(int.Parse(arg.Action.Substring(7)), item);
-				}
-				else if (arg.Action.StartsWith("Insert "))
-					list.Insert(arg.Location, new TransformedArgument(ReplaceSpecialIndicators(arg.Action.Substring(7), expression)));
-				else
-					throw new Exception("Need handler for " + arg.Action);
-			}
+            foreach (var arg in Arguments)
+            {
+                if (arg.Action == "Delete")
+                    list.RemoveAt(arg.Location);
+                else if (arg.Action == "DeleteIfPresent")
+                {
+                    if (list.Count > arg.Location)
+                        list.RemoveAt(arg.Location);
+                }
+                else if (arg.Action.StartsWith("MoveTo "))
+                {
+                    var item = list[arg.Location];
+                    list.RemoveAt(arg.Location);
+                    list.Insert(int.Parse(arg.Action.Substring(7)), item);
+                }
+                else if (arg.Action.StartsWith("Insert "))
+                    list.Insert(arg.Location, new TransformedArgument(ReplaceSpecialIndicators(arg.Action.Substring(7), expression)));
+                else
+                    throw new Exception("Need handler for " + arg.Action);
+            }
 
-			return list;
-		}
+            return list;
+        }
 
-		public void WriteTypeParameters(ScalaWriter writer, InvocationExpressionSyntax invocationExpression)
-		{
-			if (this.AddTypeParameters.Count == 0)
-				return;
+        public void WriteTypeParameters(ScalaWriter writer, InvocationExpressionSyntax invocationExpression)
+        {
+            if (this.AddTypeParameters.Count == 0)
+                return;
 
-			var model = Program.GetModel(invocationExpression);
-			var symbolInfo = model.GetSymbolInfo(invocationExpression);
+            var model = Program.GetModel(invocationExpression);
+            var symbolInfo = model.GetSymbolInfo(invocationExpression);
 
-			writer.Write("[");
+            writer.Write("[");
 
-			bool first = true;
-			foreach (var add in AddTypeParameters)
-			{
-				if (first)
-					first = false;
-				else
-					writer.Write(", ");
+            bool first = true;
+            foreach (var add in AddTypeParameters)
+            {
+                if (first)
+                    first = false;
+                else
+                    writer.Write(", ");
 
-				switch (add.From)
-				{
-					case "SpecifiedTypeParameter":
-						var t = invocationExpression.Expression.As<MemberAccessExpressionSyntax>().Name.As<GenericNameSyntax>().TypeArgumentList.Arguments[add.Index];
-						writer.Write(TypeProcessor.ConvertType(t));
-						break;
-					case "ExpressionEnumerableParameter":
-						var eep = FindIEnumerableType(model.GetTypeInfo(invocationExpression.Expression.As<MemberAccessExpressionSyntax>().Expression).Type);
-						writer.Write(TypeProcessor.ConvertType(eep));
-						break;
-					default:
-						throw new Exception("No command " + add.From);
-				}
-			}
-			writer.Write("]");
-		}
+                switch (add.From)
+                {
+                    case "SpecifiedTypeParameter":
+                        var t = invocationExpression.Expression.As<MemberAccessExpressionSyntax>().Name.As<GenericNameSyntax>().TypeArgumentList.Arguments[add.Index];
+                        writer.Write(TypeProcessor.ConvertType(t));
+                        break;
+                    case "ExpressionEnumerableParameter":
+                        var eep = FindIEnumerableType(model.GetTypeInfo(invocationExpression.Expression.As<MemberAccessExpressionSyntax>().Expression).Type);
+                        writer.Write(TypeProcessor.ConvertType(eep));
+                        break;
+                    default:
+                        throw new Exception("No command " + add.From);
+                }
+            }
+            writer.Write("]");
+        }
 
-		private static TypeSymbol FindIEnumerableType(TypeSymbol type)
-		{
-			var ret = TryFindIEnumerableType(type);
-			if (ret != null)
-				return ret;
-			else
-				throw new Exception("No IEnumerable<T> interfaces found for " + type);
-		}
+        private static TypeSymbol FindIEnumerableType(TypeSymbol type)
+        {
+            var ret = TryFindIEnumerableType(type);
+            if (ret != null)
+                return ret;
+            else
+                throw new Exception("No IEnumerable<T> interfaces found for " + type);
+        }
 
-		private static TypeSymbol TryFindIEnumerableType(TypeSymbol type)
-		{
-			if (type.Name == "IEnumerable" && type.ContainingNamespace.FullName() == "System.Collections.Generic")
-				return type.As<NamedTypeSymbol>().TypeArguments[0];
+        private static TypeSymbol TryFindIEnumerableType(TypeSymbol type)
+        {
+            if (type.Name == "IEnumerable" && type.ContainingNamespace.FullName() == "System.Collections.Generic")
+                return type.As<NamedTypeSymbol>().TypeArguments[0];
 
-			foreach(var intface in type.Interfaces)
-			{
-				var recur = TryFindIEnumerableType(intface);
-				if (recur != null)
-					return recur;
-			}
+            foreach (var intface in type.Interfaces)
+            {
+                var recur = TryFindIEnumerableType(intface);
+                if (recur != null)
+                    return recur;
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		class ArgumentModifier
-		{
-			public int Location { get; set; }
-			public string Action { get; set; }
-		}
+        class ArgumentModifier
+        {
+            public int Location { get; set; }
+            public string Action { get; set; }
+        }
 
-		class MatchTypeParameter
-		{
-			public int TypeParameterIndex { get; set; }
-			public string Match { get; set; }
-		}
+        class MatchTypeParameter
+        {
+            public int TypeParameterIndex { get; set; }
+            public string Match { get; set; }
+        }
 
-		class AddTypeParameter
-		{
-			public string From { get; set; }
-			public int Index { get; set; }
-		}
+        class AddTypeParameter
+        {
+            public string From { get; set; }
+            public int Index { get; set; }
+        }
 
-	}
+    }
 
 }

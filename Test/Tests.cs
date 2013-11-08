@@ -8,14 +8,14 @@ using Test;
 
 namespace UnitTestProject1
 {
-	[TestClass]
-	public class Tests
-	{
-		[TestMethod]
-		public void HelloWorld()
-		{
+    [TestClass]
+    public class Tests
+    {
+        [TestMethod]
+        public void HelloWorld()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -38,12 +38,12 @@ object Utilities
         System.Console.WriteLine(""Hello, World!"");
     }
 }");
-		}
-		[TestMethod]
-		public void IfStatement()
-		{
+        }
+        [TestMethod]
+        public void IfStatement()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -94,12 +94,12 @@ object Utilities
 
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void Loops()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Loops()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -208,14 +208,14 @@ object Utilities
 
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void EnumerateOnString()
-		{
+        [TestMethod]
+        public void EnumerateOnString()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Linq;
 
@@ -248,12 +248,12 @@ class Foo
 		System.Linq.Enumerable.Select(s, (o:Char) => { o; }:Char);
 	}
 }");
-		}
+        }
 
-		[TestMethod]
-		public void FieldsAndProperties()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void FieldsAndProperties()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Text;
 
@@ -365,13 +365,13 @@ class Box
 	}
 }
 ");
-		}
+        }
 
-		[TestMethod]
-		public void ForStatementWithNoCondition()
-		{
+        [TestMethod]
+        public void ForStatementWithNoCondition()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -402,12 +402,12 @@ object Utilities
         } //end for
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void AutomaticProperties()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void AutomaticProperties()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -428,12 +428,12 @@ class Box
 {
     var Width:Float = 0;
 }");
-		}
+        }
 
-		[TestMethod]
-		public void DictionaryAndHashSet()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void DictionaryAndHashSet()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -512,13 +512,13 @@ object Utilities
 
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void Lambda()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Lambda()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -561,12 +561,12 @@ object Utilities
 		});
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void LambdaNoReturn()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void LambdaNoReturn()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -610,12 +610,12 @@ object Utilities
     {
     }  
 }");
-		}
+        }
 
-		[TestMethod]
-		public void LambdaWithBranchingReturnAndReturnValue()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void LambdaWithBranchingReturnAndReturnValue()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -674,13 +674,13 @@ object Utilities
 		}:Int;
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void LambdaWithBranchingReturnNoReturnValue()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void LambdaWithBranchingReturnNoReturnValue()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -733,13 +733,13 @@ object Utilities
 		};
     }
 }");
-		}
-		
-		[TestMethod]
-		public void Indexing()
-		{
+        }
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Indexing()
+        {
+
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -779,12 +779,12 @@ class Foo
 	}
     
 }");
-		}
+        }
 
-		[TestMethod]
-		public void NamedParameters()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void NamedParameters()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Text;
 
@@ -828,12 +828,12 @@ class Foo
 		Bar(1, 2, c = 3, d = 4);
 	}
 }");
-		}
+        }
 
-		[TestMethod]
-		public void NestedClasses()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void NestedClasses()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Text;
 
@@ -882,13 +882,13 @@ class Outer_Inner
 }"
   
   });
-		}
+        }
 
 
-		[TestMethod]
-		public void AnonymousTypes()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void AnonymousTypes()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Text;
 
@@ -926,14 +926,14 @@ class Anon_Field1_Int__Field2_System_Text_StringBuilder(_Field1:Int, _Field2:Sys
 
   
   });
-		}
+        }
 
 
 
-		[TestMethod]
-		public void PreprocessorDirectives()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void PreprocessorDirectives()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -983,13 +983,13 @@ class SomeClass
 		Console.WriteLine(""CsScala3"");
 	}
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void OfType()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void OfType()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System.Text;
 using System.Linq;
 
@@ -1014,12 +1014,12 @@ class SomeClass
 		var b:ArrayBuffer[System.Text.StringBuilder] = System.Linq.Enumerable.ToList(System.Linq.Enumerable.OfType[Int, System.Text.StringBuilder](a));
 	}
 }");
-		}
+        }
 
-		[TestMethod]
-		public void GlobalKeyword()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void GlobalKeyword()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1041,14 +1041,14 @@ class SomeClass
         var c:Blargh.SomeClass = null;
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void DefaultParameter()
-		{
+        [TestMethod]
+        public void DefaultParameter()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1082,13 +1082,13 @@ class SomeClass(i3:Int = 9)
         Foo(6, 7, ""eight"");
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void Linq()
-		{
+        [TestMethod]
+        public void Linq()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Linq;
 
@@ -1153,12 +1153,12 @@ object Utilities
 	}
 }");
 
-		}
+        }
 
-		[TestMethod]
-		public void GenericClass()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void GenericClass()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -1224,12 +1224,12 @@ class KeyValueList[K, V] extends System.IEquatable[K]
 	}
 }
 ");
-		}
+        }
 
-		[TestMethod]
-		public void ConstructorCallsBaseConstructor()
-		{
-			var cs = @"
+        [TestMethod]
+        public void ConstructorCallsBaseConstructor()
+        {
+            var cs = @"
 using System;
 
 namespace Blargh
@@ -1245,7 +1245,7 @@ namespace Blargh
     }
 }";
 
-			var scala1 = @" 
+            var scala1 = @" 
 package Blargh;
 " + WriteImports.StandardImports + @"
 
@@ -1253,7 +1253,7 @@ class Top(i:Int)
 {
 }";
 
-			var scala2 = @"
+            var scala2 = @"
 package Blargh;
 " + WriteImports.StandardImports + @"
 
@@ -1261,13 +1261,13 @@ class Derived extends Blargh.Top(4)
 {
 }";
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, cs, new string[] { scala1, scala2 });
-		}
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, cs, new string[] { scala1, scala2 });
+        }
 
-		[TestMethod]
-		public void ObjectInitilization()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void ObjectInitilization()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System.Text;
 
 namespace Blargh
@@ -1298,13 +1298,13 @@ object Utilities
 }
 			
 			");
-		}
+        }
 
-		[TestMethod]
-		public void UsingStatement()
-		{
+        [TestMethod]
+        public void UsingStatement()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.IO;
 
@@ -1343,12 +1343,12 @@ object Utilities
     }
 }
 ");
-		}
+        }
 
-		[TestMethod]
-		public void Math()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Math()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1397,12 +1397,12 @@ object Utilities
 		var x:Int = (i / 3);
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void Delegates()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Delegates()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1443,12 +1443,12 @@ object Utilities
 		Blargh.Utilities.StaticAction();
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void TypeStatics()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void TypeStatics()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1497,14 +1497,14 @@ object Utilities
         s.toDouble;
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void NullableTypes()
-		{
+        [TestMethod]
+        public void NullableTypes()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1559,15 +1559,15 @@ object Utilities
 	}
  
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void Enums()
-		{
-			
+        [TestMethod]
+        public void Enums()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, new string[] { @"
+
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, new string[] { @"
 using System;
 
 namespace Blargh
@@ -1680,12 +1680,12 @@ object Clazz
 		var vals = Blargh.MostlyNumbered.Values();
 	}
 }"});
-		}
+        }
 
-		[TestMethod]
-		public void NestedEnum()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, new string[] { @"
+        [TestMethod]
+        public void NestedEnum()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, new string[] { @"
 namespace Blargh
 {
     class Foo
@@ -1740,13 +1740,13 @@ object Foo_TestEnum
 	}
 	val Values:Array[Int] = Array(1, 2, 3);
 }" });
-		}
+        }
 
-		[TestMethod]
-		public void SwitchStatement()
-		{
+        [TestMethod]
+        public void SwitchStatement()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1788,13 +1788,13 @@ object Utilities
         }
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void IsAndAs()
-		{
+        [TestMethod]
+        public void IsAndAs()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -1839,13 +1839,13 @@ object Utilities
 		System.Console.WriteLine(sss);
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void AbstractAndOverrides()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void AbstractAndOverrides()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -1960,14 +1960,14 @@ class Derived extends Blargh.TopLevel
         return ""DerivedToString"";
     }
 }"  });
-		}
+        }
 
 
 
-		[TestMethod]
-		public void Interfaces()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Interfaces()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2004,12 +2004,12 @@ class Pokable extends Blargh.ITesting
         System.Console.WriteLine(""Implementation"");
     }
 }"});
-		}
+        }
 
-		[TestMethod]
-		public void TryCatchThrow()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void TryCatchThrow()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.IO;
 
@@ -2087,14 +2087,14 @@ object Utilities
         throw new System.InvalidOperationException(""err"");    		
     }
 }");
-		}
+        }
 
 
 
-		[TestMethod]
-		public void Generics()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Generics()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -2144,12 +2144,12 @@ object Utilities
         return array;
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void Objects()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void Objects()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -2202,12 +2202,12 @@ object Utilities
         Math.max(stack.pop(), stack.pop());
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void ReplaceTypeWithAttribute()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void ReplaceTypeWithAttribute()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using Shared;
 
@@ -2237,12 +2237,12 @@ class Foo
 {
     var Obj:bar.Baz = null;
 }");
-		}
+        }
 
-		[TestMethod]
-		public void Casts()
-		{
-			var cs = @"
+        [TestMethod]
+        public void Casts()
+        {
+            var cs = @"
 using System;
 
 namespace Blargh
@@ -2267,8 +2267,8 @@ namespace Blargh
         }
     }
 }";
-  
-			var scala = @"
+
+            var scala = @"
 package Blargh;
 " + WriteImports.StandardImports + @"
 
@@ -2282,7 +2282,7 @@ object Test
     }
 }";
 
-			var transform = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            var transform = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Translations>
   <Method SourceObject=""*"" Match=""As"">
 	<ReplaceWith>
@@ -2294,14 +2294,14 @@ object Test
   </Method>
 </Translations>";
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, new[] { cs }, new[] { scala }, transform);
-		}
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, new[] { cs }, new[] { scala }, transform);
+        }
 
 
-		[TestMethod]
-		public void ArrayAndForEach()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void ArrayAndForEach()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Collections.Generic;
 
@@ -2339,12 +2339,12 @@ object Utilities
 		System.Console.WriteLine(new ArrayBuffer[String]().length);
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void PartialClasses()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name,
+        [TestMethod]
+        public void PartialClasses()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name,
 
 new string[] { @"
 using System;
@@ -2388,13 +2388,13 @@ class Utilities
         System.Console.WriteLine(""I'm in Two!"");
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void StringMethods()
-		{
+        [TestMethod]
+        public void StringMethods()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2439,13 +2439,13 @@ object Utilities
 		}
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void ExtensionMethod()
-		{
+        [TestMethod]
+        public void ExtensionMethod()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2488,13 +2488,13 @@ object Utilities
         return i == 4;
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void StringJoin()
-		{
+        [TestMethod]
+        public void StringJoin()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2516,13 +2516,13 @@ class Foo
         var s:String = System.CsScala.Join("";"", Array(""one"", ""two""));
     }
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void RefAndOut()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void RefAndOut()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Text;
 		
@@ -2586,13 +2586,13 @@ class Foo
 	}
 		
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void PartialMethods()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void PartialMethods()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2624,13 +2624,13 @@ class Foo
 		System.Console.WriteLine();
 	}
 }");
-		}
+        }
 
 
-		[TestMethod]
-		public void TypeConstraints()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        [TestMethod]
+        public void TypeConstraints()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2651,13 +2651,13 @@ object Utilities
     {
     }
 }");
-		}
+        }
 
-		[TestMethod]
-		public void ExplicitCastOperators()
-		{
+        [TestMethod]
+        public void ExplicitCastOperators()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Foo
@@ -2695,15 +2695,15 @@ object Bar
 class Bar
 {
 }");
-		}
+        }
 
 
 
-		[TestMethod]
-		public void ParamsArguments()
-		{
+        [TestMethod]
+        public void ParamsArguments()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Foo
@@ -2766,13 +2766,13 @@ object Bar
 		Foo.Bar.Method3(1, 2, Array(3, 4));
 	}
 }");
-		}
+        }
 
-		[TestMethod]
-		public void AccessStaticFromInstance()
-		{
+        [TestMethod]
+        public void AccessStaticFromInstance()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2808,14 +2808,14 @@ class Foo
 	}
 }
 ");
-		}
+        }
 
 
-		[TestMethod]
-		public void ClassTag()
-		{
+        [TestMethod]
+        public void ClassTag()
+        {
 
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -2889,12 +2889,12 @@ class Foo
 	}
 }
 ");
-		}
-		 
-		[TestMethod]
-		public void ByteConstants()
-		{
-			TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+        }
+
+        [TestMethod]
+        public void ByteConstants()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 
 namespace Blargh
@@ -2917,8 +2917,8 @@ object Utilities
         return 200.toByte;
     }
 }");
-		}
-	}
+        }
+    }
 
 
 }

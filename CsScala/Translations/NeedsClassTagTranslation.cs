@@ -7,20 +7,20 @@ using System.Xml.Linq;
 
 namespace CsScala.Translations
 {
-	class NeedsClassTagTranslation
-	{
-		public NeedsClassTagTranslation(XElement data)
-		{
-			TranslationManager.InitProperties(this, data);
-		}
+    class NeedsClassTagTranslation
+    {
+        public NeedsClassTagTranslation(XElement data)
+        {
+            TranslationManager.InitProperties(this, data);
+        }
 
-		public string Match { get; set; }
+        public string Match { get; set; }
 
-		public string[] TypeParametersOpt { get; set; } //null means all type parameters, for convenience
+        public string[] TypeParametersOpt { get; set; } //null means all type parameters, for convenience
 
-		public static NeedsClassTagTranslation Get(string match)
-		{
-			return TranslationManager.NeedsClassTags.SingleOrDefault(o => o.Match == match);
-		}
-	}
+        public static NeedsClassTagTranslation Get(string match)
+        {
+            return TranslationManager.NeedsClassTags.SingleOrDefault(o => o.Match == match);
+        }
+    }
 }

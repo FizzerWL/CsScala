@@ -16,39 +16,39 @@ namespace CsScala.Translations
 {
     class TranslationManager
     {
-		internal static List<MethodTranslation> Methods;
-		internal static List<PropertyTranslation> Properties;
-		internal static List<TypeTranslation> Types;
-		internal static List<NeedsClassTagTranslation> NeedsClassTags;
-		
-		public static void Init(IEnumerable<string> extraDocs)
-		{
-			Methods = new List<MethodTranslation>();
-			Properties = new List<PropertyTranslation>();
-			Types = new List<TypeTranslation>();
-			NeedsClassTags = new List<NeedsClassTagTranslation>();
+        internal static List<MethodTranslation> Methods;
+        internal static List<PropertyTranslation> Properties;
+        internal static List<TypeTranslation> Types;
+        internal static List<NeedsClassTagTranslation> NeedsClassTags;
 
-			foreach(var element in BuildTranslationDocs(extraDocs).SelectMany(o => o.Root.Elements()))
-			{
-				switch (element.Name.LocalName)
-				{
-					case "Method":
-						Methods.Add(new MethodTranslation(element));
-						break;
-					case "Type":
-						Types.Add(new TypeTranslation(element));
-						break;
-					case "Property":
-						Properties.Add(new PropertyTranslation(element));
-						break;
-					case "NeedsClassTag":
-						NeedsClassTags.Add(new NeedsClassTagTranslation(element));
-						break;
-					default:
-						throw new Exception("Unexpected type name " + element.Name);
-				}
-			}
-		}
+        public static void Init(IEnumerable<string> extraDocs)
+        {
+            Methods = new List<MethodTranslation>();
+            Properties = new List<PropertyTranslation>();
+            Types = new List<TypeTranslation>();
+            NeedsClassTags = new List<NeedsClassTagTranslation>();
+
+            foreach (var element in BuildTranslationDocs(extraDocs).SelectMany(o => o.Root.Elements()))
+            {
+                switch (element.Name.LocalName)
+                {
+                    case "Method":
+                        Methods.Add(new MethodTranslation(element));
+                        break;
+                    case "Type":
+                        Types.Add(new TypeTranslation(element));
+                        break;
+                    case "Property":
+                        Properties.Add(new PropertyTranslation(element));
+                        break;
+                    case "NeedsClassTag":
+                        NeedsClassTags.Add(new NeedsClassTagTranslation(element));
+                        break;
+                    default:
+                        throw new Exception("Unexpected type name " + element.Name);
+                }
+            }
+        }
 
         public static List<XDocument> BuildTranslationDocs(IEnumerable<string> extra)
         {
@@ -72,34 +72,34 @@ namespace CsScala.Translations
                 var attr = data.Attribute(prop.Name);
                 if (attr != null)
                 {
-					if (prop.PropertyType == typeof(string))
-						prop.SetValue(obj, attr.Value);
-					else if (prop.PropertyType == typeof(bool))
-						prop.SetValue(obj, bool.Parse(attr.Value));
-					else if (prop.PropertyType == typeof(int))
-						prop.SetValue(obj, int.Parse(attr.Value));
-					else
-						throw new Exception("Need handler for " + prop.PropertyType);
+                    if (prop.PropertyType == typeof(string))
+                        prop.SetValue(obj, attr.Value);
+                    else if (prop.PropertyType == typeof(bool))
+                        prop.SetValue(obj, bool.Parse(attr.Value));
+                    else if (prop.PropertyType == typeof(int))
+                        prop.SetValue(obj, int.Parse(attr.Value));
+                    else
+                        throw new Exception("Need handler for " + prop.PropertyType);
                 }
             }
 
-			return obj;
+            return obj;
         }
 
 
-		/// <summary>
-		/// Convert a type string into a string for matching Translations.xml.  We exclude generic suffixes just because xml requires encoding < and >
-		/// </summary>
-		public static string MatchString(string typeStr)
-		{
-			if (typeStr == null)
-				return null;
-			else if (typeStr.EndsWith("[]"))
-				return "System.Array";
-			else
-				return Regex.Replace(typeStr, @"[<>,]", "");
-		}
+        /// <summary>
+        /// Convert a type string into a string for matching Translations.xml.  We exclude generic suffixes just because xml requires encoding < and >
+        /// </summary>
+        public static string MatchString(string typeStr)
+        {
+            if (typeStr == null)
+                return null;
+            else if (typeStr.EndsWith("[]"))
+                return "System.Array";
+            else
+                return Regex.Replace(typeStr, @"[<>,]", "");
+        }
 
 
-	}
+    }
 }

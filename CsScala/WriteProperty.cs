@@ -13,42 +13,42 @@ namespace CsScala
             Action<AccessorDeclarationSyntax, bool> writeRegion = (region, get) =>
             {
                 writer.WriteIndent();
-					
+
                 if (property.Modifiers.Any(SyntaxKind.OverrideKeyword))
                     writer.Write("override ");
                 if (property.Modifiers.Any(SyntaxKind.PrivateKeyword))
                     writer.Write("private ");
 
-				writer.Write("def ");
-				writer.Write(WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText));
+                writer.Write("def ");
+                writer.Write(WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText));
 
-				if (get)
-				{
-					writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
-				}
-				else
-				{
-					writer.Write("_=(value");
-					writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
-					writer.Write(")");
+                if (get)
+                {
+                    writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
+                }
+                else
+                {
+                    writer.Write("_=(value");
+                    writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
+                    writer.Write(")");
 
-				}
-
-				if (property.Modifiers.Any(SyntaxKind.AbstractKeyword))
-					writer.Write(";\r\n");
-				else
-				{
-					writer.Write(" =\r\n");
-
-					writer.WriteOpenBrace();
-
-					foreach(var statement in region.Body.As<BlockSyntax>().Statements)
-						Core.Write(writer, statement);
-
-					writer.WriteCloseBrace();
                 }
 
-				
+                if (property.Modifiers.Any(SyntaxKind.AbstractKeyword))
+                    writer.Write(";\r\n");
+                else
+                {
+                    writer.Write(" =\r\n");
+
+                    writer.WriteOpenBrace();
+
+                    foreach (var statement in region.Body.As<BlockSyntax>().Statements)
+                        Core.Write(writer, statement);
+
+                    writer.WriteCloseBrace();
+                }
+
+
             };
 
             var getter = property.AccessorList.Accessors.SingleOrDefault(o => o.Keyword.Kind == SyntaxKind.GetKeyword);
@@ -67,17 +67,17 @@ namespace CsScala
 
                 if (getter != null)
                     writeRegion(getter, true);
-				else if (setter != null)
-				{
-					//Scala does not allow having a setter without a getter. Write out a getter.
-					writer.Write("def ");
-					writer.Write(WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText));
-					writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
-					writer.Write(" =\r\n");
-					writer.WriteOpenBrace();
-					writer.WriteLine("throw new Exception(\"No setter defined\");");
-					writer.WriteCloseBrace();
-				}
+                else if (setter != null)
+                {
+                    //Scala does not allow having a setter without a getter. Write out a getter.
+                    writer.Write("def ");
+                    writer.Write(WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText));
+                    writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
+                    writer.Write(" =\r\n");
+                    writer.WriteOpenBrace();
+                    writer.WriteLine("throw new Exception(\"No setter defined\");");
+                    writer.WriteCloseBrace();
+                }
 
                 if (setter != null)
                     writeRegion(setter, false);

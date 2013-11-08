@@ -7,11 +7,11 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteThisExpression
-	{
-		public static void Go(ScalaWriter writer, ThisExpressionSyntax expression)
-		{
-			writer.Write("this");
-		}
-	}
+    static class WriteThisExpression
+    {
+        public static void Go(ScalaWriter writer, ThisExpressionSyntax expression)
+        {
+            writer.Write("this");
+        }
+    }
 }

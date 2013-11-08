@@ -7,16 +7,16 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteConditionalExpression
-	{
-		public static void Go(ScalaWriter writer, ConditionalExpressionSyntax expression)
-		{
-			writer.Write("if (");
-			Core.Write(writer, expression.Condition);
-			writer.Write(") ");
-			Core.Write(writer, expression.WhenTrue);
-			writer.Write(" else ");
-			Core.Write(writer, expression.WhenFalse);
-		}
-	}
+    static class WriteConditionalExpression
+    {
+        public static void Go(ScalaWriter writer, ConditionalExpressionSyntax expression)
+        {
+            writer.Write("if (");
+            Core.Write(writer, expression.Condition);
+            writer.Write(") ");
+            Core.Write(writer, expression.WhenTrue);
+            writer.Write(" else ");
+            Core.Write(writer, expression.WhenFalse);
+        }
+    }
 }

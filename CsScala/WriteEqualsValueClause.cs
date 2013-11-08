@@ -7,12 +7,12 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteEqualsValueClause
-	{
-		public static void Go(ScalaWriter writer, EqualsValueClauseSyntax expression)
-		{
-			writer.Write(" = ");
-			Core.Write(writer, expression.Value);
-		}
-	}
+    static class WriteEqualsValueClause
+    {
+        public static void Go(ScalaWriter writer, EqualsValueClauseSyntax expression)
+        {
+            writer.Write(" = ");
+            Core.Write(writer, expression.Value);
+        }
+    }
 }

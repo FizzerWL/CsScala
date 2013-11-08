@@ -7,11 +7,11 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteBreakStatement
-	{
-		public static void Go(ScalaWriter writer, BreakStatementSyntax statement)
-		{
-			writer.WriteLine("CsScala.csbreak.break;");
-		}
-	}
+    static class WriteBreakStatement
+    {
+        public static void Go(ScalaWriter writer, BreakStatementSyntax statement)
+        {
+            writer.WriteLine("CsScala.csbreak.break;");
+        }
+    }
 }

@@ -19,12 +19,12 @@ namespace CsScala
             try
             {
 
-				Console.WriteLine("C# to Scala Converter\nSee (TODO: Insert url) for full info and documentation.\n\n");
+                Console.WriteLine("C# to Scala Converter\nSee (TODO: Insert url) for full info and documentation.\n\n");
 
-				if (args.Length == 0 || args.Any(o => o == "-?" || o == "--help" || o == "/?"))
-				{
-					//Print usage
-					Console.WriteLine(
+                if (args.Length == 0 || args.Any(o => o == "-?" || o == "--help" || o == "/?"))
+                {
+                    //Print usage
+                    Console.WriteLine(
 @"
 
 Usage:
@@ -48,62 +48,62 @@ Options available:
 	/define:<symbol>
 		Adds extra pre-processor #define symbols to add to the project before building.
 ");
-					return;
-				}
+                    return;
+                }
 
-				var sourceFiles = new List<string>();
-				var outDir = Directory.GetCurrentDirectory();
-				var extraTranslations = new List<string>();
-				string pathToSolution = null;
-				string config = null;
-				string projects = null;
-				string[] extraDefines = new string[] { };
+                var sourceFiles = new List<string>();
+                var outDir = Directory.GetCurrentDirectory();
+                var extraTranslations = new List<string>();
+                string pathToSolution = null;
+                string config = null;
+                string projects = null;
+                string[] extraDefines = new string[] { };
 
-				foreach (var arg in args)
-				{
-					if (arg.StartsWith("/extraTranslation:"))
-						extraTranslations.AddRange(arg.Substring(18).Split(';').Select(File.ReadAllText));
-					else if (arg.StartsWith("/out:"))
-						outDir = arg.Substring(5);
-					else if (arg.StartsWith("/sln:"))
-						pathToSolution = arg.Substring(5);
-					else if (arg.StartsWith("/config:"))
-						config = arg.Substring(8);
-					else if (arg.StartsWith("/projects:"))
-						projects = arg.Substring(10);
-					else if (arg.StartsWith("/define:"))
-						extraDefines = arg.Substring(8).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					else
-						throw new Exception("Invalid argument: " + arg);
-				}
+                foreach (var arg in args)
+                {
+                    if (arg.StartsWith("/extraTranslation:"))
+                        extraTranslations.AddRange(arg.Substring(18).Split(';').Select(File.ReadAllText));
+                    else if (arg.StartsWith("/out:"))
+                        outDir = arg.Substring(5);
+                    else if (arg.StartsWith("/sln:"))
+                        pathToSolution = arg.Substring(5);
+                    else if (arg.StartsWith("/config:"))
+                        config = arg.Substring(8);
+                    else if (arg.StartsWith("/projects:"))
+                        projects = arg.Substring(10);
+                    else if (arg.StartsWith("/define:"))
+                        extraDefines = arg.Substring(8).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    else
+                        throw new Exception("Invalid argument: " + arg);
+                }
 
-				if (pathToSolution == null)
-					throw new Exception("/sln parameter not passed");
+                if (pathToSolution == null)
+                    throw new Exception("/sln parameter not passed");
 
-				var solution = Solution.Load(pathToSolution, config);
+                var solution = Solution.Load(pathToSolution, config);
 
-				var projectsList = solution.Projects.ToList();
+                var projectsList = solution.Projects.ToList();
 
-				if (projects != null)
-					TrimList(projectsList, projects);
+                if (projects != null)
+                    TrimList(projectsList, projects);
 
-				if (extraDefines.Length > 0)
-					projectsList = projectsList.Select(p => p.UpdateParseOptions(new ParseOptions(preprocessorSymbols: 
-						p.ParseOptions.As<ParseOptions>().PreprocessorSymbolNames
-						.Concat(extraDefines.Where(z => z.StartsWith("-") == false))
-						.Except(extraDefines.Where(z => z.StartsWith("-")).Select(z => z.Substring(1)))
-						.ToArray())
-						)).ToList();
+                if (extraDefines.Length > 0)
+                    projectsList = projectsList.Select(p => p.UpdateParseOptions(new ParseOptions(preprocessorSymbols:
+                        p.ParseOptions.As<ParseOptions>().PreprocessorSymbolNames
+                        .Concat(extraDefines.Where(z => z.StartsWith("-") == false))
+                        .Except(extraDefines.Where(z => z.StartsWith("-")).Select(z => z.Substring(1)))
+                        .ToArray())
+                        )).ToList();
 
-				foreach (var project in projectsList)
-				{
-					Console.WriteLine("Converting project " + project.Name + "...");
-					var sw = Stopwatch.StartNew();
-					Program.Go((Compilation)project.GetCompilation(), outDir, extraTranslations);
-					Console.WriteLine("Finished project " + project.Name + " in " + sw.Elapsed);
-				}
+                foreach (var project in projectsList)
+                {
+                    Console.WriteLine("Converting project " + project.Name + "...");
+                    var sw = Stopwatch.StartNew();
+                    Program.Go((Compilation)project.GetCompilation(), outDir, extraTranslations);
+                    Console.WriteLine("Finished project " + project.Name + " in " + sw.Elapsed);
+                }
 
-				Environment.ExitCode = 0;
+                Environment.ExitCode = 0;
             }
             catch (Exception ex)
             {
@@ -113,25 +113,25 @@ Options available:
             }
         }
 
-		private static void TrimList(List<IProject> projectsList, string projectsCsv)
-		{
-			var split = projectsCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        private static void TrimList(List<IProject> projectsList, string projectsCsv)
+        {
+            var split = projectsCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-			for (int i = 0; i < projectsList.Count; i++)
-			{
-				var si = split.IndexOf(projectsList[i].Name);
-				if (si != -1)
-					split.RemoveAt(si);
-				else
-				{
-					projectsList.RemoveAt(i);
-					i--;
-				}
-			}
+            for (int i = 0; i < projectsList.Count; i++)
+            {
+                var si = split.IndexOf(projectsList[i].Name);
+                if (si != -1)
+                    split.RemoveAt(si);
+                else
+                {
+                    projectsList.RemoveAt(i);
+                    i--;
+                }
+            }
 
-			if (split.Count > 0)
-				throw new Exception("Project(s) not found: " + string.Join(", ", split));
-		}
+            if (split.Count > 0)
+                throw new Exception("Project(s) not found: " + string.Join(", ", split));
+        }
 
     }
 }

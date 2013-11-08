@@ -7,13 +7,13 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteParenthesizedExpression
-	{
-		public static void Go(ScalaWriter writer, ParenthesizedExpressionSyntax expression)
-		{
-			writer.Write("(");
-			Core.Write(writer, expression.Expression);
-			writer.Write(")");
-		}
-	}
+    static class WriteParenthesizedExpression
+    {
+        public static void Go(ScalaWriter writer, ParenthesizedExpressionSyntax expression)
+        {
+            writer.Write("(");
+            Core.Write(writer, expression.Expression);
+            writer.Write(")");
+        }
+    }
 }

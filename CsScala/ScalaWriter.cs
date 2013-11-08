@@ -14,12 +14,12 @@ namespace CsScala
         public int Indent;
         private StringBuilder _builder = new StringBuilder(5000);
 
-		public ScalaWriter(string typeNamespace, string typeName)
+        public ScalaWriter(string typeNamespace, string typeName)
         {
 
-			var dir = Path.Combine(Program.OutDir, typeNamespace.Replace(".", Path.DirectorySeparatorChar.ToString()));
-			if (!Directory.Exists(dir))
-				Directory.CreateDirectory(dir);
+            var dir = Path.Combine(Program.OutDir, typeNamespace.Replace(".", Path.DirectorySeparatorChar.ToString()));
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
             _path = Path.Combine(dir, typeName + ".scala");
             Writer = new StringWriter(_builder);

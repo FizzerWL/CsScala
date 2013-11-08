@@ -7,41 +7,41 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	static class WriteUnaryExpression
-	{
-		public static void WritePrefix(ScalaWriter writer, PrefixUnaryExpressionSyntax expression)
-		{
-			if (expression.OperatorToken.Kind == SyntaxKind.MinusMinusToken)
-			{
-				Core.Write(writer, expression.Operand);
-				writer.Write(" -= 1");
-			}
-			else if (expression.OperatorToken.Kind == SyntaxKind.PlusPlusToken)
-			{
-				Core.Write(writer, expression.Operand);
-				writer.Write(" += 1");
-			}
-			else
-			{
-				writer.Write(expression.OperatorToken.ToString());
-				Core.Write(writer, expression.Operand);
-			}
-		}
+    static class WriteUnaryExpression
+    {
+        public static void WritePrefix(ScalaWriter writer, PrefixUnaryExpressionSyntax expression)
+        {
+            if (expression.OperatorToken.Kind == SyntaxKind.MinusMinusToken)
+            {
+                Core.Write(writer, expression.Operand);
+                writer.Write(" -= 1");
+            }
+            else if (expression.OperatorToken.Kind == SyntaxKind.PlusPlusToken)
+            {
+                Core.Write(writer, expression.Operand);
+                writer.Write(" += 1");
+            }
+            else
+            {
+                writer.Write(expression.OperatorToken.ToString());
+                Core.Write(writer, expression.Operand);
+            }
+        }
 
-		public static void WritePostfix(ScalaWriter writer, PostfixUnaryExpressionSyntax expression)
-		{
-			if (expression.OperatorToken.Kind == SyntaxKind.MinusMinusToken)
-			{
-				Core.Write(writer, expression.Operand);
-				writer.Write(" -= 1");
-			}
-			else if (expression.OperatorToken.Kind == SyntaxKind.PlusPlusToken)
-			{
-				Core.Write(writer, expression.Operand);
-				writer.Write(" += 1");
-			}
-			else
-				throw new Exception("No support for " + expression.OperatorToken.Kind + " at " + Utility.Descriptor(expression));
-		}
-	}
+        public static void WritePostfix(ScalaWriter writer, PostfixUnaryExpressionSyntax expression)
+        {
+            if (expression.OperatorToken.Kind == SyntaxKind.MinusMinusToken)
+            {
+                Core.Write(writer, expression.Operand);
+                writer.Write(" -= 1");
+            }
+            else if (expression.OperatorToken.Kind == SyntaxKind.PlusPlusToken)
+            {
+                Core.Write(writer, expression.Operand);
+                writer.Write(" += 1");
+            }
+            else
+                throw new Exception("No support for " + expression.OperatorToken.Kind + " at " + Utility.Descriptor(expression));
+        }
+    }
 }
