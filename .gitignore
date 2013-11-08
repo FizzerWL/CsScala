@@ -1,0 +1,10 @@
+*/bin/*
+*/obj/*
+*/Bin/*
+*/ClientBin/*
+*/TestResults/*
+*.suo
+*.vsmdi
+*.user
+*_ReSharper*
+*.ide

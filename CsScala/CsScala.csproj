@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E6DE880-241E-451B-86F1-36EE3E10B316}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CsScala</RootNamespace>
+    <AssemblyName>CsScala</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Roslyn.Compilers, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ref\Roslyn.Compilers.dll</HintPath>
+    </Reference>
+    <Reference Include="Roslyn.Compilers.CSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ref\Roslyn.Compilers.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Roslyn.Services, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ref\Roslyn.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Roslyn.Services.CSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ref\Roslyn.Services.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClassTags.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="EntryPoint.cs" />
+    <Compile Include="TransformedArgument.cs" />
+    <Compile Include="Translations\NeedsClassTagTranslation.cs" />
+    <Compile Include="TriviaProcessor.cs" />
+    <Compile Include="WriteAnonymousObjectCreationExpression.cs" />
+    <Compile Include="WriteArrayCreationExpression.cs" />
+    <Compile Include="WriteBaseExpression.cs" />
+    <Compile Include="WriteBinaryExpression.cs" />
+    <Compile Include="WriteBreakStatement.cs" />
+    <Compile Include="WriteCastExpression.cs" />
+    <Compile Include="WriteConditionalExpression.cs" />
+    <Compile Include="WriteConstructor.cs" />
+    <Compile Include="WriteContinueStatement.cs" />
+    <Compile Include="WriteConversionOperatorDeclaration.cs" />
+    <Compile Include="WriteDefaultExpression.cs" />
+    <Compile Include="WriteDoStatement.cs" />
+    <Compile Include="WriteElementAccessExpression.cs" />
+    <Compile Include="WriteEnum.cs" />
+    <Compile Include="WriteEqualsValueClause.cs" />
+    <Compile Include="WriteField.cs" />
+    <Compile Include="WriteForEachStatement.cs" />
+    <Compile Include="WriteForStatement.cs" />
+    <Compile Include="WriteGenericName.cs" />
+    <Compile Include="WriteIdentifierName.cs" />
+    <Compile Include="WriteIfStatement.cs" />
+    <Compile Include="WriteLambdaExpression.cs" />
+    <Compile Include="WriteLiteralExpression.cs" />
+    <Compile Include="WriteLockStatement.cs" />
+    <Compile Include="LoopInfo.cs" />
+    <Compile Include="WriteMethod.cs" />
+    <Compile Include="WriteObjectCreationExpression.cs" />
+    <Compile Include="WriteParenthesizedExpression.cs" />
+    <Compile Include="WriteUnaryExpression.cs" />
+    <Compile Include="WriteSwitchStatement.cs" />
+    <Compile Include="WriteTryStatement.cs" />
+    <Compile Include="WriteTypeOfExpression.cs" />
+    <Compile Include="WriteProperty.cs" />
+    <Compile Include="ScalaWriter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Translations\MethodTranslation.cs" />
+    <Compile Include="Translations\PropertyTranslation.cs" />
+    <Compile Include="Translations\TranslationManager.cs" />
+    <Compile Include="Translations\TypeTranslation.cs" />
+    <Compile Include="TypeProcessor.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="WriteImports.cs" />
+    <Compile Include="WriteInvocationExpression.cs" />
+    <Compile Include="WriteLocalDeclaration.cs" />
+    <Compile Include="WriteMemberAccessExpression.cs" />
+    <Compile Include="TypeState.cs" />
+    <Compile Include="WriteReturnStatement.cs" />
+    <Compile Include="WriteThisExpression.cs" />
+    <Compile Include="WriteThrowStatement.cs" />
+    <Compile Include="WriteType.cs" />
+    <Compile Include="WriteUsingStatement.cs" />
+    <Compile Include="WriteWhileStatement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Translations.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Translations>
+  <Method SourceObject="*" Match="ToString" ReplaceWith="toString" />
+  <Method SourceObject="*" Match="GetType" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="*" Match="CompareTo" ReplaceWith="compareTo" />
+  <Type Match="System.Type" ReplaceWith="system.TypeCS" />
+
+  <Method SourceObject="System.String" Match="StartsWith" ReplaceWith="startsWith" />
+  <Method SourceObject="System.String" Match="EndsWith" ReplaceWith="endsWith" />
+  <Method SourceObject="System.String" Match="ToLower" ReplaceWith="toLowerCase" />
+  <Method SourceObject="System.String" Match="ToUpper" ReplaceWith="toUpperCase" />
+  <Method SourceObject="System.String" Match="Replace" ReplaceWith="replaceAll" />
+  <Method SourceObject="System.String" Match="Replace" ArgumentTypes="char char" ReplaceWith="replace" />
+  <Method SourceObject="System.String" Match="Substring" ReplaceWith="substring" />
+  <Method SourceObject="System.String" Match="IndexOf" ReplaceWith="indexOf" />
+  <Method SourceObject="System.String" Match="Trim" ReplaceWith="trim" />
+  <Method SourceObject="System.String" Match="ToCharArray" ReplaceWith="toCharArray" />
+  <Method SourceObject="System.String" Match="Split" ReplaceWith="split" />
+  <Property SourceObject="System.String" Match="Length" ReplaceWith="length()" />
+
+  <Method SourceObject="System.String" Match="IsNullOrEmpty" ExtensionNamespace="System.CsScala" SkipExtensionParameter="true" />
+  <Method SourceObject="System.String" Match="Join" ExtensionNamespace="System.CsScala" SkipExtensionParameter="true" />
+  <Method SourceObject="System.String" Match="Contains" ReplaceWith="StringContains" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.String" Match="Equals" ExtensionNamespace="System.CsScala" />
+  
+  <Method SourceObject="System.Char" Match="IsLetterOrDigit" ExtensionNamespace="System.CsScala" SkipExtensionParameter="true" />
+  <Method SourceObject="System.Char" Match="IsDigit" ExtensionNamespace="System.CsScala" SkipExtensionParameter="true" />
+
+  <Type Match="System.Collections.Generic.Queue" ReplaceWith="Queue" />
+  <Property SourceObject="System.Collections.Generic.Queue" Match="Count" ReplaceWith="length" />
+  <Method SourceObject="System.Collections.Generic.Queue" Match="Enqueue" ReplaceWith="enqueue" />
+  <Method SourceObject="System.Collections.Generic.Queue" Match="Dequeue" ReplaceWith="dequeue" />
+  <Method SourceObject="System.Collections.Generic.Queue" Match="Peek" ReplaceWith="First" ExtensionNamespace="System.Linq.Enumerable" />
+  <Method SourceObject="System.Collections.Generic.Queue" Match="Clear" ReplaceWith="clear" />
+  <Method SourceObject="System.Collections.Generic.Queue" Match=".ctor">
+    <Argument Location="0" Action="DeleteIfPresent" />
+  </Method>
+
+
+  <Method SourceObject="System.Array" Match="Sort" ReplaceWith="sort" />
+  <Property SourceObject="System.Array" Match="Length" ReplaceWith="length" />
+
+  <Property SourceObject="System.Collections.Generic.ICollection" Match="Count" ReplaceWith="length" />
+
+
+  <Type Match="System.Collections.Generic.List" ReplaceWith="ArrayBuffer" />
+  <Type Match="System.Collections.Generic.IList" ReplaceWith="ArrayBuffer" />
+  <Property SourceObject="System.Collections.Generic.List" Match="Count" ReplaceWith="length" />
+  <Property SourceObject="System.Collections.Generic.IList" Match="Count" ReplaceWith="length" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Reverse" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Contains" ReplaceWith="Contains" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Collections.Generic.List" Match="ToArray" ReplaceWith="ToArray" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Add" ReplaceWith="append" />
+  <Method SourceObject="System.Collections.Generic.List" Match="AddRange" ReplaceWith="appendAll" />
+  <Method SourceObject="System.Collections.Generic.List" Match="ForEach" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Clear" ReplaceWith="clear" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Sort" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Insert" ReplaceWith="insert" />
+  <Method SourceObject="System.Collections.Generic.List" Match="IndexOf" ReplaceWith="indexOf" />
+  <Method SourceObject="System.Collections.Generic.List" Match="RemoveRange" ReplaceWith="remove" />
+  <Method SourceObject="System.Collections.Generic.List" Match="RemoveAt" ReplaceWith="remove" />
+  <Method SourceObject="System.Collections.Generic.List" Match="Remove" ExtensionNamespace="System.CsScala" />
+
+  <Type Match="System.Collections.Generic.Stack" ReplaceWith="Stack" />
+  <Method SourceObject="System.Collections.Generic.Stack" Match="Push" ReplaceWith="push" />
+  <Method SourceObject="System.Collections.Generic.Stack" Match="Pop" ReplaceWith="pop" />
+
+  <Method SourceObject="System.IO.MemoryStream" Match=".ctor" ArgumentTypes="int">
+    <Argument Location="0" Action="DeleteIfPresent" />
+  </Method>
+
+
+  <Method SourceObject="System.Linq.Enumerable" Match="Contains" ReplaceWith="Contains" ExtensionNamespace="System.CsScala" />
+
+  <Method SourceObject="System.Linq.Enumerable" Match="OfType">
+    <AddTypeParameter From="ExpressionEnumerableParameter" Index="0" />
+    <AddTypeParameter From="SpecifiedTypeParameter" Index="0" />
+  </Method>
+
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Int">
+    <MatchTypeParameter TypeParameterIndex="1" Match="int" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_String">
+    <MatchTypeParameter TypeParameterIndex="1" Match="string" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">
+    <MatchTypeParameter TypeParameterIndex="1" Match="long" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">
+    <MatchTypeParameter TypeParameterIndex="1" Match="double" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">
+    <MatchTypeParameter TypeParameterIndex="1" Match="float" />
+  </Method>
+
+  <Type Match="System.Guid" ReplaceWith="java.util.UUID" />
+  <Method SourceObject="System.Guid" Match="NewGuid" ReplaceWith="randomUUID" />
+  <Method SourceObject="System.Guid" Match="ToByteArray" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Guid" Match="Parse" ReplaceWith="fromString" />
+
+  <Type Match="System.MulticastDelegate" ReplaceWith="Dynamic" />
+  
+  
+  <Type Match="System.Collections.Generic.IEnumerable" ReplaceWith="Traversable" />
+  <Type Match="System.Collections.IEnumerable" ReplaceWith="Traversable" />
+  <Type Match="System.Linq.IOrderedEnumerable" ReplaceWith="Traversable" />
+
+  <Type Match="System.Collections.Generic.LinkedList" ReplaceWith="LinkedList" />
+
+
+  <Type Match="System.Math" ReplaceWith="Math" />
+  <Method SourceObject="System.Math" Match="Max" ReplaceWith="max" />
+  <Method SourceObject="System.Math" Match="Min" ReplaceWith="min" />
+  <Method SourceObject="System.Math" Match="Abs" ReplaceWith="abs" />
+  <Method SourceObject="System.Math" Match="Sqrt" ReplaceWith="sqrt" />
+  <Method SourceObject="System.Math" Match="Log" ReplaceWith="log" />
+  <Method SourceObject="System.Math" Match="Exp" ReplaceWith="exp" />
+  <Method SourceObject="System.Math" Match="Atan" ReplaceWith="atan" />
+  <Method SourceObject="System.Math" Match="Atan2" ReplaceWith="atan2" />
+  <Method SourceObject="System.Math" Match="Sin" ReplaceWith="sin" />
+  <Method SourceObject="System.Math" Match="Cos" ReplaceWith="cos" />
+  <Method SourceObject="System.Math" Match="Tan" ReplaceWith="tan" />
+
+  <Type Match="System.Exception" ReplaceWith="java.lang.Exception" />
+  <Property SourceObject="System.Exception" Match="StackTrace" ReplaceWith="getStackTraceString" />
+
+  <NeedsClassTag Match="System.Linq.Enumerable.OfType" />
+  <NeedsClassTag Match="System.Linq.Enumerable.ToArray" />
+  <NeedsClassTag Match="System.Linq.Enumerable.ToList" />
+
+</Translations>
