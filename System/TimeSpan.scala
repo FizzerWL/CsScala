@@ -39,6 +39,11 @@ object TimeSpan
 class TimeSpan(mills:Long = 0)
 {
   val TotalMillisecondsL:Long = mills;
+  
+  override def toString():String =
+  {
+    return TotalMillisecondsL + "ms";
+  }
 
   def Ticks:Long =
   {

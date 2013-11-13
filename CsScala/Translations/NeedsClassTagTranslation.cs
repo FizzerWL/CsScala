@@ -18,8 +18,9 @@ namespace CsScala.Translations
 
         public string[] TypeParametersOpt { get; set; } //null means all type parameters, for convenience
 
-        public static NeedsClassTagTranslation Get(string match)
+        public static NeedsClassTagTranslation Get(string typeStr)
         {
+            var match = TranslationManager.MatchString(typeStr);
             return TranslationManager.NeedsClassTags.SingleOrDefault(o => o.Match == match);
         }
     }

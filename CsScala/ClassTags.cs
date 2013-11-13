@@ -49,11 +49,12 @@ namespace CsScala
 
         private static HashSet<string> GetClassTagHashSetUncached(MethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
         {
+            var model = Program.GetModel(methodSyntax);
             var ret = new HashSet<string>();
 
             foreach (var invoke in methodSyntax.DescendantNodes().OfType<InvocationExpressionSyntax>())
             {
-                var invokeMethod = Program.GetModel(invoke).GetSymbolInfo(invoke).Symbol.As<MethodSymbol>();
+                var invokeMethod = model.GetSymbolInfo(invoke).Symbol.As<MethodSymbol>();
 
                 if (invokeMethod.TypeParameters.Count == 0)
                     continue;
@@ -79,9 +80,27 @@ namespace CsScala
                     ret.Add(retTag);
             }
 
+            foreach(var objCreation in methodSyntax.DescendantNodes().OfType<ObjectCreationExpressionSyntax>())
+            {
+                var ctor = model.GetSymbolInfo(objCreation).Symbol.As<MethodSymbol>();
+                //if (objCreation.ToString() == "new List<C>()")
+                //    Debugger.Break();
+
+                var tags = TryGetBCLClassTags(ctor);
+                if (tags == null)
+                    continue;
+                
+                var genName = objCreation.Type as GenericNameSyntax;
+                if (genName == null)
+                    continue;
+
+                foreach (var arg in genName.TypeArgumentList.Arguments)
+                    ret.Add(arg.ToString());
+            }
+
             foreach (var arrayCreation in methodSyntax.DescendantNodes().OfType<ArrayCreationExpressionSyntax>())
             {
-                var info = Program.GetModel(arrayCreation).GetTypeInfo(arrayCreation.Type.ElementType).Type;
+                var info = model.GetTypeInfo(arrayCreation.Type.ElementType).Type;
                 if (info.TypeKind == TypeKind.TypeParameter)
                     ret.Add(info.ToString());
             }

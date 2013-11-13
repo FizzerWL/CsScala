@@ -73,24 +73,24 @@ object Utilities
 {
     def SomeFunction()
     {
-		var notInitialized:String = null;
-		var myNum:Int = 0;
-		notInitialized = ""InitMe!"";
+        var notInitialized:String = null;
+        var myNum:Int = 0;
+        notInitialized = ""InitMe!"";
 
-		if (myNum > 4)
-		{
-			myNum = 2;
-		}
-		else if (notInitialized == ""asdf"")
-		{
-			myNum = 1;
-		}
-		else
-		{
-			myNum = 999;
-		}
+        if (myNum > 4)
+        {
+            myNum = 2;
+        }
+        else if (notInitialized == ""asdf"")
+        {
+            myNum = 1;
+        }
+        else
+        {
+            myNum = 999;
+        }
 
-		System.Console.WriteLine(if (myNum == 999) ""One"" else ""Two"");
+        System.Console.WriteLine(if (myNum == 999) ""One"" else ""Two"");
 
     }
 }");
@@ -113,9 +113,9 @@ namespace Blargh
                 Console.WriteLine(""hi"");
                 break;
             }
-			
-			while (true)
-				Console.WriteLine(""nobreak"");
+            
+            while (true)
+                Console.WriteLine(""nobreak"");
 
             for (int i=0;i<50;i=i+1)
                 Console.WriteLine(i);
@@ -126,22 +126,22 @@ namespace Blargh
             }
             while (false);
 
-			while (true)
-			{
-				if (4 == 5)
-					continue;
-				
-			}
+            while (true)
+            {
+                if (4 == 5)
+                    continue;
+                
+            }
 
-			while (true)
-			{
-				Console.WriteLine(1);
-				break;
-				Console.WriteLine(2);
-				continue;
-				Console.WriteLine(3);
+            while (true)
+            {
+                Console.WriteLine(1);
+                break;
+                Console.WriteLine(2);
+                continue;
+                Console.WriteLine(3);
 
-			}
+            }
         }
     }
 }", @"
@@ -152,20 +152,20 @@ object Utilities
 {
     def SomeFunction()
     {
-	  	CsScala.csbreak.breakable
-	  	{
-		  	while (true)
-	        {
-	            System.Console.WriteLine(""hi"");
-	            CsScala.csbreak.break;
-	        }
-	  	}
+          CsScala.csbreak.breakable
+          {
+              while (true)
+            {
+                System.Console.WriteLine(""hi"");
+                CsScala.csbreak.break;
+            }
+          }
 
-		while (true)
-		{
-			System.Console.WriteLine(""nobreak"");
-		}
-		
+        while (true)
+        {
+            System.Console.WriteLine(""nobreak"");
+        }
+        
         { //for
             var i:Int = 0;
             while (i < 50)
@@ -180,31 +180,31 @@ object Utilities
         }
         while (false);  
 
-		while (true)
-		{
-		    CsScala.cscontinue.breakable
-		    {
-				if (4 == 5)
-				{
-	    			CsScala.cscontinue.break;
-				}
-		    }
-		}
+        while (true)
+        {
+            CsScala.cscontinue.breakable
+            {
+                if (4 == 5)
+                {
+                    CsScala.cscontinue.break;
+                }
+            }
+        }
 
-		CsScala.csbreak.breakable
-		{
-		    while (true)
-		    {
-		    	CsScala.cscontinue.breakable
-		    	{
-	                System.Console.WriteLine(1);
-	    			CsScala.csbreak.break;
-	                System.Console.WriteLine(2);
-	    			CsScala.cscontinue.break;
-	                System.Console.WriteLine(3);
-		    	}
-		    }
-		}
+        CsScala.csbreak.breakable
+        {
+            while (true)
+            {
+                CsScala.cscontinue.breakable
+                {
+                    System.Console.WriteLine(1);
+                    CsScala.csbreak.break;
+                    System.Console.WriteLine(2);
+                    CsScala.cscontinue.break;
+                    System.Console.WriteLine(3);
+                }
+            }
+        }
 
     }
 }");
@@ -226,11 +226,11 @@ namespace Blargh
         public Foo()
         {
             var s = ""hello"";
-			var chars = s.ToCharArray();
-			foreach(var c in s)
-			{
-			}
-			s.Select(o => o);
+            var chars = s.ToCharArray();
+            foreach(var c in s)
+            {
+            }
+            s.Select(o => o);
         }
     }
 }", @"
@@ -239,14 +239,14 @@ package Blargh;
 
 class Foo
 {
-	{
-		var s:String = ""hello"";
-		var chars:Array[Char] = s.toCharArray();
-		for (c <- s)
-		{
-		}
-		System.Linq.Enumerable.Select(s, (o:Char) => { o; }:Char);
-	}
+    {
+        var s:String = ""hello"";
+        var chars:Array[Char] = s.toCharArray();
+        for (c <- s)
+        {
+        }
+        System.Linq.Enumerable.Select(s, (o:Char) => { o; }:Char);
+    }
 }");
         }
 
@@ -287,12 +287,12 @@ namespace Blargh
         public const string WithQuoteStart = @""""""after"";
         public int MultipleOne, MultipleTwo;
         public readonly int ReadonlyInt = 3;
-		public DateTime UninitializedDate;
-		public int? UnitializedNullableInt;
-		public TimeSpan UninitializedTimeSpan;
-		public static DateTime StaticUninitializedDate;
-		public static int? StaticUnitializedNullableInt;
-		public static TimeSpan StaticUninitializedTimeSpan;
+        public DateTime UninitializedDate;
+        public int? UnitializedNullableInt;
+        public TimeSpan UninitializedTimeSpan;
+        public static DateTime StaticUninitializedDate;
+        public static int? StaticUnitializedNullableInt;
+        public static TimeSpan StaticUninitializedTimeSpan;
 
         static Box()
         {
@@ -311,13 +311,13 @@ package Blargh;
 object Box
 {
     var StaticField:System.Text.StringBuilder = new System.Text.StringBuilder();
-    val ConstInt:Int = 24;
+    final val ConstInt:Int = 24;
     var StaticReadonlyInt:Int = 5;
-    val WithQuoteMiddle:String = ""before\""after"";
-    val WithQuoteStart:String = ""\""after"";
-	var StaticUninitializedDate:System.DateTime = new System.DateTime();
-	var StaticUnitializedNullableInt:java.lang.Integer = null;
-	var StaticUninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
+    final val WithQuoteMiddle:String = ""before\""after"";
+    final val WithQuoteStart:String = ""\""after"";
+    var StaticUninitializedDate:System.DateTime = new System.DateTime();
+    var StaticUnitializedNullableInt:java.lang.Integer = null;
+    var StaticUninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
 
 
     def cctor()
@@ -337,10 +337,10 @@ class Box
     {
         _width = value;
     }
-	def SetOnly:Float =
-	{
-		throw new Exception(""No setter defined"");
-	}
+    def SetOnly:Float =
+    {
+        throw new Exception(""No setter defined"");
+    }
     def SetOnly_=(value:Float) =
     {
         System.Console.WriteLine(value);
@@ -356,13 +356,13 @@ class Box
     var MultipleOne:Int = 0;
     var MultipleTwo:Int = 0;
     var ReadonlyInt:Int = 3;
-	var UninitializedDate:System.DateTime = new System.DateTime();
-	var UnitializedNullableInt:java.lang.Integer = null;
-	var UninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
+    var UninitializedDate:System.DateTime = new System.DateTime();
+    var UnitializedNullableInt:java.lang.Integer = null;
+    var UninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
 
-	{
-		System.Console.WriteLine(""ctor"");
-	}
+    {
+        System.Console.WriteLine(""ctor"");
+    }
 }
 ");
         }
@@ -453,10 +453,10 @@ namespace Blargh
                 Console.WriteLine(key);
             foreach(int val in dict.Values)
                 Console.WriteLine(val);
-			foreach(var kv in dict)
-				Console.WriteLine(kv.Key + "" "" + kv.Value);
-			var dict2 = dict.ToDictionary(o => o.Key, o => o.Value);
-			var vals = dict.Values;
+            foreach(var kv in dict)
+                Console.WriteLine(kv.Key + "" "" + kv.Value);
+            var dict2 = dict.ToDictionary(o => o.Key, o => o.Value);
+            var vals = dict.Values;
             
             HashSet<int> hash = new HashSet<int>();
             hash.Add(999);
@@ -465,8 +465,8 @@ namespace Blargh
             Console.WriteLine(hash.Contains(999));
             foreach(int hashItem in hash)
                 Console.WriteLine(hashItem);
-			var z = hash.Select(o => 3).ToArray();
-			var g = hash.GroupBy(o => o).Select(o => o.Count()).Min();
+            var z = hash.Select(o => 3).ToArray();
+            var g = hash.GroupBy(o => o).Select(o => o.Count()).Min();
         }
     }
 }", @"
@@ -491,12 +491,12 @@ object Utilities
             System.Console.WriteLine(csval);
         }
         
-		for (kv <- dict)
-		{
-			System.Console.WriteLine(kv.Key + "" "" + kv.Value);
-		}
-		var dict2:System.Collections.Generic.Dictionary[Int, Int] = System.Linq.Enumerable.ToDictionary(dict, (o:System.Collections.Generic.KeyValuePair[Int, Int]) => { o.Key; }:Int, (o:System.Collections.Generic.KeyValuePair[Int, Int]) => { o.Value; }:Int);
-		var vals:System.Collections.Generic.Dictionary_ValueCollection[Int] = dict.Values;
+        for (kv <- dict)
+        {
+            System.Console.WriteLine(kv.Key + "" "" + kv.Value);
+        }
+        var dict2:System.Collections.Generic.Dictionary[Int, Int] = System.Linq.Enumerable.ToDictionary(dict, (o:System.Collections.Generic.KeyValuePair[Int, Int]) => { o.Key; }:Int, (o:System.Collections.Generic.KeyValuePair[Int, Int]) => { o.Value; }:Int);
+        var vals:System.Collections.Generic.Dictionary_ValueCollection[Int] = dict.Values;
         
         var hash:System.Collections.Generic.HashSet[Int] = new System.Collections.Generic.HashSet[Int]();
         hash.Add(999);
@@ -507,8 +507,8 @@ object Utilities
         {
             System.Console.WriteLine(hashItem);
         }
-		var z:Array[Int] = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(hash, (o:Int) => { 3; }:Int));
-		var g:Int = System.Linq.Enumerable.Min(System.Linq.Enumerable.Select(System.Linq.Enumerable.GroupBy(hash, (o:Int) => { o; }:Int), (o:System.Linq.IGrouping[Int, Int]) => { System.Linq.Enumerable.Count(o); }:Int));
+        var z:Array[Int] = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(hash, (o:Int) => { 3; }:Int));
+        var g:Int = System.Linq.Enumerable.Min(System.Linq.Enumerable.Select(System.Linq.Enumerable.GroupBy(hash, (o:Int) => { o; }:Int), (o:System.Linq.IGrouping[Int, Int]) => { System.Linq.Enumerable.Count(o); }:Int));
 
     }
 }");
@@ -534,7 +534,7 @@ namespace Blargh
             Console.WriteLine(f2(3));
 
             List<Action> actions = new List<Action>();
-			actions.Add(() => { });
+            actions.Add(() => { });
         }
     }
 }", @"
@@ -545,20 +545,20 @@ object Utilities
 {
     def SomeFunction()
     {
-		var f1:(Int) => Int = (x:Int) => 
-		{ 
-		x + 5; 
-		}:Int;
-		System.Console.WriteLine(f1(3));
-		var f2:(Int) => Int = (x:Int) => 
-		{ 
-		x + 6; 
-		}:Int;
-		System.Console.WriteLine(f2(3));
-		var actions:ArrayBuffer[() => Unit] = new ArrayBuffer[() => Unit]();
-		actions.append(() =>
-		{
-		});
+        var f1:(Int) => Int = (x:Int) => 
+        { 
+        x + 5; 
+        }:Int;
+        System.Console.WriteLine(f1(3));
+        var f2:(Int) => Int = (x:Int) => 
+        { 
+        x + 6; 
+        }:Int;
+        System.Console.WriteLine(f2(3));
+        var actions:System.Collections.Generic.List[() => Unit] = new System.Collections.Generic.List[() => Unit]();
+        actions.Add(() =>
+        {
+        });
     }
 }");
         }
@@ -590,7 +590,7 @@ package Blargh;
 
 object Utilities
 {
-	def SomeFunction()
+    def SomeFunction()
     {
         var i:Int = 3;
         var a:() => Unit = () =>
@@ -625,19 +625,19 @@ namespace Blargh
         public static void SomeFunction()
         {
             Func<bool, bool, int> z = (a, b) => 
-			{
-				Console.WriteLine(1);
-				if (a && b)
-					return 1;
-				Console.WriteLine(2);
-				if (a)
-				{
-					Console.WriteLine(3);
-					return 2;
-				}
-				Console.WriteLine(4);
-				return 3;
-			};
+            {
+                Console.WriteLine(1);
+                if (a && b)
+                    return 1;
+                Console.WriteLine(2);
+                if (a)
+                {
+                    Console.WriteLine(3);
+                    return 2;
+                }
+                Console.WriteLine(4);
+                return 3;
+            };
         }
     }
 }", @"
@@ -646,32 +646,32 @@ package Blargh;
 
 object Utilities
 {
-	def SomeFunction()
+    def SomeFunction()
     {
         var z:(Boolean, Boolean) => Int = (a:Boolean, b:Boolean) => 
-		{
-			val __lambdabreak = new Breaks;
-			var __lambdareturn:Int = 0;
-			__lambdabreak.breakable
-			{
-				System.Console.WriteLine(1);
-				if (a && b)
-				{
-					__lambdareturn = 1;
-					__lambdabreak.break();
-				}
-				System.Console.WriteLine(2);
-				if (a)
-				{
-					System.Console.WriteLine(3);
-					__lambdareturn = 2;
-					__lambdabreak.break();
-				}
-				System.Console.WriteLine(4);
-				__lambdareturn = 3;
-			}
-			__lambdareturn;
-		}:Int;
+        {
+            val __lambdabreak = new Breaks;
+            var __lambdareturn:Int = 0;
+            __lambdabreak.breakable
+            {
+                System.Console.WriteLine(1);
+                if (a && b)
+                {
+                    __lambdareturn = 1;
+                    __lambdabreak.break();
+                }
+                System.Console.WriteLine(2);
+                if (a)
+                {
+                    System.Console.WriteLine(3);
+                    __lambdareturn = 2;
+                    __lambdabreak.break();
+                }
+                System.Console.WriteLine(4);
+                __lambdareturn = 3;
+            }
+            __lambdareturn;
+        }:Int;
     }
 }");
         }
@@ -690,18 +690,18 @@ namespace Blargh
         public static void SomeFunction()
         {
             Action<bool, bool> z = (a, b) => 
-			{
-				Console.WriteLine(1);
-				if (a && b)
-					return;
-				Console.WriteLine(2);
-				if (a)
-				{
-					Console.WriteLine(3);
-					return;
-				}
-				Console.WriteLine(4);
-			};
+            {
+                Console.WriteLine(1);
+                if (a && b)
+                    return;
+                Console.WriteLine(2);
+                if (a)
+                {
+                    Console.WriteLine(3);
+                    return;
+                }
+                Console.WriteLine(4);
+            };
         }
     }
 }", @"
@@ -710,27 +710,27 @@ package Blargh;
 
 object Utilities
 {
-	def SomeFunction()
+    def SomeFunction()
     {
         var z:(Boolean, Boolean) => Unit = (a:Boolean, b:Boolean) => 
-		{
-			val __lambdabreak = new Breaks;
-			__lambdabreak.breakable
-			{
-				System.Console.WriteLine(1);
-				if (a && b)
-				{
-					__lambdabreak.break();
-				}
-				System.Console.WriteLine(2);
-				if (a)
-				{
-					System.Console.WriteLine(3);
-					__lambdabreak.break();
-				}
-				System.Console.WriteLine(4);
-			}
-		};
+        {
+            val __lambdabreak = new Breaks;
+            __lambdabreak.breakable
+            {
+                System.Console.WriteLine(1);
+                if (a && b)
+                {
+                    __lambdabreak.break();
+                }
+                System.Console.WriteLine(2);
+                if (a)
+                {
+                    System.Console.WriteLine(3);
+                    __lambdabreak.break();
+                }
+                System.Console.WriteLine(4);
+            }
+        };
     }
 }");
         }
@@ -750,14 +750,14 @@ namespace Blargh
         public Foo()
         {
             var dict = new Dictionary<int, int>();
-			dict[3] = 4;
-			var i = dict[3];
-			var array = new int[3];
-			array[0] = 1;
-			var str = ""hello"";
-			var c = str[2];
-			var list = new List<int>();
-			i = list[0];
+            dict[3] = 4;
+            var i = dict[3];
+            var array = new int[3];
+            array[0] = 1;
+            var str = ""hello"";
+            var c = str[2];
+            var list = new List<int>();
+            i = list[0];
         }
     }
 }", @"
@@ -766,17 +766,17 @@ package Blargh;
 
 class Foo
 {
-	{
-		var dict:System.Collections.Generic.Dictionary[Int, Int] = new System.Collections.Generic.Dictionary[Int, Int]();
-		dict(3) = 4;
-		var i:Int = dict(3);
-		var array:Array[Int] = new Array[Int](3);
-		array(0) = 1;
-		var str:String = ""hello"";
-		var c:Char = str(2);
-		var list:ArrayBuffer[Int] = new ArrayBuffer[Int]();
-		i = list(0);
-	}
+    {
+        var dict:System.Collections.Generic.Dictionary[Int, Int] = new System.Collections.Generic.Dictionary[Int, Int]();
+        dict(3) = 4;
+        var i:Int = dict(3);
+        var array:Array[Int] = new Array[Int](3);
+        array(0) = 1;
+        var str:String = ""hello"";
+        var c:Char = str(2);
+        var list:System.Collections.Generic.List[Int] = new System.Collections.Generic.List[Int]();
+        i = list(0);
+    }
     
 }");
         }
@@ -793,20 +793,20 @@ namespace Blargh
 
     public class Foo
     {
-		public void Bar(int a, int b, int c, int d = 3)
-		{
-		}
+        public void Bar(int a, int b, int c, int d = 3)
+        {
+        }
 
         public Foo()
-		{
-			Bar(1,2,3,4);
-			Bar(1,2,3);
-			Bar(a: 1, b: 2, c: 3, d: 4);
-			Bar(a: 1, b: 2, c: 3);
-			Bar(a: 1, c: 3, b: 2);
-			Bar(1, c: 3, b: 2);
-			Bar(1, 2, c: 3, d: 4);
-		}
+        {
+            Bar(1,2,3,4);
+            Bar(1,2,3);
+            Bar(a: 1, b: 2, c: 3, d: 4);
+            Bar(a: 1, b: 2, c: 3);
+            Bar(a: 1, c: 3, b: 2);
+            Bar(1, c: 3, b: 2);
+            Bar(1, 2, c: 3, d: 4);
+        }
     }
 }", @"
 package Blargh;
@@ -814,19 +814,19 @@ package Blargh;
 
 class Foo
 {
-	def Bar(a:Int, b:Int, c:Int, d:Int = 3)
-	{
-	}
+    def Bar(a:Int, b:Int, c:Int, d:Int = 3)
+    {
+    }
 
-	{
-		Bar(1, 2, 3, 4);
-		Bar(1, 2, 3);
-		Bar(a = 1, b = 2, c = 3, d = 4);
-		Bar(a = 1, b = 2, c = 3);
-		Bar(a = 1, c = 3, b = 2);
-		Bar(1, c = 3, b = 2);
-		Bar(1, 2, c = 3, d = 4);
-	}
+    {
+        Bar(1, 2, 3, 4);
+        Bar(1, 2, 3);
+        Bar(a = 1, b = 2, c = 3, d = 4);
+        Bar(a = 1, b = 2, c = 3);
+        Bar(a = 1, c = 3, b = 2);
+        Bar(1, c = 3, b = 2);
+        Bar(1, 2, c = 3, d = 4);
+    }
 }");
         }
 
@@ -842,20 +842,20 @@ namespace Blargh
 
     public class Outer
     {
-		public class Inner
-		{
-			public int InnerField;
-			public Inner()
-			{
-				InnerField = 9;
-			}
-		}
+        public class Inner
+        {
+            public int InnerField;
+            public Inner()
+            {
+                InnerField = 9;
+            }
+        }
 
-		public Outer()
-		{
-			var i = new Inner();
-			i.InnerField = 4;
-		}
+        public Outer()
+        {
+            var i = new Inner();
+            i.InnerField = 4;
+        }
     }
 }", new[] { @"
 package Blargh;
@@ -863,10 +863,10 @@ package Blargh;
 
 class Outer
 {
-	{
-		var i:Blargh.Outer_Inner = new Blargh.Outer_Inner();
-		i.InnerField = 4;
-	}
+    {
+        var i:Blargh.Outer_Inner = new Blargh.Outer_Inner();
+        i.InnerField = 4;
+    }
 }",
   @"
 package Blargh;
@@ -874,11 +874,11 @@ package Blargh;
 
 class Outer_Inner
 {
-	var InnerField:Int = 0;
+    var InnerField:Int = 0;
     
-	{
-		InnerField = 9;
-	}
+    {
+        InnerField = 9;
+    }
 }"
   
   });
@@ -898,10 +898,10 @@ namespace Blargh
     public class Foo
     {
         public Foo()
-		{
-			var i = new { Field1 = 3, Field2 = new StringBuilder() };
-			Console.WriteLine(i.Field1);
-		}
+        {
+            var i = new { Field1 = 3, Field2 = new StringBuilder() };
+            Console.WriteLine(i.Field1);
+        }
     }
 }", new[] { @"
 package Blargh;
@@ -909,10 +909,10 @@ package Blargh;
 
 class Foo
 {
-	{
-		var i:Anon_Field1_Int__Field2_System_Text_StringBuilder = new Anon_Field1_Int__Field2_System_Text_StringBuilder(3, new System.Text.StringBuilder());
-		System.Console.WriteLine(i.Field1);
-	}
+    {
+        var i:Anon_Field1_Int__Field2_System_Text_StringBuilder = new Anon_Field1_Int__Field2_System_Text_StringBuilder(3, new System.Text.StringBuilder());
+        System.Console.WriteLine(i.Field1);
+    }
 }",
  @"
 package anonymoustypes;
@@ -920,8 +920,8 @@ package anonymoustypes;
 
 class Anon_Field1_Int__Field2_System_Text_StringBuilder(_Field1:Int, _Field2:System.Text.StringBuilder)
 {
-	var Field1:Int = _Field1;
-	var Field2:System.Text.StringBuilder = _Field2;
+    var Field1:Int = _Field1;
+    var Field2:System.Text.StringBuilder = _Field2;
 }"
 
   
@@ -941,30 +941,30 @@ namespace Blargh
     public class SomeClass
     {
 #if CSSCALA
-		Some raw text here;
+        Some raw text here;
 #endif
 
         public SomeClass()
         {
 #if CSSCALA
-			Console.WriteLine(""CsScala1"");
+            Console.WriteLine(""CsScala1"");
 #else
-			Console.WriteLine(""not1"");
+            Console.WriteLine(""not1"");
 #endif
 #if CSSCALA //comment
-			Console.WriteLine(""CsScala2"");
+            Console.WriteLine(""CsScala2"");
 #else
 
-			Console.WriteLine(""not2"");
+            Console.WriteLine(""not2"");
 #if nope
-			Console.WriteLine(""not3"");
+            Console.WriteLine(""not3"");
 #endif
 
 #endif
-			Console.WriteLine(""outside"");
+            Console.WriteLine(""outside"");
 
 #if CSSCALA
-			Console.WriteLine(""CsScala3"");
+            Console.WriteLine(""CsScala3"");
 #endif
         }
     }
@@ -974,14 +974,14 @@ package Blargh;
 
 class SomeClass
 {
-	Some raw text here;
+    Some raw text here;
 
-	{
-		Console.WriteLine(""CsScala1"");
-		Console.WriteLine(""CsScala2"");
-		System.Console.WriteLine(""outside"");
-		Console.WriteLine(""CsScala3"");
-	}
+    {
+        Console.WriteLine(""CsScala1"");
+        Console.WriteLine(""CsScala2"");
+        System.Console.WriteLine(""outside"");
+        Console.WriteLine(""CsScala3"");
+    }
 }");
         }
 
@@ -1000,7 +1000,7 @@ namespace Blargh
         public SomeClass()
         {
             var a = new[] { 1,2,3 };
-			var b = a.OfType<StringBuilder>().ToList();
+            var b = a.OfType<StringBuilder>().ToList();
         }
     }
 }", @"
@@ -1009,10 +1009,10 @@ package Blargh;
 
 class SomeClass
 {
-	{
-		var a:Array[Int] = Array(1, 2, 3);
-		var b:ArrayBuffer[System.Text.StringBuilder] = System.Linq.Enumerable.ToList(System.Linq.Enumerable.OfType[Int, System.Text.StringBuilder](a));
-	}
+    {
+        var a:Array[Int] = Array(1, 2, 3);
+        var b:System.Collections.Generic.List[System.Text.StringBuilder] = System.Linq.Enumerable.ToList(System.Linq.Enumerable.OfType[Int, System.Text.StringBuilder](a));
+    }
 }");
         }
 
@@ -1109,8 +1109,8 @@ namespace Blargh
 
             var dict = e.ToDictionary(o => o, o => 555);
             e.OfType<int>();
-			e.OrderBy(o => 4);
-			e.OrderBy(o => ""z"");
+            e.OrderBy(o => 4);
+            e.OrderBy(o => ""z"");
         }
     }
 }", @"
@@ -1122,35 +1122,35 @@ object Utilities
     def SomeFunction()
     {
              
-		var e:Array[Int] = Array[Int](0, 1, 2, 3);
-		System.Console.WriteLine(System.Linq.Enumerable.First(e));
-		
-		System.Console.WriteLine(System.Linq.Enumerable.First(e, (o:Int) =>
-		{
-		    o == 1;
-		}:Boolean));
-		System.Console.WriteLine(System.Linq.Enumerable.ElementAt(e, 2));
-		System.Console.WriteLine(System.Linq.Enumerable.Last(e));
-		System.Console.WriteLine(System.Linq.Enumerable.Count(System.Linq.Enumerable.Select(e, (o:Int) => { o; }:Int)));
-		System.Console.WriteLine(System.Linq.Enumerable.Count(System.Linq.Enumerable.Where(e, (o:Int) => 
-		{
-		    o > 0;
-		}:Boolean)) + 2);
-		System.Console.WriteLine(System.Linq.Enumerable.Count(e, (o:Int) =>
-		{
-		    true;
-		}:Boolean) + 2);
-		var dict:System.Collections.Generic.Dictionary[Int, Int] = System.Linq.Enumerable.ToDictionary(e, (o:Int) =>
-		{
-		    o;
-		}:Int, (o:Int) =>
-		{
-		    555;
-		}:Int);
-		System.Linq.Enumerable.OfType[Int, Int](e);
-		System.Linq.Enumerable.OrderBy_Int(e, (o:Int) => { 4; }:Int);
-		System.Linq.Enumerable.OrderBy_String(e, (o:Int) => { ""z""; }:String);
-	}
+        var e:Array[Int] = Array[Int](0, 1, 2, 3);
+        System.Console.WriteLine(System.Linq.Enumerable.First(e));
+        
+        System.Console.WriteLine(System.Linq.Enumerable.First(e, (o:Int) =>
+        {
+            o == 1;
+        }:Boolean));
+        System.Console.WriteLine(System.Linq.Enumerable.ElementAt(e, 2));
+        System.Console.WriteLine(System.Linq.Enumerable.Last(e));
+        System.Console.WriteLine(System.Linq.Enumerable.Count(System.Linq.Enumerable.Select(e, (o:Int) => { o; }:Int)));
+        System.Console.WriteLine(System.Linq.Enumerable.Count(System.Linq.Enumerable.Where(e, (o:Int) => 
+        {
+            o > 0;
+        }:Boolean)) + 2);
+        System.Console.WriteLine(System.Linq.Enumerable.Count(e, (o:Int) =>
+        {
+            true;
+        }:Boolean) + 2);
+        var dict:System.Collections.Generic.Dictionary[Int, Int] = System.Linq.Enumerable.ToDictionary(e, (o:Int) =>
+        {
+            o;
+        }:Int, (o:Int) =>
+        {
+            555;
+        }:Int);
+        System.Linq.Enumerable.OfType[Int, Int](e);
+        System.Linq.Enumerable.OrderBy_Int(e, (o:Int) => { 4; }:Int);
+        System.Linq.Enumerable.OrderBy_String(e, (o:Int) => { ""z""; }:String);
+    }
 }");
 
         }
@@ -1164,35 +1164,35 @@ using System.Collections.Generic;
 
 namespace Blargh
 {
-	public class KeyValueList<K, V> : IEquatable<K>
-	{
-		private List<KeyValuePair<K, V>> _list = new List<KeyValuePair<K, V>>();
+    public class KeyValueList<K, V> : IEquatable<K>
+    {
+        private List<KeyValuePair<K, V>> _list = new List<KeyValuePair<K, V>>();
 
-		public void Add(K key, V value)
-		{
-			this._list.Add(new KeyValuePair<K, V>(key, value));
-		}
+        public void Add(K key, V value)
+        {
+            this._list.Add(new KeyValuePair<K, V>(key, value));
+        }
 
-		public void Insert(int index, K key, V value)
-		{
-			_list.Insert(index, new KeyValuePair<K, V>(key, value));
-		}
+        public void Insert(int index, K key, V value)
+        {
+            _list.Insert(index, new KeyValuePair<K, V>(key, value));
+        }
 
-		public void Clear()
-		{
-			_list.Clear();
-		}
+        public void Clear()
+        {
+            _list.Clear();
+        }
 
-		public void RemoveAt(int index)
-		{
-			_list.RemoveAt(index);
-		}
+        public void RemoveAt(int index)
+        {
+            _list.RemoveAt(index);
+        }
 
-		public bool Equals(K other)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public bool Equals(K other)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
@@ -1200,28 +1200,28 @@ package Blargh;
 class KeyValueList[K, V] extends System.IEquatable[K]
 {
   
-    private var _list:ArrayBuffer[System.Collections.Generic.KeyValuePair[K, V]] = new ArrayBuffer[System.Collections.Generic.KeyValuePair[K, V]]();
+    private var _list:System.Collections.Generic.List[System.Collections.Generic.KeyValuePair[K, V]] = new System.Collections.Generic.List[System.Collections.Generic.KeyValuePair[K, V]]();
 
     def Add(key:K, value:V)
     {
-        this._list.append(new System.Collections.Generic.KeyValuePair[K, V](key, value));
+        this._list.Add(new System.Collections.Generic.KeyValuePair[K, V](key, value));
     }
     def Insert(index:Int, key:K, value:V)
     {
-        _list.insert(index, new System.Collections.Generic.KeyValuePair[K, V](key, value));
+        _list.Insert(index, new System.Collections.Generic.KeyValuePair[K, V](key, value));
     }
     def Clear()
     {
-    	_list.clear();
+        _list.Clear();
     }
     def RemoveAt(index:Int)
     {
-        _list.remove(index);
+        _list.RemoveAt(index);
     }
-	def Equals(other:K):Boolean =
-	{
-		throw new System.NotImplementedException();
-	}
+    def Equals(other:K):Boolean =
+    {
+        throw new System.NotImplementedException();
+    }
 }
 ");
         }
@@ -1288,16 +1288,16 @@ package Blargh;
 
 object Utilities
 {
-	def SomeFunction()
-	{
-		var sb:System.Text.StringBuilder = new System.Text.StringBuilder()
-		{
-			Capacity = 9;
-		};
-	}
+    def SomeFunction()
+    {
+        var sb:System.Text.StringBuilder = new System.Text.StringBuilder()
+        {
+            Capacity = 9;
+        };
+    }
 }
-			
-			");
+            
+            ");
         }
 
         [TestMethod]
@@ -1318,7 +1318,7 @@ namespace Blargh
             using (usingMe)
             {
                 Console.WriteLine(""In using"");
-				return;
+                return;
             }
         }
     }
@@ -1369,8 +1369,8 @@ namespace Blargh
             double f = i / 3f;
             int hex = 0x00ff;
             i = (int)f;
-			var z = (i & hex) == 5;
-			var x = (int)(i / 3);
+            var z = (i & hex) == 5;
+            var x = (int)(i / 3);
         }
     }
 }", @"
@@ -1393,8 +1393,8 @@ object Utilities
         var f:Double = i / 3f;
         var hex:Int = 0x00ff;
         i = f.toInt;
-		var z:Boolean = (i & hex) == 5;
-		var x:Int = (i / 3);
+        var z:Boolean = (i & hex) == 5;
+        var x:Int = (i / 3);
     }
 }");
         }
@@ -1412,17 +1412,17 @@ namespace Blargh
 
     public static class Utilities
     {
-		public static Action StaticAction;
+        public static Action StaticAction;
         public delegate int GetMahNumber(int arg);
 
         public static void SomeFunction(GetMahNumber getit, NamespaceDlg getitnow, TemplatedDelegate<float> unused)
         {
             Console.WriteLine(getit(getitnow()));
             var a = new[] { getitnow };
-			a[0]();
-			StaticAction();
-			Utilities.StaticAction();
-			Blargh.Utilities.StaticAction();
+            a[0]();
+            StaticAction();
+            Utilities.StaticAction();
+            Blargh.Utilities.StaticAction();
         }
     }
 }", @"
@@ -1431,16 +1431,16 @@ package Blargh;
 
 object Utilities
 {
-	var StaticAction:() => Unit = null;
+    var StaticAction:() => Unit = null;
 
     def SomeFunction(getit:(Int) => Int, getitnow:() => Int, unused:(Float, Int) => Float)
     {
         System.Console.WriteLine(getit(getitnow()));
-		var a:Array[() => Int] = Array(getitnow);
-		a(0)();
-		Blargh.Utilities.StaticAction();
-		Blargh.Utilities.StaticAction();
-		Blargh.Utilities.StaticAction();
+        var a:Array[() => Int] = Array(getitnow);
+        a(0)();
+        Blargh.Utilities.StaticAction();
+        Blargh.Utilities.StaticAction();
+        Blargh.Utilities.StaticAction();
     }
 }");
         }
@@ -1455,7 +1455,7 @@ namespace Blargh
 {
     public static class Utilities
     {
-		static int Foo;
+        static int Foo;
         public static void SomeFunction()
         {
             Blargh.Utilities.Foo = 4;
@@ -1479,7 +1479,7 @@ package Blargh;
 
 object Utilities
 {
-	var Foo:Int = 0;
+    var Foo:Int = 0;
     def SomeFunction()
     {
         Blargh.Utilities.Foo = 4;
@@ -1514,23 +1514,23 @@ namespace Blargh
         public static void SomeFunction()
         {
             int? nullableInt = new Nullable<int>();
-			float d = 3;
-			var cond = nullableInt.HasValue ? (float?)null : ((float)d);
+            float d = 3;
+            var cond = nullableInt.HasValue ? (float?)null : ((float)d);
             Console.WriteLine(nullableInt.HasValue);
             int? withValue = new Nullable<int>(8);
             Console.WriteLine(withValue.Value);
-			int? implicitNull = null;
-			implicitNull = null;
-			int? implicitValue = 5;
-			implicitValue = 8;
-			Foo(3);
-			int? n = (int?)null;
+            int? implicitNull = null;
+            implicitNull = null;
+            int? implicitValue = 5;
+            implicitValue = 8;
+            Foo(3);
+            int? n = (int?)null;
         }
 
-		public static int? Foo(int? i)
-		{
-			return 4;
-		}
+        public static int? Foo(int? i)
+        {
+            return 4;
+        }
     }
 }", @"
 package Blargh;
@@ -1541,22 +1541,22 @@ object Utilities
     def SomeFunction()
     {
         var nullableInt:java.lang.Integer = null;
-		var d:Float = 3;
-		var cond:java.lang.Float = if ((nullableInt != null)) null else (d);
+        var d:Float = 3;
+        var cond:java.lang.Float = if ((nullableInt != null)) null else (d);
         System.Console.WriteLine((nullableInt != null));
         var withValue:java.lang.Integer = 8;
         System.Console.WriteLine(withValue.intValue());
-		var implicitNull:java.lang.Integer = null;
-		implicitNull = null;
-		var implicitValue:java.lang.Integer = 5;
-		implicitValue = 8;
-		Blargh.Utilities.Foo(3);
-		var n:java.lang.Integer = null;
+        var implicitNull:java.lang.Integer = null;
+        implicitNull = null;
+        var implicitValue:java.lang.Integer = 5;
+        implicitValue = 8;
+        Blargh.Utilities.Foo(3);
+        var n:java.lang.Integer = null;
     }
-	def Foo(i:java.lang.Integer):java.lang.Integer =
-	{
-		return 4;
-	}
+    def Foo(i:java.lang.Integer):java.lang.Integer =
+    {
+        return 4;
+    }
  
 }");
         }
@@ -1591,11 +1591,11 @@ namespace Blargh
             var f = MostlyNumbered.One;
             var arr = new UnNumbered[] { UnNumbered.One, UnNumbered.Two, UnNumbered.Three };
             var i = (int)f;
-			var e = (MostlyNumbered)Enum.Parse(typeof(MostlyNumbered), ""One"");
-			var s = e.ToString();
-			s = e + ""asdf"";
-			s = ""asdf"" + e;
-			var vals = Enum.GetValues(typeof(MostlyNumbered));
+            var e = (MostlyNumbered)Enum.Parse(typeof(MostlyNumbered), ""One"");
+            var s = e.ToString();
+            s = e + ""asdf"";
+            s = ""asdf"" + e;
+            var vals = Enum.GetValues(typeof(MostlyNumbered));
         }
     }
 }" }, new string[] { @"
@@ -1603,65 +1603,65 @@ package Blargh;
 " + WriteImports.StandardImports + @"
 object MostlyNumbered
 {
-    val One:Int = 1;
-    val Two:Int = 2;
-    val Three:Int = 3;
-    val Unnumbered:Int = 4;
-    val SomethingElse:Int = 50;
+    final val One:Int = 1;
+    final val Two:Int = 2;
+    final val Three:Int = 3;
+    final val Unnumbered:Int = 4;
+    final val SomethingElse:Int = 50;
 
-	def ToString(e:Int):String =
-	{ 
-		return e match
-		{ 
-			case 1 => ""One""; 
-			case 2 => ""Two""; 
-			case 3 => ""Three""; 
-			case 4 => ""Unnumbered""; 
-			case 50 => ""SomethingElse""; 
-		}
-	} 
-	
-	def Parse(s:String):Int =
-	{ 
-		return s match
-		{ 
-			case ""One"" => 1; 
-			case ""Two"" => 2;		
-			case ""Three"" => 3; 
-			case ""Unnumbered"" => 4; 
-			case ""SomethingElse"" => 50; 
-		} 
-	}
+    def ToString(e:Int):String =
+    { 
+        return e match
+        { 
+            case 1 => ""One""; 
+            case 2 => ""Two""; 
+            case 3 => ""Three""; 
+            case 4 => ""Unnumbered""; 
+            case 50 => ""SomethingElse""; 
+        }
+    } 
+    
+    def Parse(s:String):Int =
+    { 
+        return s match
+        { 
+            case ""One"" => 1; 
+            case ""Two"" => 2;        
+            case ""Three"" => 3; 
+            case ""Unnumbered"" => 4; 
+            case ""SomethingElse"" => 50; 
+        } 
+    }
 
-	val Values:Array[Int] = Array(1, 2, 3, 4, 50);
+    final val Values:Array[Int] = Array(1, 2, 3, 4, 50);
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
 object UnNumbered
 {
-	val One:Int = 1; 
-    val Two:Int = 2;
-    val Three:Int = 3;
-	def ToString(e:Int):String =
-	{ 
-		return e match
-		{ 
-			case 1 => ""One""; 
-			case 2 => ""Two""; 
-			case 3 => ""Three""; 
-		}
-	} 
-	
-	def Parse(s:String):Int =
-	{ 
-		return s match
-		{ 
-			case ""One"" => 1; 
-			case ""Two"" => 2;		
-			case ""Three"" => 3; 
-		} 
-	}
-	val Values:Array[Int] = Array(1, 2, 3);
+    final val One:Int = 1; 
+    final val Two:Int = 2;
+    final val Three:Int = 3;
+    def ToString(e:Int):String =
+    { 
+        return e match
+        { 
+            case 1 => ""One""; 
+            case 2 => ""Two""; 
+            case 3 => ""Three""; 
+        }
+    } 
+    
+    def Parse(s:String):Int =
+    { 
+        return s match
+        { 
+            case ""One"" => 1; 
+            case ""Two"" => 2;        
+            case ""Three"" => 3; 
+        } 
+    }
+    final val Values:Array[Int] = Array(1, 2, 3);
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
@@ -1673,12 +1673,12 @@ object Clazz
         var f:Int = Blargh.MostlyNumbered.One;
         var arr:Array[Int] = Array[Int](Blargh.UnNumbered.One, Blargh.UnNumbered.Two, Blargh.UnNumbered.Three);
         var i:Int = f;
-		var e:Int = Blargh.MostlyNumbered.Parse(""One"").asInstanceOf[Int];
-		var s:String = Blargh.MostlyNumbered.ToString(e);
-		s = Blargh.MostlyNumbered.ToString(e) + ""asdf"";
-		s = ""asdf"" + Blargh.MostlyNumbered.ToString(e);
-		var vals = Blargh.MostlyNumbered.Values();
-	}
+        var e:Int = Blargh.MostlyNumbered.Parse(""One"").asInstanceOf[Int];
+        var s:String = Blargh.MostlyNumbered.ToString(e);
+        s = Blargh.MostlyNumbered.ToString(e) + ""asdf"";
+        s = ""asdf"" + Blargh.MostlyNumbered.ToString(e);
+        var vals = Blargh.MostlyNumbered.Values();
+    }
 }"});
         }
 
@@ -1690,55 +1690,55 @@ namespace Blargh
 {
     class Foo
     {
-		public enum TestEnum
-		{
-			One, Two, Three
-		}
+        public enum TestEnum
+        {
+            One, Two, Three
+        }
 
-		public Foo()
-		{
-			var i = TestEnum.One;
-			i.ToString();
-		}
+        public Foo()
+        {
+            var i = TestEnum.One;
+            i.ToString();
+        }
     }
 }" }, new string[] { @"
 package Blargh;
 " + WriteImports.StandardImports + @"
 class Foo
 {
-	{
-		var i:Int = Blargh.Foo_TestEnum.One;
-		Blargh.Foo_TestEnum.ToString(i);
-	}
+    {
+        var i:Int = Blargh.Foo_TestEnum.One;
+        Blargh.Foo_TestEnum.ToString(i);
+    }
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
 object Foo_TestEnum
 {
-	val One:Int = 1; 
-    val Two:Int = 2;
-    val Three:Int = 3;
+    final val One:Int = 1; 
+    final val Two:Int = 2;
+    final val Three:Int = 3;
 
-	def ToString(e:Int):String =
-	{ 
-		return e match
-		{ 
-			case 1 => ""One""; 
-			case 2 => ""Two""; 
-			case 3 => ""Three""; 
-		}
-	} 
-	
-	def Parse(s:String):Int =
-	{ 
-		return s match
-		{ 
-			case ""One"" => 1; 
-			case ""Two"" => 2;		
-			case ""Three"" => 3; 
-		} 
-	}
-	val Values:Array[Int] = Array(1, 2, 3);
+    def ToString(e:Int):String =
+    { 
+        return e match
+        { 
+            case 1 => ""One""; 
+            case 2 => ""Two""; 
+            case 3 => ""Three""; 
+        }
+    } 
+    
+    def Parse(s:String):Int =
+    { 
+        return s match
+        { 
+            case ""One"" => 1; 
+            case ""Two"" => 2;        
+            case ""Three"" => 3; 
+        } 
+    }
+    final val Values:Array[Int] = Array(1, 2, 3);
 }" });
         }
 
@@ -1761,7 +1761,7 @@ namespace Blargh
                 case ""NotMe"": Console.WriteLine(5); break;
                 case ""Box"": Console.WriteLine(4); break;
                 case ""Blah"": 
-				case ""Blah2"": Console.WriteLine(3); break;
+                case ""Blah2"": Console.WriteLine(3); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -1825,18 +1825,18 @@ object Utilities
     def SomeFunction()
     {
         var s:String = ""Blah"";
-        var list:ArrayBuffer[Int] = new ArrayBuffer[Int]();
+        var list:System.Collections.Generic.List[Int] = new System.Collections.Generic.List[Int]();
         if (s.isInstanceOf[String])
         {
             System.Console.WriteLine(""Yes"");
         }
-        if (list.isInstanceOf[ArrayBuffer[Int]])
+        if (list.isInstanceOf[System.Collections.Generic.List[Int]])
         {
             System.Console.WriteLine(""Yes"");
         }
-		var o:Any = s;
-		var sss:String = CsScala.As[String](o);
-		System.Console.WriteLine(sss);
+        var o:Any = s;
+        var sss:String = CsScala.As[String](o);
+        System.Console.WriteLine(sss);
     }
 }");
         }
@@ -1912,7 +1912,7 @@ abstract class TopLevel
     def AbstractMethod();
 
     def AbstractProperty:String;
-	
+    
     def VirtualMethod()
     {
         System.Console.WriteLine(""TopLevel::VirtualMethod"");
@@ -1926,7 +1926,7 @@ abstract class TopLevel
     override def toString():String =
     {
         return """";
-    }	
+    }    
 }",
     @"
 package Blargh;
@@ -2032,10 +2032,10 @@ namespace Blargh
             {
                 Console.WriteLine(""In catch 2"");
             }
-			finally
-			{
+            finally
+            {
                 Console.WriteLine(""In finally"");
-			}
+            }
 
             try
             {
@@ -2084,7 +2084,7 @@ object Utilities
             System.Console.WriteLine(""In parameterless catch"");
         }
 
-        throw new System.InvalidOperationException(""err"");    		
+        throw new System.InvalidOperationException(""err"");            
     }
 }");
         }
@@ -2190,12 +2190,12 @@ object Utilities
         System.Console.WriteLine(queue.dequeue());
         queue.clear();
 
-        var list:ArrayBuffer[String] = new ArrayBuffer[String](3);
-        list.append(""Three"");
-        list.remove(0);
-        list.insert(4, ""Seven"");
+        var list:System.Collections.Generic.List[String] = new System.Collections.Generic.List[String](3);
+        list.Add(""Three"");
+        list.RemoveAt(0);
+        list.Insert(4, ""Seven"");
 
-		
+        
         var stack:Stack[Int] = new Stack[Int]();
         stack.push(9);
         stack.push(3);
@@ -2214,7 +2214,7 @@ using Shared;
 #if !CSSCALA
 namespace Shared
 {
-	public class CsScalaAttribute : Attribute
+    public class CsScalaAttribute : Attribute
     {
         public string ReplaceWithType { get; set; }
     }
@@ -2248,22 +2248,22 @@ using System;
 namespace Blargh
 {
 #if !CSSCALA
-	public static class Utilities
-	{
-		public static T As<T>(this object o)
-		{
-			return (T)o;
-		}
-	}
+    public static class Utilities
+    {
+        public static T As<T>(this object o)
+        {
+            return (T)o;
+        }
+    }
 #endif
 
     public static class Test
     {
         public static void SomeFunction()
         {
-			var a = DateTime.Now.As<String>();
-			object o = 4;
-			var b = (byte)(short)o;
+            var a = DateTime.Now.As<String>();
+            object o = 4;
+            var b = (byte)(short)o;
         }
     }
 }";
@@ -2277,20 +2277,20 @@ object Test
     def SomeFunction()
     {
         var a:String = System.DateTime.Now.asInstanceOf[String];
-		var o:Any = 4;
-		var b:Byte = o.asInstanceOf[Short].toByte;
+        var o:Any = 4;
+        var b:Byte = o.asInstanceOf[Short].toByte;
     }
 }";
 
             var transform = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Translations>
   <Method SourceObject=""*"" Match=""As"">
-	<ReplaceWith>
-	  <Expression />
-	  <String>.asInstanceOf[</String>
-	  <TypeParameter Index=""0"" />
-	  <String>]</String>
-	</ReplaceWith>
+    <ReplaceWith>
+      <Expression />
+      <String>.asInstanceOf[</String>
+      <TypeParameter Index=""0"" />
+      <String>]</String>
+    </ReplaceWith>
   </Method>
 </Translations>";
 
@@ -2318,7 +2318,7 @@ namespace Blargh
 
             Console.WriteLine(ar[1]);
             Console.WriteLine(ar.Length);
-			Console.WriteLine(new List<string>().Count);
+            Console.WriteLine(new List<string>().Count);
         }
     }
 }", @"
@@ -2332,11 +2332,11 @@ object Utilities
         var ar:Array[Int] = Array[Int](1, 2, 3);
         for (i <- ar)
         {
-        	System.Console.WriteLine(i);
+            System.Console.WriteLine(i);
         }
         System.Console.WriteLine(ar(1));
         System.Console.WriteLine(ar.length);
-		System.Console.WriteLine(new ArrayBuffer[String]().length);
+        System.Console.WriteLine(new System.Collections.Generic.List[String]().Count);
     }
 }");
         }
@@ -2412,8 +2412,8 @@ namespace Blargh
 
             int i = 4;
             string si = i.ToString();
-			if (si.StartsWith(""asdf""))
-				Console.WriteLine(4);
+            if (si.StartsWith(""asdf""))
+                Console.WriteLine(4);
         }
     }
 }", @"
@@ -2434,9 +2434,9 @@ object Utilities
         var i:Int = 4;
         var si:String = i.toString();
         if (si.startsWith(""asdf""))
-		{
-			System.Console.WriteLine(4);
-		}
+        {
+            System.Console.WriteLine(4);
+        }
     }
 }");
         }
@@ -2525,66 +2525,66 @@ class Foo
             TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
 using System.Text;
-		
+        
 namespace Blargh
 {
-	public class Foo
-	{
-		public Foo()
-		{
-			int x;
-			TestOut(out x);
-			x = 3;
-			var s = x.ToString();
-			int i = 1;
-			TestRef(ref i);
-			i = 5;
-			new StringBuilder(i);
-			Func<int> fun = () => x;
-		}
-		
-		public void TestRef(ref int i)
-		{
-			var sb = new StringBuilder(i);
-			i = 4;
-		}
-		public void TestOut(out int i)
-		{
-			i = 4;
-			var sb = new StringBuilder(i);
-		}
-		
-	}
+    public class Foo
+    {
+        public Foo()
+        {
+            int x;
+            TestOut(out x);
+            x = 3;
+            var s = x.ToString();
+            int i = 1;
+            TestRef(ref i);
+            i = 5;
+            new StringBuilder(i);
+            Func<int> fun = () => x;
+        }
+        
+        public void TestRef(ref int i)
+        {
+            var sb = new StringBuilder(i);
+            i = 4;
+        }
+        public void TestOut(out int i)
+        {
+            i = 4;
+            var sb = new StringBuilder(i);
+        }
+        
+    }
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
-		
+        
 class Foo
 {
-	def TestRef(i:CsRef[Int])
-	{
-		var sb:System.Text.StringBuilder = new System.Text.StringBuilder(i.Value);
-		i.Value = 4;
-	}
-		
-	def TestOut(i:CsRef[Int])
-	{
-		i.Value = 4;
-		var sb:System.Text.StringBuilder = new System.Text.StringBuilder(i.Value);
-	}
-	
-	{
-		var x:CsRef[Int] = new CsRef[Int](0);
-		TestOut(x);
-		x.Value = 3;
-		var s:String = x.Value.toString();
-		var i:CsRef[Int] = new CsRef[Int](1);
-		TestRef(i);
-		i.Value = 5;
-		new System.Text.StringBuilder(i.Value);
-		var fun:() => Int = () => { x.Value; }:Int;
-	}
-		
+    def TestRef(i:CsRef[Int])
+    {
+        var sb:System.Text.StringBuilder = new System.Text.StringBuilder(i.Value);
+        i.Value = 4;
+    }
+        
+    def TestOut(i:CsRef[Int])
+    {
+        i.Value = 4;
+        var sb:System.Text.StringBuilder = new System.Text.StringBuilder(i.Value);
+    }
+    
+    {
+        var x:CsRef[Int] = new CsRef[Int](0);
+        TestOut(x);
+        x.Value = 3;
+        var s:String = x.Value.toString();
+        var i:CsRef[Int] = new CsRef[Int](1);
+        TestRef(i);
+        i.Value = 5;
+        new System.Text.StringBuilder(i.Value);
+        var fun:() => Int = () => { x.Value; }:Int;
+    }
+        
 }");
         }
 
@@ -2600,29 +2600,29 @@ namespace Blargh
     public partial class Foo
     {
         partial void NoOther();
-		partial void Other();
+        partial void Other();
     }
 
-	partial class Foo
-	{
-		partial void Other()
-		{
-			Console.WriteLine();
-		}
-	}
+    partial class Foo
+    {
+        partial void Other()
+        {
+            Console.WriteLine();
+        }
+    }
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
 
 class Foo
 {
-	def NoOther()
-	{
-	}
-	def Other()
-	{
-		System.Console.WriteLine();
-	}
+    def NoOther()
+    {
+    }
+    def Other()
+    {
+        System.Console.WriteLine();
+    }
 }");
         }
 
@@ -2665,16 +2665,16 @@ namespace Foo
     public class Bar
     {
         public static explicit operator string(Bar value)
-		{
-			return ""blah"";
-		}
+        {
+            return ""blah"";
+        }
 
-		public static void Foo()
-		{
-			var b = new Bar();
-			var s = (string)b;
-	
-		}
+        public static void Foo()
+        {
+            var b = new Bar();
+            var s = (string)b;
+    
+        }
     }
 }", @"
 package Foo;
@@ -2686,11 +2686,11 @@ object Bar
     {
         return ""blah"";
     }
-	def Foo()
-	{
-		var b:Foo.Bar = new Foo.Bar();
-		var s:String = Foo.Bar.op_Explicit_String(b);
-	}
+    def Foo()
+    {
+        var b:Foo.Bar = new Foo.Bar();
+        var s:String = Foo.Bar.op_Explicit_String(b);
+    }
 }
 class Bar
 {
@@ -2711,30 +2711,30 @@ namespace Foo
     public static class Bar
     {
         public static void Method1(params int[] p)
-		{
-		}
+        {
+        }
         public static void Method2(int i, params int[] p)
-		{
-		}
+        {
+        }
         public static void Method3(int i, int z, params int[] p)
-		{
-		}
+        {
+        }
 
-		public static void Foo()
-		{
-			Method1(1);
-			Method1(1, 2);
-			Method1(1, 2, 3);
-			Method1(1, 2, 3, 4);
-			Method2(1);
-			Method2(1, 2);
-			Method2(1, 2, 3);
-			Method2(1, 2, 3, 4);
-			Method3(1, 2);
-			Method3(1, 2, 3);
-			Method3(1, 2, 3, 4);
+        public static void Foo()
+        {
+            Method1(1);
+            Method1(1, 2);
+            Method1(1, 2, 3);
+            Method1(1, 2, 3, 4);
+            Method2(1);
+            Method2(1, 2);
+            Method2(1, 2, 3);
+            Method2(1, 2, 3, 4);
+            Method3(1, 2);
+            Method3(1, 2, 3);
+            Method3(1, 2, 3, 4);
 
-		}
+        }
     }
 }", @"
 package Foo;
@@ -2743,28 +2743,28 @@ package Foo;
 object Bar
 {
     def Method1(p:Array[Int])
-	{
-	}
+    {
+    }
     def Method2(i:Int, p:Array[Int])
-	{
-	}
+    {
+    }
     def Method3(i:Int, z:Int, p:Array[Int])
-	{
-	}
-	def Foo()
-	{
-		Foo.Bar.Method1(Array(1));
-		Foo.Bar.Method1(Array(1, 2));
-		Foo.Bar.Method1(Array(1, 2, 3));
-		Foo.Bar.Method1(Array(1, 2, 3, 4));
-		Foo.Bar.Method2(1);
-		Foo.Bar.Method2(1, Array(2));
-		Foo.Bar.Method2(1, Array(2, 3));
-		Foo.Bar.Method2(1, Array(2, 3, 4));
-		Foo.Bar.Method3(1, 2);
-		Foo.Bar.Method3(1, 2, Array(3));
-		Foo.Bar.Method3(1, 2, Array(3, 4));
-	}
+    {
+    }
+    def Foo()
+    {
+        Foo.Bar.Method1(Array(1));
+        Foo.Bar.Method1(Array(1, 2));
+        Foo.Bar.Method1(Array(1, 2, 3));
+        Foo.Bar.Method1(Array(1, 2, 3, 4));
+        Foo.Bar.Method2(1);
+        Foo.Bar.Method2(1, Array(2));
+        Foo.Bar.Method2(1, Array(2, 3));
+        Foo.Bar.Method2(1, Array(2, 3, 4));
+        Foo.Bar.Method3(1, 2);
+        Foo.Bar.Method3(1, 2, Array(3));
+        Foo.Bar.Method3(1, 2, Array(3, 4));
+    }
 }");
         }
 
@@ -2779,13 +2779,13 @@ namespace Blargh
 {
     public class Foo
     {
-		static int StaticField = 1;
-		static void StaticMethod() { }
+        static int StaticField = 1;
+        static void StaticMethod() { }
         public void Method()
-		{
-			Console.WriteLine(StaticField);
-			StaticMethod();
-		}
+        {
+            Console.WriteLine(StaticField);
+            StaticMethod();
+        }
     }
 }", @"
 package Blargh;
@@ -2793,19 +2793,19 @@ package Blargh;
 
 object Foo
 {
-	var StaticField:Int = 1;
-	def StaticMethod()
-	{
-	}
+    var StaticField:Int = 1;
+    def StaticMethod()
+    {
+    }
 }
 
 class Foo
 {
-	def Method()
-	{
-		System.Console.WriteLine(Blargh.Foo.StaticField);
-		Blargh.Foo.StaticMethod();
-	}
+    def Method()
+    {
+        System.Console.WriteLine(Blargh.Foo.StaticField);
+        Blargh.Foo.StaticMethod();
+    }
 }
 ");
         }
@@ -2825,33 +2825,33 @@ namespace Blargh
     public class Foo
     {
         public void Method1<T1>(IEnumerable<T1> t)
-		{
-			t.ToList();
-		}
+        {
+            t.ToList();
+        }
         public void Method2<T2>(IEnumerable<T2> t)
-		{
-			
-		}
+        {
+            
+        }
         public void Method3<T3>(IEnumerable<T3> t)
-		{
-			Method1(t);
-		}
+        {
+            Method1(t);
+        }
         public void Method4<A4,B4,C4>(IEnumerable<A4> a, IEnumerable<B4> b, IEnumerable<C4> c)
-		{
-			b.OfType<C4>();
-		}
+        {
+            b.OfType<C4>();
+        }
         public void Method5<T5>(IEnumerable<T5> t)
-		{
-			Method4(t, new int[] { }, new int[] { });
-		}
+        {
+            Method4(t, new int[] { }, new int[] { });
+        }
         public void Method6<T6>(IEnumerable<T6> t)
-		{
-			Method4(new int[] { }, t, new int[] { });
-		}
+        {
+            Method4(new int[] { }, t, new int[] { });
+        }
         public void Method7<T7>(IEnumerable<T7> t)
-		{
-			Method4(new int[] { }, new int[] { }, t);
-		}
+        {
+            Method4(new int[] { }, new int[] { }, t);
+        }
 
     }
 }", @"
@@ -2860,33 +2860,33 @@ package Blargh;
 
 class Foo
 {
-	def Method1[T1:ClassTag](t:Traversable[T1])
-	{
-		System.Linq.Enumerable.ToList(t);
-	}
-	def Method2[T2](t:Traversable[T2])
-	{
-	}
-	def Method3[T3:ClassTag](t:Traversable[T3])
-	{
-		Method1(t);
-	}
-	def Method4[A4, B4, C4:ClassTag](a:Traversable[A4], b:Traversable[B4], c:Traversable[C4])
-	{
-		System.Linq.Enumerable.OfType[B4, C4](b);
-	}
-	def Method5[T5](t:Traversable[T5])
-	{
-		Method4(t, Array[Int](), Array[Int]());
-	}
-	def Method6[T6](t:Traversable[T6])
-	{
-		Method4(Array[Int](), t, Array[Int]());
-	}
-	def Method7[T7:ClassTag](t:Traversable[T7])
-	{
-		Method4(Array[Int](), Array[Int](), t);
-	}
+    def Method1[T1:ClassTag](t:Traversable[T1])
+    {
+        System.Linq.Enumerable.ToList(t);
+    }
+    def Method2[T2](t:Traversable[T2])
+    {
+    }
+    def Method3[T3:ClassTag](t:Traversable[T3])
+    {
+        Method1(t);
+    }
+    def Method4[A4, B4, C4:ClassTag](a:Traversable[A4], b:Traversable[B4], c:Traversable[C4])
+    {
+        System.Linq.Enumerable.OfType[B4, C4](b);
+    }
+    def Method5[T5](t:Traversable[T5])
+    {
+        Method4(t, Array[Int](), Array[Int]());
+    }
+    def Method6[T6](t:Traversable[T6])
+    {
+        Method4(Array[Int](), t, Array[Int]());
+    }
+    def Method7[T7:ClassTag](t:Traversable[T7])
+    {
+        Method4(Array[Int](), Array[Int](), t);
+    }
 }
 ");
         }
@@ -2903,7 +2903,7 @@ namespace Blargh
     {
         public static Byte SomeFunction()
         {
-			return 200;
+            return 200;
         }
     }
 }", @"

@@ -20,6 +20,7 @@ namespace CsScala.Translations
         internal static List<PropertyTranslation> Properties;
         internal static List<TypeTranslation> Types;
         internal static List<NeedsClassTagTranslation> NeedsClassTags;
+        internal static List<ElementAccessTranslation> ElementAccesses;
 
         public static void Init(IEnumerable<string> extraDocs)
         {
@@ -27,6 +28,7 @@ namespace CsScala.Translations
             Properties = new List<PropertyTranslation>();
             Types = new List<TypeTranslation>();
             NeedsClassTags = new List<NeedsClassTagTranslation>();
+            ElementAccesses = new List<ElementAccessTranslation>();
 
             foreach (var element in BuildTranslationDocs(extraDocs).SelectMany(o => o.Root.Elements()))
             {
@@ -43,6 +45,9 @@ namespace CsScala.Translations
                         break;
                     case "NeedsClassTag":
                         NeedsClassTags.Add(new NeedsClassTagTranslation(element));
+                        break;
+                    case "ElementAccess":
+                        ElementAccesses.Add(new ElementAccessTranslation(element));
                         break;
                     default:
                         throw new Exception("Unexpected type name " + element.Name);

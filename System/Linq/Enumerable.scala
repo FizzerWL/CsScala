@@ -1,13 +1,13 @@
 package System.Linq;
 
 import System.Collections.Generic.Dictionary
-import scala.reflect.ClassTag
-import scala.collection.mutable.ArrayBuffer
+import System.Collections.Generic.List
 import System.DateTime
+import scala.reflect._
+import scala.collection.JavaConverters._
 
 object Enumerable 
 {
-
   def Select[F,T](a:Traversable[F], fn:F=>T):Traversable[T] = 
   {
     return a.map(fn);
@@ -41,10 +41,11 @@ object Enumerable
     return a.toArray;
   }
   
-  def ToList[T:ClassTag](a:Traversable[T]):ArrayBuffer[T] =
+  def ToList[T:ClassTag](a:Traversable[T]):List[T] =
   {
-    val ret = new ArrayBuffer[T]();
-    a.toBuffer.copyToBuffer(ret);
+    val ret = new List[T]();
+    for(e <- a)
+      ret.Add(e);
     return ret;
   }
   
@@ -130,12 +131,23 @@ object Enumerable
   
   def OfType[T,K:ClassTag](a:Traversable[T]):Traversable[K] =
   {
-    return a.flatMap(e => e match
+    var c = classTag[K].runtimeClass;
+    var ret = new List[K]();
+    
+    for (e <- a)
+    {
+      if (c.isInstance(e))
+        ret.Add(e.asInstanceOf[K]);
+    }
+    
+    return ret;
+    
+    /*return a.flatMap(e => e match
       {
       case e: K => e :: Nil
       case _ => Nil
       });
-    
+    */
   }
   
   def Sum(a:Traversable[Double]):Double =
@@ -272,6 +284,11 @@ object Enumerable
   def Intersect[T](a:Traversable[T], b:Traversable[T]):Traversable[T] = 
   {
     return a.toBuffer.intersect(b.toBuffer);
+  }
+  
+  def Cast[F,T](a:Traversable[F]):Traversable[T] =
+  {
+    return a.map(_.asInstanceOf[T]);
   }
 }
 

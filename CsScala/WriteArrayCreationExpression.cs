@@ -11,7 +11,19 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, ImplicitArrayCreationExpressionSyntax array)
         {
-            writer.Write("Array(");
+            writer.Write("Array");
+
+            //var t = Program.GetModel(array).GetTypeInfo(array).Type;
+
+            //if (t is ArrayTypeSymbol)
+            //{
+            //    writer.Write("[");
+            //    writer.Write(TypeProcessor.ConvertType(t.As<ArrayTypeSymbol>().ElementType));
+            //    writer.Write("]");
+            //}
+
+            
+            writer.Write("(");
 
             bool first = true;
             foreach (var expression in array.Initializer.Expressions)

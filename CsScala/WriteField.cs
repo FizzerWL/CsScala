@@ -29,7 +29,7 @@ namespace CsScala
 
             WriteFieldModifiers(writer, modifiers);
             if (isConst)
-                writer.Write("val ");
+                writer.Write("final val ");
             else
                 writer.Write("var ");
 

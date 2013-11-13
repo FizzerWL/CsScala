@@ -32,6 +32,11 @@ class DateTime(d:Date)
   {
     this(new Date(ticks / 10000));
   }
+  
+  override def toString():String =
+  {
+    return _d.toString();
+  }
 
   def Year:Int =
   {
@@ -73,7 +78,7 @@ class DateTime(d:Date)
   
   def Subtract(other:DateTime):TimeSpan =
   {
-    return TimeSpan.FromMillisecondsL(other._d.getTime() - this._d.getTime());
+    return TimeSpan.FromMillisecondsL(this._d.getTime() - other._d.getTime());
   }
   def Add(span:TimeSpan):DateTime =
   {

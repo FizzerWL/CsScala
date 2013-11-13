@@ -19,7 +19,7 @@ namespace CsScala
             try
             {
 
-                Console.WriteLine("C# to Scala Converter\nSee (TODO: Insert url) for full info and documentation.\n\n");
+                Console.WriteLine("C# to Scala Converter\nSee http://github.com/FizzerWL/CsScala for full info and documentation.\n\n");
 
                 if (args.Length == 0 || args.Any(o => o == "-?" || o == "--help" || o == "/?"))
                 {

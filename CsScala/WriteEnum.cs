@@ -21,7 +21,7 @@ namespace CsScala
             var values = allChildren.Select(o => new { Syntax = o, Value = DetermineEnumValue(o, ref lastEnumValue) }).ToList();
 
             foreach (var value in values)
-                writer.WriteLine("val " + WriteIdentifierName.TransformIdentifier(value.Syntax.Identifier.ValueText) + ":Int = " + value.Value + ";");
+                writer.WriteLine("final val " + WriteIdentifierName.TransformIdentifier(value.Syntax.Identifier.ValueText) + ":Int = " + value.Value + ";");
 
             writer.WriteLine();
 
@@ -50,7 +50,7 @@ namespace CsScala
 
             writer.WriteLine();
             writer.WriteIndent();
-            writer.Write("val Values:Array[Int] = Array(");
+            writer.Write("final val Values:Array[Int] = Array(");
             writer.Write(string.Join(", ", values.Select(o => o.Value.ToString())));
             writer.Write(");\r\n");
 

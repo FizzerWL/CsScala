@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsScala.Translations;
 using Roslyn.Compilers.CSharp;
 
 namespace CsScala
@@ -39,6 +40,37 @@ namespace CsScala
             }
             else
             {
+
+                if (expression.Left is ElementAccessExpressionSyntax && IsAssignmentToken(expression.OperatorToken.Kind))
+                {
+                    var subExpr = expression.Left.As<ElementAccessExpressionSyntax>();
+                    var typeStr = TypeProcessor.GenericTypeName(Program.GetModel(expression).GetTypeInfo(subExpr.Expression).Type);
+                    var trans = ElementAccessTranslation.Get(typeStr);
+
+                    if (trans != null)
+                    {
+                        Core.Write(writer, subExpr.Expression);
+                        writer.Write(".");
+
+                        if (expression.OperatorToken.Kind == SyntaxKind.EqualsToken)
+                            writer.Write(trans.ReplaceAssign);
+                        else
+                            throw new Exception(expression.OperatorToken.Kind + " is not supported on " + typeStr + " " + Utility.Descriptor(expression));
+
+                        writer.Write("(");
+                        foreach(var arg in subExpr.ArgumentList.Arguments)
+                        {
+                            Core.Write(writer, arg.Expression);
+                            writer.Write(", ");
+                        }
+
+                        Core.Write(writer, expression.Right);
+                        writer.Write(")");
+
+                        return;
+                    }
+                }
+
                 Action<ExpressionSyntax> write = e =>
                     {
                         var type = Program.GetModel(expression).GetTypeInfo(e);
@@ -64,6 +96,22 @@ namespace CsScala
 
 
         }
+
+        private static bool IsAssignmentToken(SyntaxKind syntaxKind)
+        {
+            switch (syntaxKind)
+            {
+                case SyntaxKind.EqualsToken:
+                case SyntaxKind.PlusEqualsToken:
+                case SyntaxKind.MinusEqualsToken:
+                case SyntaxKind.SlashEqualsToken:
+                case SyntaxKind.AsteriskEqualsToken:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
 
 
     }

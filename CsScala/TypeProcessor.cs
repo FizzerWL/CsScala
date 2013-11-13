@@ -124,6 +124,11 @@ namespace CsScala
 
         public static string TryConvertType(TypeSymbol typeInfo)
         {
+            //var specialized = SpecializedType.TryConvertType(typeInfo as NamedTypeSymbol);
+            //if (specialized != null)
+            //    return specialized;
+
+
             string cachedValue;
             if (_cachedTypes.TryGetValue(typeInfo, out cachedValue))
                 return cachedValue;
@@ -240,7 +245,7 @@ namespace CsScala
 
                 default:
                     if (trans != null)
-                        return trans.As<Translations.TypeTranslation>().Replace(named);
+                        return trans.As<TypeTranslation>().Replace(named);
 
                     if (named != null)
                         return typeSymbol.ContainingNamespace.FullNameWithDot() + WriteType.TypeName(named);
@@ -278,12 +283,13 @@ namespace CsScala
             if (typeSymbol == null)
                 return null;
 
-            var named = typeSymbol as NamedTypeSymbol;
             var array = typeSymbol as ArrayTypeSymbol;
-
             if (array != null)
                 return GenericTypeName(array.ElementType) + "[]";
-            else if (named != null && named.IsGenericType && !named.IsUnboundGenericType)
+
+            var named = typeSymbol as NamedTypeSymbol;
+
+            if (named != null && named.IsGenericType && !named.IsUnboundGenericType)
                 return GenericTypeName(named.ConstructUnboundGenericType());
             else if (named != null && named.SpecialType != SpecialType.None)
                 return named.ContainingNamespace.FullNameWithDot() + named.Name; //this forces C# shortcuts like "int" to never be used, and instead returns System.Int32 etc.

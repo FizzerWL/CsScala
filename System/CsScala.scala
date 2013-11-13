@@ -4,6 +4,8 @@ import java.util.UUID
 import java.nio.ByteBuffer
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
+import java.util.ArrayList
+import scala.collection.JavaConverters._
 
 object CsScala 
 {
@@ -71,9 +73,9 @@ object CsScala
       return false;
     }
     
-    def ToArray[T:ClassTag](buf:ArrayBuffer[T]):Array[T] =
+    def ToArray[T:ClassTag](buf:ArrayList[T]):Array[T] =
     {
-      return buf.toArray;
+      return buf.toArray().asInstanceOf[Array[T]];
     }
     
     def IsNaN(d:Double):Boolean =
@@ -86,30 +88,4 @@ object CsScala
       return d.isInfinity;
     }
     
-    def Reverse[T](list:ArrayBuffer[T])
-    {
-      for(i <- 0 until list.length/2)
-      {
-        val s = list.length - i - 1;
-        val t = list(i);
-        list(i) = list(s);
-        list(s) = t;
-      }
-    }
-    
-    def Remove[T](a:ArrayBuffer[T], item:T):Boolean = 
-    {
-      var i = 0;
-      for(e <- a)
-      {
-        if (e == item)
-        {
-          a.remove(i);
-          return true;
-        }
-        i += 1;
-      }
-      
-      return false;
-    }
 }

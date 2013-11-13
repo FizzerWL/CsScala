@@ -1,8 +1,7 @@
 package System.Collections.Generic
 
-import System.CsRef
 import java.util.HashMap
-//import scala.collection.JavaConversions._
+import System.CsRef
 
 class Dictionary[K, V](initialMap:HashMap[K,V]) extends Traversable[KeyValuePair[K,V]] 
 {
