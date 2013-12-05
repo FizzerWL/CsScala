@@ -71,17 +71,21 @@ class TimeSpan(mills:Long = 0)
   }
 
   
+  def Days:Int = 
+  {
+    return (TotalMillisecondsL / 86400000).toInt;
+  }
   def Hours:Int = 
   {
-    throw new NotImplementedException();
+    return (TotalMillisecondsL / 3600000).toInt;
   }
   def Minutes:Int = 
   {
-    throw new NotImplementedException();
+    return (TotalMillisecondsL / 60000).toInt;
   }
   def Seconds:Int = 
   {
-    throw new NotImplementedException();
+    return (TotalMillisecondsL / 1000).toInt;
   }
   
   

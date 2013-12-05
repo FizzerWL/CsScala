@@ -99,7 +99,7 @@ namespace CsScala
                         if (genericArgs.Count > 0)
                         {
                             writer.Write("[");
-                            writer.Write(string.Join(", ", genericArgs.Select(o => Utility.TypeConstraints(o, partials.SelectMany(z => z.Syntax.As<TypeDeclarationSyntax>().ConstraintClauses)))));
+                            writer.Write(string.Join(", ", genericArgs.Select(o => TypeParameter(o))));
                             writer.Write("]");
                         }
 
@@ -128,7 +128,7 @@ namespace CsScala
                         }
 
                         bool firstBase = true;
-                        foreach (var baseType in bases)
+                        foreach (var baseType in bases.OrderBy(o => o.TypeKind == TypeKind.Interface ? 1 : 0))
                         {
                             if (firstBase)
                                 writer.Write(" extends ");
@@ -183,6 +183,16 @@ namespace CsScala
                     writer.WriteCloseBrace();
                 }
             }
+        }
+
+        private static string TypeParameter(TypeParameterSyntax type)
+        {
+            var ret = Utility.TypeConstraints(type, TypeState.Instance.Partials.SelectMany(z => z.Syntax.As<TypeDeclarationSyntax>().ConstraintClauses));
+
+            if (ClassTags.NeedsClassTag(TypeState.Instance.Partials.First().Symbol, type.Identifier.ValueText))
+                ret += " :ClassTag";
+
+            return ret;
         }
 
         private static bool IsStatic(MemberDeclarationSyntax member)

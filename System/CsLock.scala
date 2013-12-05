@@ -4,7 +4,7 @@ object CsLock
 {
   def Lock(obj:Any, cb:()=>Unit)
   {
-    cb(); //TODO
+    obj.asInstanceOf[AnyRef].synchronized({ cb(); });
   }
 
 }

@@ -1,6 +1,6 @@
 package System.IO
 
-class IOException extends java.lang.Exception
+class IOException(msg:String) extends java.lang.Exception(msg)
 {
 
 }

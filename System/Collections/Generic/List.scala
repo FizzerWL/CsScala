@@ -4,6 +4,7 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
 import scala.reflect.ClassTag
+import System.NotImplementedException
 
 class List[T:ClassTag](initialList:ArrayList[T]) extends Traversable[T]
 {
@@ -36,6 +37,14 @@ class List[T:ClassTag](initialList:ArrayList[T]) extends Traversable[T]
   def iterator():java.util.Iterator[T] = _list.iterator();
   
   def foreach[U](fn:T=>U)
+  {
+    val it = _list.iterator();
+    while (it.hasNext())
+      fn(it.next());
+    
+  }
+  
+  def ForEach(fn:T=>Unit)
   {
     val it = _list.iterator();
     while (it.hasNext())
@@ -132,17 +141,24 @@ class List[T:ClassTag](initialList:ArrayList[T]) extends Traversable[T]
   
   class Cmp(fn:(T,T)=>Int) extends Comparator[T]
   {
-    def compare(a:T, b:T):Int =
-    {
-      return fn(a,b);
-    }
+    def compare(a:T, b:T):Int = fn(a,b);
+  }
+  
+  class Cmp2(fn:IComparer[T]) extends Comparator[T]
+  {
+    def compare(a:T, b:T):Int = fn.Compare(a,b);
   }
   
   def Sort(fn:(T,T)=>Int)
   {
     Collections.sort(_list, new Cmp(fn));
   }
-  
+
+  def Sort(startAt:Int, length:Int, comparer:IComparer[T])
+  {
+    Collections.sort(_list.subList(startAt, length), new Cmp2(comparer));
+  }
+
   def Sort()
   {
     Collections.sort(_list, new Cmp((a,b) =>

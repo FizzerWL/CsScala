@@ -158,10 +158,10 @@ namespace CsScala.Translations
             return list;
         }
 
-        public void WriteTypeParameters(ScalaWriter writer, InvocationExpressionSyntax invocationExpression)
+        public bool WriteTypeParameters(ScalaWriter writer, InvocationExpressionSyntax invocationExpression)
         {
             if (this.AddTypeParameters.Count == 0)
-                return;
+                return false;
 
             var model = Program.GetModel(invocationExpression);
             var symbolInfo = model.GetSymbolInfo(invocationExpression);
@@ -191,6 +191,7 @@ namespace CsScala.Translations
                 }
             }
             writer.Write("]");
+            return true;
         }
 
         private static TypeSymbol FindIEnumerableType(TypeSymbol type)

@@ -2,6 +2,7 @@ package System
 
 import java.util.Date
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 
 object DateTime
@@ -17,30 +18,57 @@ object DateTime
   {
     return new DateTime(new Date(s));
   }
+  
+  final val _dateFormat = new SimpleDateFormat("MM/d/yyyy hh:mm:ss a");
 }
 
 class DateTime(d:Date)
 {
   val _d:Date = d;
   
+  if (_d == null)
+    throw new ArgumentNullException("Null date");
+  
   def this(year:Int, month:Int, day:Int)
   {
-    this(new Date(year, month - 1, day));
+    this(new Date(year - 1900, month - 1, day));
   }
   
-  def this(ticks:Long = 0)
+  def this(ticks:Long)
   {
     this(new Date(ticks / 10000));
+  }
+  def this()
+  {
+    this(new Date(0))
+  }
+  
+  override def equals(other:Any):Boolean = 
+  {
+    if (!other.isInstanceOf[DateTime])
+      return false;
+    return other.asInstanceOf[DateTime]._d.getTime() == _d.getTime();
   }
   
   override def toString():String =
   {
-    return _d.toString();
+    return DateTime._dateFormat.format(_d);
   }
+  
+  def toString(format:String):String =
+  {
+    val sdf = format.replace('f', 'S') //milliseconds are f in .net and S in SimpleDateFormat
+    return new SimpleDateFormat(sdf).format(_d);
+  }
+  def ToShortDateString():String =
+  {
+    return Year + "/" + Month + "/" + Day;
+  }
+
 
   def Year:Int =
   {
-    return _d.getYear();
+    return _d.getYear() + 1900;
   }
   def Month:Int =
   {
@@ -69,16 +97,20 @@ class DateTime(d:Date)
 
   def ToUniversalTime():DateTime = 
   {
-    throw new NotImplementedException();
+    return this; //TODO
   }
   def ToLocalTime():DateTime = 
   {
-    throw new NotImplementedException();
+    return this; //TODO
   }
   
   def Subtract(other:DateTime):TimeSpan =
   {
     return TimeSpan.FromMillisecondsL(this._d.getTime() - other._d.getTime());
+  }
+  def Subtract(other:TimeSpan):DateTime =
+  {
+    throw new NotImplementedException();
   }
   def Add(span:TimeSpan):DateTime =
   {

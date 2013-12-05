@@ -15,8 +15,21 @@ namespace CsScala.Translations
         }
 
         public string Match { get; set; }
+        public string TypeParametersOpt { get; set; } //null means all type parameters, for convenience
 
-        public string[] TypeParametersOpt { get; set; } //null means all type parameters, for convenience
+        HashSet<string> _types;
+        public HashSet<string> TypesHashSet
+        {
+            get
+            {
+                if (TypeParametersOpt == null)
+                    return null;
+                if (_types == null)
+                    _types = this.TypeParametersOpt.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToHashSet(true);
+                return _types;
+            }
+        }
+
 
         public static NeedsClassTagTranslation Get(string typeStr)
         {

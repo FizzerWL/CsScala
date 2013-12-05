@@ -15,6 +15,7 @@ namespace CsScala
             var info = new LoopInfo(foreachStatement);
 
             var types = Program.GetModel(foreachStatement).GetTypeInfo(foreachStatement.Expression);
+            var typeStr = TypeProcessor.GenericTypeName(types.Type);
             if (types.Type is ArrayTypeSymbol)
             {
                 //It's faster to "while" through arrays than "for" through them
@@ -55,7 +56,10 @@ namespace CsScala
                 info.WritePostLoop(writer);
                 writer.WriteCloseBrace();
             }
-            else if (types.Type.Name == "List" && types.Type.ContainingNamespace.FullName() == "System.Collections.Generic")
+            else if (typeStr == "System.Collections.Generic.List<>"
+                //|| typeStr == "System.Collections.Generic.Dictionary<,>" 
+                || typeStr == "System.Collections.Generic.Dictionary<,>.KeyCollection" 
+                || typeStr == "System.Collections.Generic.Dictionary<,>.ValueCollection")
             {
                 //It's faster to "while" over a list's iterator than to "for" through it
                 writer.WriteOpenBrace();

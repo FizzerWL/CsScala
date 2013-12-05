@@ -17,4 +17,7 @@ class Dictionary_KeyCollection[T](i:java.util.Set[T]) extends Traversable[T]
 	   fn(it.next());
 	}
   }
+  
+  def iterator():java.util.Iterator[T] = i.iterator();
+
 }

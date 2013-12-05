@@ -61,6 +61,11 @@ namespace CsScala
                 writer.Indent--;
 
             }
+            else
+            {
+                //Scala will throw a MatchError if nothing matches, whereas C# just skips switch statements with no match.  Therefore, if no default section is provided, just write out a do-nothing default so that MatchError is not thrown
+                writer.WriteLine("case _ =>");
+            }
 
 
             writer.WriteCloseBrace();

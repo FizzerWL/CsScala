@@ -5,9 +5,9 @@ class HashSet[T] extends Traversable[T]
 {
   val _set = new java.util.HashSet[T]();
 
-  def Add(t:T)
+  def Add(t:T):Boolean =
   {
-    _set.add(t);
+    return _set.add(t);
   }
   
   def Contains(t:T):Boolean = 

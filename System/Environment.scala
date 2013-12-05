@@ -8,5 +8,9 @@ object Environment
   {
     return new Date().getTime().toInt;
   }
+  
+  final val NewLine:String = "\n";
 
+  final val OSVersion = new OperatingSystem();
+  
 }

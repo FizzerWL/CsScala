@@ -37,7 +37,10 @@ class Dictionary[K, V](initialMap:HashMap[K,V]) extends Traversable[KeyValuePair
   
   def apply(k:K):V =
   {
-    return _map.get(k);
+    val r = _map.get(k);
+    if (r == null && !ContainsKey(k))
+      throw new KeyNotFoundException();
+    return r;
   }
   
   def update(k:K, v:V)

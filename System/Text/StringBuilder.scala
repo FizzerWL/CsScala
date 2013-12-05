@@ -1,5 +1,8 @@
 package System.Text
 
+import System.NotImplementedException
+import java.io.StringWriter
+
 
 class StringBuilder(sb:java.lang.StringBuilder) 
 {
@@ -17,6 +20,12 @@ class StringBuilder(sb:java.lang.StringBuilder)
     this(new java.lang.StringBuilder());
   }
   
+  private var _writer:StringWriter = null;
+  def SetStringWriter(writer:StringWriter)
+  {
+    _writer = writer;
+  }
+  
   def Append(c:Char)
   {
     sb.append(c);
@@ -25,14 +34,20 @@ class StringBuilder(sb:java.lang.StringBuilder)
   {
     sb.append(s);
   }
-  def AppendLine(s:String)
+  def AppendLine(s:String = null)
   {
-    sb.append(s);
+    if (s != null)
+    	sb.append(s);
+    
     sb.append('\n');
   }
   def Append(i:Int)
   {
     sb.append(i);
+  }
+  def Append(s:String, offset:Int, len:Int)
+  {
+    throw new NotImplementedException();
   }
   
   def Insert(index:Int, c:Char)
@@ -51,6 +66,21 @@ class StringBuilder(sb:java.lang.StringBuilder)
   
   override def toString():String = 
   {
-    return sb.toString();
+    if (_writer == null)
+    	return sb.toString();
+    else
+    	return _writer.toString();
   }
+  
+  def Clear()
+  {
+    sb.setLength(0);
+  }
+  
+  def Remove(startAt:Int, count:Int)
+  {
+    sb.delete(startAt, startAt + count);
+  }
+  
+  def apply(i:Int):Char = sb.charAt(i);
 }

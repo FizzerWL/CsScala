@@ -16,7 +16,7 @@ namespace CsScala.Translations
         public string SourceObject { get; set; }
         public string Match { get; set; }
         public string ReplaceWith { get; set; }
-
+        public string ExtensionMethod { get; set; }
 
         public static PropertyTranslation Get(string typeStr, string memberName)
         {

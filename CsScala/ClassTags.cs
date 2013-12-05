@@ -38,6 +38,18 @@ namespace CsScala
             return GetClassTagHashSet(methodSymbol, methodSyntax).Contains(templateID);
         }
 
+        public static bool NeedsClassTag(NamedTypeSymbol symbol, string templateID)
+        {
+            //For types, unlike methods, this requires that they're specified in Translations.xml. TODO: Determine these programmatically. 
+            //var symbol = Program.GetModel(typeSyntax).GetDeclaredSymbol(typeSyntax);
+
+            var trans = NeedsClassTagTranslation.Get(TypeProcessor.GenericTypeName(symbol));
+            if (trans == null || trans.TypesHashSet == null)
+                return false;
+            else
+                return trans.TypesHashSet.Contains(templateID);
+        }
+
         private static HashSet<string> GetClassTagHashSet(MethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
         {
             var info = _methods[methodSymbol];
@@ -113,10 +125,13 @@ namespace CsScala
             var methodStr = TypeProcessor.GenericTypeName(method.ContainingType) + "." + method.Name;
 
             var trans = NeedsClassTagTranslation.Get(methodStr);
-            if (trans != null)
-                return trans.TypeParametersOpt == null ? method.TypeParameters.ToArray().Select(o => o.ToString()).ToHashSet(true) : trans.TypeParametersOpt.ToHashSet(true);
-            else
+            if (trans == null)
                 return null;
+
+            if (trans.TypesHashSet != null)
+                return trans.TypesHashSet;
+            else
+                return method.TypeParameters.ToArray().Select(o => o.ToString()).ToHashSet(true);
         }
     }
 }

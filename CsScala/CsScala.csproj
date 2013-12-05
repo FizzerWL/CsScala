@@ -66,6 +66,7 @@
     <Compile Include="ClassTags.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="OverloadResolver.cs" />
     <Compile Include="TransformedArgument.cs" />
     <Compile Include="Translations\ElementAccessTranslation.cs" />
     <Compile Include="Translations\NeedsClassTagTranslation.cs" />

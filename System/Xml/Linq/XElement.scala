@@ -1,24 +1,43 @@
 package System.Xml.Linq
 
-import System.NotImplementedException
-import System.NotImplementedException
+import org.jdom2._
+import System.Xml.XmlNodeType
 import System.NotImplementedException
 
-class XElement(name:String) extends XContainer
+class XElement(elem:Element) extends XContainer(elem)
 {
+  def this(name:String)
+  {
+    this(new Element(name));
+  }
   def Attribute(name:String):XAttribute =
   {
-    throw new NotImplementedException();
+    
+    val a = _elem.getAttribute(name);
+    if (a == null)
+      return null;
+    else
+      return new XAttribute(a);
   }
   
   def SetAttributeValue(name:String, value:String)
   {
-    throw new NotImplementedException();
+    _elem.setAttribute(name, value);
   }
   
   def Value:String =
   {
-    throw new NotImplementedException();
+    return _elem.getText();
   }
+  
+  def Name:XName = {
+    return new XName(_elem.getName());
+  }
+  
+  def NodeType:Int = XmlNodeType.Element;
 
+  def GetDefaultNamespace():XNamespace =
+  {
+    throw new NotImplementedException("stub");
+  }
 }

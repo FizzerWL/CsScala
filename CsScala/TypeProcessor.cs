@@ -119,7 +119,6 @@ namespace CsScala
             if (ret == null)
                 throw new Exception("Could not convert type " + typeSymbol);
             return ret;
-
         }
 
         public static string TryConvertType(TypeSymbol typeInfo)
@@ -181,13 +180,15 @@ namespace CsScala
                     case "Byte":
                         return "java.lang.Byte";
                     case "Short":
-                        return "java.lang'Short";
+                        return "java.lang.Short";
                     case "Float":
                         return "java.lang.Float";
                     case "Double":
                         return "java.lang.Double";
                     case "Char":
                         return "java.lang.Char";
+                    case "Long":
+                        return "java.lang.Long";
                     default:
                         return convertedType;
                 }

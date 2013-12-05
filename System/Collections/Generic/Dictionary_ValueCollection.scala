@@ -17,5 +17,7 @@ class Dictionary_ValueCollection[T](i:java.util.Collection[T]) extends Traversab
 	   fn(it.next());
 	}
   }
+  
+  def iterator():java.util.Iterator[T] = i.iterator();
 
 }

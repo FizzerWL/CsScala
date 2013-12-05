@@ -35,7 +35,7 @@ namespace CsScala
                 writer.Write("private ");
 
             writer.Write("def ");
-            var methodName = methodSymbol.Name;
+            var methodName = OverloadResolver.MethodName(methodSymbol);
 
             if (methodName == "ToString")
                 methodName = "toString";

@@ -78,6 +78,16 @@ namespace CsScala
             {
 
                 var translate = PropertyTranslation.Get(typeStr, memberName);
+
+                if (translate != null && translate.ExtensionMethod != null)
+                {
+                    writer.Write(translate.ExtensionMethod);
+                    writer.Write("(");
+                    Core.Write(writer, expression.Expression);
+                    writer.Write(")");
+                    return;
+                }
+
                 if (translate != null)
                     memberName = translate.ReplaceWith;
                 else

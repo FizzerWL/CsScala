@@ -18,7 +18,6 @@ namespace CsScala
 		static public string StandardImports =
 @"
 import scala.util.control._;
-import scala.collection.mutable.Queue;
 import scala.reflect.ClassTag;
 import CsRoot._;
 import anonymoustypes._;
@@ -26,7 +25,6 @@ import System.CsScala;
 import System.CsRef;
 import System.CsLock;
 import System.CsObject;
-import java.util.ArrayList;
 
 ";
 		

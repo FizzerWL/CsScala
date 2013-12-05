@@ -5,6 +5,7 @@ import System.Collections.Generic.List
 import System.DateTime
 import scala.reflect._
 import scala.collection.JavaConverters._
+import System.NotImplementedException
 
 object Enumerable 
 {
@@ -52,6 +53,18 @@ object Enumerable
   def Min(a:Traversable[Int]):Int =
   {
     return a.min;
+  }
+  def Min(a:Traversable[DateTime]):DateTime =
+  {
+    return a.minBy(_.Ticks);
+  }
+  def Min[T](a:Traversable[T], fn:T=>DateTime):DateTime =
+  {
+    return a.map(fn).minBy(_.Ticks);
+  }
+  def Min[T](a:Traversable[T], fn:T=>Int):Int =
+  {
+    return a.map(fn).min;
   }
   
   def GroupBy[S,K](a:Traversable[S], fn:S=>K):Traversable[IGrouping[K,S]] =
@@ -107,6 +120,15 @@ object Enumerable
       ret = c;
     return ret;
   }
+  def LastOrDefault[T >: Null](a:Traversable[T], pred:T=>Boolean):T =
+  {
+    var ret:T = null;
+    
+    for(c <- a)
+      if (pred(c))
+    	ret = c;
+    return ret;
+  }
   def LastOrDefault[T >: Null](a:Traversable[T]):T =
   {
     var ret:T = null;
@@ -117,6 +139,10 @@ object Enumerable
   }
   
   def OrderBy_Int[T](a:Traversable[T], fn:T=>Int):Traversable[T] =
+  {
+    return a.toBuffer.sortBy(fn);
+  }
+  def OrderBy_Float[T](a:Traversable[T], fn:T=>Float):Traversable[T] =
   {
     return a.toBuffer.sortBy(fn);
   }
@@ -162,6 +188,27 @@ object Enumerable
     var ret:Int = 0;
     for (e <- a)
       ret += e;
+    return ret;
+  }
+  def Sum[T](a:Traversable[T], fn:T=>Int):Int =
+  {
+    var ret:Int = 0;
+    for (e <- a)
+      ret += fn(e);
+    return ret;
+  }
+  def Sum[T](a:Traversable[T], fn:T=>Long):Long =
+  {
+    var ret:Long = 0;
+    for (e <- a)
+      ret += fn(e);
+    return ret;
+  }
+  def Sum[T](a:Traversable[T], fn:T=>Double):Double =
+  {
+    var ret:Double = 0;
+    for (e <- a)
+      ret += fn(e);
     return ret;
   }
   
@@ -263,6 +310,14 @@ object Enumerable
   {
     return a.map(fn).maxBy(_.Ticks);
   }
+  def Max[T](a:Traversable[T], fn:T=>Long):Long =
+  {
+    return a.map(fn).max;
+  }
+  def Max[T](a:Traversable[T], fn:T=>Int):Int =
+  {
+    return a.map(fn).max;
+  }
   def Max(a:Traversable[DateTime]):DateTime =
   {
     return a.maxBy(_.Ticks);
@@ -286,10 +341,26 @@ object Enumerable
     return a.toBuffer.intersect(b.toBuffer);
   }
   
-  def Cast[F,T](a:Traversable[F]):Traversable[T] =
+  def Cast[T](a:Traversable[Any]):Traversable[T] =
   {
     return a.map(_.asInstanceOf[T]);
   }
+  
+  def Union[T](a:Traversable[T], b:Traversable[T]):Traversable[T] =
+  {
+    return a.toBuffer.union(b.toBuffer);
+  }
+  
+  def Aggregate[T](a:Traversable[T], fn:(T,T)=>T):T =
+  {
+    return a.reduceLeft(fn); 
+  }
+  
+  def Skip[T](a:Traversable[T], numToSkip:Int):Traversable[T] =
+  {
+    return a.drop(numToSkip);
+  }
+  
 }
 
 

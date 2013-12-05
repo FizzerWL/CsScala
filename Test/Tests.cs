@@ -482,14 +482,26 @@ object Utilities
         System.Console.WriteLine(dict(4));
         System.Console.WriteLine(dict.ContainsKey(8));
         dict.Remove(4);
-        for (key <- dict.Keys)
+
+
         {
-            System.Console.WriteLine(key);
+            val __foreachiterator = dict.Keys.iterator(); 
+            while (__foreachiterator.hasNext()) 
+            { 
+                val key = __foreachiterator.next(); 
+                System.Console.WriteLine(key); 
+            }
         }
-        for (csval <- dict.Values)
-        {
-            System.Console.WriteLine(csval);
+
+        { 
+            val __foreachiterator = dict.Values.iterator(); 
+            while (__foreachiterator.hasNext()) 
+            { 
+                val csval = __foreachiterator.next(); 
+                System.Console.WriteLine(csval); 
+            } 
         }
+
         
         for (kv <- dict)
         {
@@ -1489,8 +1501,8 @@ object Utilities
         System.Console.WriteLine(Short.MinValue);
         System.Console.WriteLine(System.CsScala.ushortMaxValue);
         System.Console.WriteLine(System.CsScala.ushortMinValue);
-        System.Console.WriteLine(System.CsScala.uintMaxValue);
-        System.Console.WriteLine(System.CsScala.uintMinValue);
+        System.Console.WriteLine_UInt32(System.CsScala.uintMaxValue);
+        System.Console.WriteLine_UInt32(System.CsScala.uintMinValue);
         var s:String = ""123"";
         System.Console.WriteLine(s.toInt + 1);
         s.toFloat;
@@ -1625,11 +1637,11 @@ object MostlyNumbered
     { 
         return s match
         { 
-            case ""One"" => 1; 
-            case ""Two"" => 2;        
-            case ""Three"" => 3; 
-            case ""Unnumbered"" => 4; 
-            case ""SomethingElse"" => 50; 
+            case ""One"" | ""1"" => 1; 
+            case ""Two"" | ""2"" => 2;        
+            case ""Three"" | ""3"" => 3; 
+            case ""Unnumbered"" | ""4"" => 4; 
+            case ""SomethingElse"" | ""50"" => 50; 
         } 
     }
 
@@ -1656,9 +1668,9 @@ object UnNumbered
     { 
         return s match
         { 
-            case ""One"" => 1; 
-            case ""Two"" => 2;        
-            case ""Three"" => 3; 
+            case ""One"" | ""1"" => 1; 
+            case ""Two"" | ""2"" => 2;        
+            case ""Three"" | ""3"" => 3; 
         } 
     }
     final val Values:Array[Int] = Array(1, 2, 3);
@@ -1677,7 +1689,7 @@ object Clazz
         var s:String = Blargh.MostlyNumbered.ToString(e);
         s = Blargh.MostlyNumbered.ToString(e) + ""asdf"";
         s = ""asdf"" + Blargh.MostlyNumbered.ToString(e);
-        var vals = Blargh.MostlyNumbered.Values();
+        var vals = Blargh.MostlyNumbered.Values;
     }
 }"});
         }
@@ -1733,9 +1745,9 @@ object Foo_TestEnum
     { 
         return s match
         { 
-            case ""One"" => 1; 
-            case ""Two"" => 2;        
-            case ""Three"" => 3; 
+            case ""One"" | ""1"" => 1; 
+            case ""Two"" | ""2"" => 2;        
+            case ""Three"" | ""3"" => 3; 
         } 
     }
     final val Values:Array[Int] = Array(1, 2, 3);
@@ -2109,6 +2121,7 @@ namespace Blargh
                 queue.Enqueue(a);
 
             queue.Dequeue();
+            Foo<long>();
             return queue;
         }
 
@@ -2118,6 +2131,11 @@ namespace Blargh
                 effect(i);
             return array;
         }
+
+        public static T Foo<T>()
+        {
+            throw new Exception();
+        }
     }
 }", @"
 package Blargh;
@@ -2125,14 +2143,15 @@ package Blargh;
 
 object Utilities
 {
-    def ToQueue[T](array:Traversable[T]):Queue[T] =
+    def ToQueue[T](array:Traversable[T]):scala.collection.mutable.Queue[T] =
     {
-        var queue:Queue[T] = new Queue[T]();
+        var queue:scala.collection.mutable.Queue[T] = new scala.collection.mutable.Queue[T]();
         for (a <- array)
         {
             queue.enqueue(a);
         }
         queue.dequeue();
+        Blargh.Utilities.Foo[Long]();
         return queue;
     }
     def SideEffect[T](array:Traversable[T], effect:(T) => Unit):Traversable[T] =
@@ -2142,6 +2161,10 @@ object Utilities
             effect(i);
         }
         return array;
+    }
+    def Foo[T]():T =
+    {
+        throw new java.lang.Exception();
     }
 }");
         }
@@ -2184,7 +2207,7 @@ object Utilities
 {
     def SomeFunction()
     {
-        var queue:Queue[Int] = new Queue[Int]();
+        var queue:scala.collection.mutable.Queue[Int] = new scala.collection.mutable.Queue[Int]();
         queue.enqueue(4);
         queue.enqueue(2);
         System.Console.WriteLine(queue.dequeue());
@@ -2196,7 +2219,7 @@ object Utilities
         list.Insert(4, ""Seven"");
 
         
-        var stack:Stack[Int] = new Stack[Int]();
+        var stack:scala.collection.mutable.Stack[Int] = new scala.collection.mutable.Stack[Int]();
         stack.push(9);
         stack.push(3);
         Math.max(stack.pop(), stack.pop());
@@ -2330,9 +2353,16 @@ object Utilities
     def SomeFunction()
     {
         var ar:Array[Int] = Array[Int](1, 2, 3);
-        for (i <- ar)
+
         {
-            System.Console.WriteLine(i);
+            var __foreachindex:Int = 0;
+            val __foreacharray = ar;
+            while (__foreachindex < __foreacharray.length)
+            {
+                val i = __foreacharray(__foreachindex);
+                System.Console.WriteLine(i);
+                __foreachindex += 1;
+            }
         }
         System.Console.WriteLine(ar(1));
         System.Console.WriteLine(ar.length);
@@ -2427,10 +2457,17 @@ object Utilities
         System.Console.WriteLine(s.indexOf(""0""));
         System.Console.WriteLine(s2.indexOf(""0""));
 
-        for (s3 <- Array[String](""Hello""))
         {
-            s3.substring(4, 5);
+            var __foreachindex:Int = 0;
+            val __foreacharray = Array[String](""Hello"");
+            while (__foreachindex < __foreacharray.length)
+            {
+                val s3 = __foreacharray(__foreachindex);
+                System.CsScala.Substring(s3, 4, 5);
+                __foreachindex += 1;
+            }
         }
+
         var i:Int = 4;
         var si:String = i.toString();
         if (si.startsWith(""asdf""))
@@ -2918,6 +2955,101 @@ object Utilities
     }
 }");
         }
+
+
+        [TestMethod]
+        public void OverloadedMethods()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+
+namespace Blargh
+{
+    public static class Utilities
+    {
+        public static void Foo(byte i){ }
+        public static void Foo(short i){ }
+        public static void Foo(int i){ }
+        public static void Foo(long i){ }
+        public static void Foo(float i){ }
+        public static void Foo(double i){ }
+        public static void Foo(ushort i){ }
+        public static void Foo(uint i){ }
+        public static void Foo(ulong i){ }
+
+        static Utilities()
+        {
+            byte b = 1;
+            short s = 1;
+            int i = 1;
+            long l = 1;
+            float f = 1;
+            double d = 1;
+            ushort us = 1;
+            uint ui = 1;
+            ulong ul = 1;
+            Foo(b); Foo(s); Foo(i); Foo(l); Foo(f); Foo(d); Foo(us); Foo(ui); Foo(ul);
+        }
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Utilities
+{
+    def Foo(i:Byte)
+    {
+    }
+    def Foo(i:Short)
+    {
+    }
+    def Foo(i:Int)
+    {
+    }
+    def Foo(i:Long)
+    {
+    }
+    def Foo(i:Float)
+    {
+    }
+    def Foo(i:Double)
+    {
+    }
+    def Foo_UInt16(i:Int)
+    {
+    }
+    def Foo_UInt32(i:Long)
+    {
+    }
+    def Foo_UInt64(i:Double)
+    {
+    }
+
+    def cctor()
+    {
+        var b:Byte = 1.toByte;
+        var s:Short = 1;
+        var i:Int = 1;
+        var l:Long = 1;
+        var f:Float = 1;
+        var d:Double = 1;
+        var us:Int = 1;
+        var ui:Long = 1;
+        var ul:Double = 1;
+        Blargh.Utilities.Foo(b); 
+        Blargh.Utilities.Foo(s);
+        Blargh.Utilities.Foo(i);
+        Blargh.Utilities.Foo(l);
+        Blargh.Utilities.Foo(f);
+        Blargh.Utilities.Foo(d);
+        Blargh.Utilities.Foo_UInt16(us);
+        Blargh.Utilities.Foo_UInt32(ui);
+        Blargh.Utilities.Foo_UInt64(ul);
+    }
+}");
+        }
+
+
     }
 
 

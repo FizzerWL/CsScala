@@ -18,5 +18,15 @@ object Console {
   {
     java.lang.System.out.println(i.toString());
   }
+  
+  def Write(s:String)
+  {
+    java.lang.System.out.print(s);
+  }
+  
+  def ReadLine():String =
+  {
+    throw new NotImplementedException("stub");
+  }
 
 }

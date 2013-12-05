@@ -24,6 +24,7 @@ namespace CsScala
 
             var extensionNamespace = methodSymbol.IsExtensionMethod ? methodSymbol.ContainingNamespace.FullNameWithDot() + methodSymbol.ContainingType.Name : null; //null means it's not an extension method, non-null means it is
             string methodName;
+            string typeParameters = null;
             ExpressionSyntax subExpressionOpt;
 
             if (methodSymbol.ContainingType.Name == "Enum")
@@ -71,11 +72,11 @@ namespace CsScala
             else if (methodSymbol.MethodKind == MethodKind.DelegateInvoke)
                 methodName = null;
             else
-                methodName = methodSymbol.Name;
+                methodName = OverloadResolver.MethodName(methodSymbol);
 
             if (translateOpt != null && translateOpt.HasComplexReplaceWith)
             {
-                translateOpt.DoComplexReplaceWith(writer, memberReferenceExpressionOpt); //TODO: What if this is null?
+                translateOpt.DoComplexReplaceWith(writer, memberReferenceExpressionOpt);
                 return;
             }
 
@@ -92,6 +93,16 @@ namespace CsScala
             }
             else
                 subExpressionOpt = null;
+
+            
+
+
+            //When the code specifically names generic arguments, include them in the method name
+            var genNameExpression = invocationExpression.Expression as GenericNameSyntax;
+            if (genNameExpression == null && memberReferenceExpressionOpt != null)
+                genNameExpression = memberReferenceExpressionOpt.Name as GenericNameSyntax;
+            if (genNameExpression != null && genNameExpression.TypeArgumentList.Arguments.Count > 0)
+                typeParameters = "[" + string.Join(", ", genNameExpression.TypeArgumentList.Arguments.Select(TypeProcessor.ConvertType)) + "]";
 
 
             //Determine if it's an extension method called in a non-extension way.  In this case, just pretend it's not an extension method
@@ -113,8 +124,8 @@ namespace CsScala
                     writer.Write(methodName);
                 }
 
-                if (translateOpt != null)
-                    translateOpt.WriteTypeParameters(writer, invocationExpression);
+                WriteTypeParameters(writer, translateOpt, typeParameters, invocationExpression);
+                
 
                 writer.Write("(");
 
@@ -164,8 +175,7 @@ namespace CsScala
 
 
                 writer.Write(methodName);
-                if (translateOpt != null)
-                    translateOpt.WriteTypeParameters(writer, invocationExpression);
+                WriteTypeParameters(writer, translateOpt, typeParameters, invocationExpression);
                 writer.Write("(");
             }
 
@@ -203,6 +213,18 @@ namespace CsScala
 
 
             writer.Write(")");
+        }
+
+        private static void WriteTypeParameters(ScalaWriter writer, MethodTranslation translateOpt, string typeParameters, InvocationExpressionSyntax invoke)
+        {
+            if (translateOpt != null)
+            {
+                if (translateOpt.WriteTypeParameters(writer, invoke))
+                    return;
+            }
+
+            if (typeParameters != null)
+                writer.Write(typeParameters);
         }
 
         private static bool IsParamsArgument(InvocationExpressionSyntax invocationExpression, ArgumentSyntax argumentOpt, MethodSymbol methodSymbol)
@@ -250,7 +272,7 @@ namespace CsScala
 
             writer.Write(type.ContainingNamespace.FullNameWithDot());
             writer.Write(WriteType.TypeName((NamedTypeSymbol)type));
-            writer.Write(".Values()");
+            writer.Write(".Values");
         }
 
 
