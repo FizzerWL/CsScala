@@ -3049,8 +3049,39 @@ object Utilities
 }");
         }
 
+        [TestMethod]
+        public void ThreadStatic()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
 
+namespace Blargh
+{
+    public static class Utilities
+    {
+        [ThreadStatic]
+        public static string NoInit;
+
+        [ThreadStatic]
+        public static string Init = ""initval"";
     }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
 
+object Utilities
+{
+    final val __NoInit = new ThreadLocal[String]();
+    def NoInit:String = __NoInit.get();
+    def NoInit_=(value:String) = __NoInit.set(value);
+    
+    final val __Init = new ThreadLocal[String]()
+    { override def initialValue():String = ""initval""; };
+    def Init:String = __Init.get();
+    def Init_=(value:String) = __Init.set(value);
+  
+}");
+        }
+    }
 
 }
