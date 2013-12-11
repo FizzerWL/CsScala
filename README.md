@@ -2,6 +2,8 @@
 
 CsScala uses Microsoft Roslyn to convert your C# 4.0 code to Scala 2.10 code.  It was primarilly invented to provide a way to run C# on the JVM.
 
+Check out Test/Tests.cs for examples as well as an overview of what is supported.
+
 C# is a large language, and there are some language features that CsScala doesn't support, such as unsafe code, goto, await, etc.
 
 CsScala aims to support 90% of an average C# codebase.  You should expect going in to have to refactor some of your C# code to work around features that CsScala doesn't support.  See the limitations section for a full list.
