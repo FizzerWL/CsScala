@@ -6,6 +6,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.reflect._
 import java.util.ArrayList
 import scala.collection.JavaConverters._
+import org.apache.http.util.ExceptionUtils
 
 object CsScala 
 {
@@ -279,6 +280,16 @@ object CsScala
         return "";
       else
         return i.toString();
+    }
+    
+    def ExceptionToString(ex:Exception):String =
+    {
+      if (ex == null)
+        return "";
+      else
+      {
+        return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n");
+      }
     }
     
 }

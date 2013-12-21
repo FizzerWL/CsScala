@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Translations>
   <Method SourceObject="System.Nullable" Match="ToString" ReplaceWith="NullableToString" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.Exception" Match="ToString" ReplaceWith="ExceptionToString" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="*" Match="ToString" ReplaceWith="toString" />
   <Method SourceObject="*" Match="GetType" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="*" Match="CompareTo" ReplaceWith="compareTo" />
