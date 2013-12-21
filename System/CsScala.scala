@@ -272,4 +272,13 @@ object CsScala
       return s.substring(startIndex);
     }
     
+    //Simulates the C# method of returning an empty string for null nullables
+    def NullableToString(i:java.lang.Integer):String =
+    {
+      if (i == null)
+        return "";
+      else
+        return i.toString();
+    }
+    
 }

@@ -1537,6 +1537,7 @@ namespace Blargh
             implicitValue = 8;
             Foo(3);
             int? n = (int?)null;
+			n.ToString();
         }
 
         public static int? Foo(int? i)
@@ -1564,6 +1565,7 @@ object Utilities
         implicitValue = 8;
         Blargh.Utilities.Foo(3);
         var n:java.lang.Integer = null;
+		System.CsScala.NullableToString(n);
     }
     def Foo(i:java.lang.Integer):java.lang.Integer =
     {
