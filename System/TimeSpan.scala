@@ -47,7 +47,7 @@ class TimeSpan(mills:Long = 0)
 
   def Ticks:Long =
   {
-    return TotalMillisecondsL / 10000;
+    return TotalMillisecondsL * 10000;
   }
   def TotalMilliseconds:Double =
   {
