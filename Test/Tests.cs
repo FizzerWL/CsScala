@@ -1375,8 +1375,8 @@ namespace Blargh
             i *= 4;
             i %= 3;
             i = i + 1;
-            i = i % 3;
-            i = i - 4;
+            i = i % sizeof(int);
+            i = i - sizeof(byte);
             i = i * 100;
             double f = i / 3f;
             int hex = 0x00ff;
@@ -1399,8 +1399,8 @@ object Utilities
         i *= 4;
         i %= 3;
         i = i + 1;
-        i = i % 3;
-        i = i - 4;
+        i = i % 4;
+        i = i - 1;
         i = i * 100;
         var f:Double = i / 3f;
         var hex:Int = 0x00ff;

@@ -99,6 +99,7 @@
     <Compile Include="WriteMethod.cs" />
     <Compile Include="WriteObjectCreationExpression.cs" />
     <Compile Include="WriteParenthesizedExpression.cs" />
+    <Compile Include="WriteSizeOfExpression.cs" />
     <Compile Include="WriteUnaryExpression.cs" />
     <Compile Include="WriteSwitchStatement.cs" />
     <Compile Include="WriteTryStatement.cs" />
