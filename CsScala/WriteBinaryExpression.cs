@@ -58,7 +58,7 @@ namespace CsScala
                             throw new Exception(expression.OperatorToken.Kind + " is not supported on " + typeStr + " " + Utility.Descriptor(expression));
 
                         writer.Write("(");
-                        foreach(var arg in subExpr.ArgumentList.Arguments)
+                        foreach (var arg in subExpr.ArgumentList.Arguments)
                         {
                             Core.Write(writer, arg.Expression);
                             writer.Write(", ");
@@ -75,7 +75,7 @@ namespace CsScala
                     {
                         var type = Program.GetModel(expression).GetTypeInfo(e);
 
-						if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && type.Type.TypeKind == TypeKind.Enum)  //Check for enums being converted to strings by string concatenation
+                        if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && type.Type.TypeKind == TypeKind.Enum)  //Check for enums being converted to strings by string concatenation
                         {
                             writer.Write(type.Type.ContainingNamespace.FullNameWithDot());
                             writer.Write(WriteType.TypeName(type.Type.As<NamedTypeSymbol>()));
@@ -83,12 +83,12 @@ namespace CsScala
                             Core.Write(writer, e);
                             writer.Write(")");
                         }
-						else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && IsException(type.Type)) //Check for exceptions being converted to strings by string concatenation
-						{
-							writer.Write("System.CsScala.ExceptionToString(");
-							Core.Write(writer, e);
-							writer.Write(")");
-						}
+                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && IsException(type.Type)) //Check for exceptions being converted to strings by string concatenation
+                        {
+                            writer.Write("System.CsScala.ExceptionToString(");
+                            Core.Write(writer, e);
+                            writer.Write(")");
+                        }
                         else
                             Core.Write(writer, e);
                     };
@@ -103,15 +103,15 @@ namespace CsScala
 
         }
 
-		private static bool IsException(TypeSymbol typeSymbol)
-		{
-			if (typeSymbol.Name == "Exception" && typeSymbol.ContainingNamespace.FullName() == "System")
-				return true;
+        private static bool IsException(TypeSymbol typeSymbol)
+        {
+            if (typeSymbol.Name == "Exception" && typeSymbol.ContainingNamespace.FullName() == "System")
+                return true;
 
-			if (typeSymbol.BaseType == null)
-				return false;
-			return IsException(typeSymbol.BaseType);
-		}
+            if (typeSymbol.BaseType == null)
+                return false;
+            return IsException(typeSymbol.BaseType);
+        }
 
         private static bool IsAssignmentToken(SyntaxKind syntaxKind)
         {

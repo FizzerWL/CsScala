@@ -58,7 +58,7 @@ namespace CsScala
             }
             else if (typeStr == "System.Collections.Generic.List<>"
                 //|| typeStr == "System.Collections.Generic.Dictionary<,>" 
-                || typeStr == "System.Collections.Generic.Dictionary<,>.KeyCollection" 
+                || typeStr == "System.Collections.Generic.Dictionary<,>.KeyCollection"
                 || typeStr == "System.Collections.Generic.Dictionary<,>.ValueCollection")
             {
                 //It's faster to "while" over a list's iterator than to "for" through it

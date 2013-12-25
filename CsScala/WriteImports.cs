@@ -12,10 +12,10 @@ using Roslyn.Compilers.CSharp;
 
 namespace CsScala
 {
-	public static class WriteImports
-	{
+    public static class WriteImports
+    {
 
-		static public string StandardImports =
+        static public string StandardImports =
 @"
 import scala.util.control._;
 import scala.reflect.ClassTag;
@@ -27,11 +27,11 @@ import System.CsLock;
 import System.CsObject;
 
 ";
-		
 
-		public static void Go(ScalaWriter writer)
-		{
-			writer.WriteLine(StandardImports);
-		}
-	}
+
+        public static void Go(ScalaWriter writer)
+        {
+            writer.WriteLine(StandardImports);
+        }
+    }
 }

@@ -14,7 +14,7 @@ namespace CsScala
         {
             var typeStr = TypeProcessor.GenericTypeName(Program.GetModel(expression).GetTypeInfo(expression.Expression).Type);
             var trans = ElementAccessTranslation.Get(typeStr);
-            
+
             Core.Write(writer, expression.Expression);
 
             if (trans != null)

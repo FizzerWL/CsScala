@@ -11,9 +11,9 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, TypeOfExpressionSyntax expression)
         {
-			writer.Write("new System.Type(classOf[");
-			writer.Write(TypeProcessor.ConvertType(expression.Type));
-			writer.Write("])");
+            writer.Write("new System.Type(classOf[");
+            writer.Write(TypeProcessor.ConvertType(expression.Type));
+            writer.Write("])");
         }
     }
 }

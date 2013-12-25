@@ -94,7 +94,7 @@ namespace CsScala
             else
                 subExpressionOpt = null;
 
-            
+
 
 
             //When the code specifically names generic arguments, include them in the method name
@@ -125,7 +125,7 @@ namespace CsScala
                 }
 
                 WriteTypeParameters(writer, translateOpt, typeParameters, invocationExpression);
-                
+
 
                 writer.Write("(");
 

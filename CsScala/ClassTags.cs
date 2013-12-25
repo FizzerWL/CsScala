@@ -92,7 +92,7 @@ namespace CsScala
                     ret.Add(retTag);
             }
 
-            foreach(var objCreation in methodSyntax.DescendantNodes().OfType<ObjectCreationExpressionSyntax>())
+            foreach (var objCreation in methodSyntax.DescendantNodes().OfType<ObjectCreationExpressionSyntax>())
             {
                 var ctor = model.GetSymbolInfo(objCreation).Symbol.As<MethodSymbol>();
                 //if (objCreation.ToString() == "new List<C>()")
@@ -101,7 +101,7 @@ namespace CsScala
                 var tags = TryGetBCLClassTags(ctor);
                 if (tags == null)
                     continue;
-                
+
                 var genName = objCreation.Type as GenericNameSyntax;
                 if (genName == null)
                     continue;

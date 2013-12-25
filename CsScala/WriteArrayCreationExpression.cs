@@ -22,7 +22,7 @@ namespace CsScala
             //    writer.Write("]");
             //}
 
-            
+
             writer.Write("(");
 
             bool first = true;

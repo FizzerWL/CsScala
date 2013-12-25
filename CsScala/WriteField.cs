@@ -104,7 +104,7 @@ namespace CsScala
             writer.Write(") = __");
             writer.Write(declaration.Identifier.ValueText);
             writer.Write(".set(value);\r\n");
-            
+
         }
     }
 }
