@@ -9,4 +9,9 @@ class GroupCollection(matcher:Matcher)
 	{
 		return new Group(matcher.group(name));
 	}
+	
+	def apply(index:Int):Group =
+	{
+	  return new Group(matcher.group(index));
+	}
 }

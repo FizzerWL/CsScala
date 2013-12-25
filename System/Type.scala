@@ -1,7 +1,17 @@
 package System
 
-class Type(obj:Any)
+class Type(obj:Class[_])
 {
-  val Name:String = obj.getClass().getName();
+  final val _obj = obj;
+  
+  val Name:String = obj.getName();
 
+  
+  
+  override def equals(other:Any):Boolean = 
+  {
+    if (!other.isInstanceOf[Type])
+      return false;
+    return other.asInstanceOf[Type]._obj == _obj;
+  }
 }

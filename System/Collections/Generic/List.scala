@@ -36,6 +36,14 @@ class List[T:ClassTag](initialList:ArrayList[T]) extends Traversable[T]
   def Insert(index:Int, item:T) { _list.add(index, item); }
   def iterator():java.util.Iterator[T] = _list.iterator();
   
+  private var _capacity:Int = 0;
+  def Capacity = _capacity;
+  def Capacity_=(v:Int)
+  {
+    _capacity = v;
+    _list.ensureCapacity(v);
+  }
+  
   def foreach[U](fn:T=>U)
   {
     val it = _list.iterator();

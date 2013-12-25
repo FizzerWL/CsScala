@@ -11,7 +11,9 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, TypeOfExpressionSyntax expression)
         {
-            throw new Exception("typeof is not supported unless part of Enum.Parse or Enum.GetValues " + Utility.Descriptor(expression));
+			writer.Write("new System.Type(classOf[");
+			writer.Write(TypeProcessor.ConvertType(expression.Type));
+			writer.Write("])");
         }
     }
 }

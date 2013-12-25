@@ -77,7 +77,7 @@ object CsScala
     
     def GetType(obj:Any):Type =
     {
-      return new Type(obj);
+      return new Type(obj.getClass());
     }
     
     def Sort[T](buf:ArrayBuffer[T], cmp:(T,T)=>Int)

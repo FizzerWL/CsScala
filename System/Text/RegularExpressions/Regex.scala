@@ -55,4 +55,8 @@ class Regex(pattern: String, options: Int = 0) {
     {
       return new Match(_pattern.matcher(input));
     }
+  
+  def Replace(input:String, eval:Match => String):String = { 
+    throw new NotImplementedException();
+  }
 }
