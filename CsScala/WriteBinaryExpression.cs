@@ -75,10 +75,20 @@ namespace CsScala
                     {
                         var type = Program.GetModel(expression).GetTypeInfo(e);
 
-                        if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && type.Type.TypeKind == TypeKind.Enum)  //Check for enums being converted to strings by string concatenation
+                        //Check for enums being converted to strings by string concatenation
+                        if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && type.Type.TypeKind == TypeKind.Enum)
                         {
                             writer.Write(type.Type.ContainingNamespace.FullNameWithDot());
                             writer.Write(WriteType.TypeName(type.Type.As<NamedTypeSymbol>()));
+                            writer.Write(".ToString(");
+                            Core.Write(writer, e);
+                            writer.Write(")");
+                        }
+                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && (type.Type.Name == "Nullable" && type.Type.ContainingNamespace.FullName() == "System" && type.Type.As<NamedTypeSymbol>().TypeArguments.Single().TypeKind == TypeKind.Enum))
+                        {
+                            var enumType = type.Type.As<NamedTypeSymbol>().TypeArguments.Single();
+                            writer.Write(enumType.ContainingNamespace.FullNameWithDot());
+                            writer.Write(WriteType.TypeName(enumType.As<NamedTypeSymbol>()));
                             writer.Write(".ToString(");
                             Core.Write(writer, e);
                             writer.Write(")");

@@ -104,5 +104,22 @@ namespace Test
 
             return Math.Min(p1.Length, p2.Length);
         }
+
+        public static void ExpectException(Action a, string exceptionText)
+        {
+            try
+            {
+                a();
+            }
+            catch (Exception ex)
+            {
+                if (ex.ToString().Contains(exceptionText))
+                    return;
+                else
+                    throw new Exception("Expected exception that contains " + exceptionText, ex);
+            }
+
+            throw new Exception("Expected exception, but got none");
+        }
     }
 }

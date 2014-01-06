@@ -978,6 +978,14 @@ namespace Blargh
 #if CSSCALA
             Console.WriteLine(""CsScala3"");
 #endif
+
+            if (true)
+            {
+#if CSSCALA
+            Console.WriteLine(""In if"");
+#endif
+
+            }
         }
     }
 }", @"
@@ -993,6 +1001,10 @@ class SomeClass
         Console.WriteLine(""CsScala2"");
         System.Console.WriteLine(""outside"");
         Console.WriteLine(""CsScala3"");
+        if (true)
+        {
+            Console.WriteLine(""In if"");
+        }
     }
 }");
         }
@@ -1609,6 +1621,9 @@ namespace Blargh
             var s = e.ToString();
             s = e + ""asdf"";
             s = ""asdf"" + e;
+            MostlyNumbered? n = MostlyNumbered.Two;
+            var s2 = n.ToString();
+            s2 = ""asdf"" + n;
             var vals = Enum.GetValues(typeof(MostlyNumbered));
         }
     }
@@ -1623,6 +1638,7 @@ object MostlyNumbered
     final val Unnumbered:Int = 4;
     final val SomethingElse:Int = 50;
 
+    def ToString(n:java.lang.Integer):String = if (n == null) """" else ToString(n.intValue());
     def ToString(e:Int):String =
     { 
         return e match
@@ -1656,6 +1672,7 @@ object UnNumbered
     final val One:Int = 1; 
     final val Two:Int = 2;
     final val Three:Int = 3;
+    def ToString(n:java.lang.Integer):String = if (n == null) """" else ToString(n.intValue());
     def ToString(e:Int):String =
     { 
         return e match
@@ -1691,10 +1708,47 @@ object Clazz
         var s:String = Blargh.MostlyNumbered.ToString(e);
         s = Blargh.MostlyNumbered.ToString(e) + ""asdf"";
         s = ""asdf"" + Blargh.MostlyNumbered.ToString(e);
+        var n:java.lang.Integer = Blargh.MostlyNumbered.Two;
+        var s2:String = Blargh.MostlyNumbered.ToString(n);
+        s2 = ""asdf"" + Blargh.MostlyNumbered.ToString(n);
         var vals = Blargh.MostlyNumbered.Values;
     }
 }"});
         }
+
+        [TestMethod]
+        public void EnumToObject()
+        {
+            var testName = MethodInfo.GetCurrentMethod().Name;
+
+            Action<string> test = code =>
+                {
+                    TestFramework.ExpectException(() =>
+                    {
+                        TestFramework.TestCode(testName, @"
+using System;
+
+namespace Blargh
+{
+    class Foo
+    {
+        public Foo()
+        {
+            " + code + @"
+        }
+    }
+}", "");
+                    }, "Enums cannot convert to objects.  Use .ToString()");
+
+                };
+
+            test("Console.WriteLine(StringComparison.OrdinalIgnoreCase);");
+            test("StringComparison c = StringComparison.OrdinalIgnoreCase; Console.WriteLine(c);");
+            test("StringComparison? c = StringComparison.OrdinalIgnoreCase; Console.WriteLine(c);");
+
+            
+        }
+        
 
         [TestMethod]
         public void NestedEnum()
@@ -1733,6 +1787,7 @@ object Foo_TestEnum
     final val Two:Int = 2;
     final val Three:Int = 3;
 
+    def ToString(n:java.lang.Integer):String = if (n == null) """" else ToString(n.intValue());
     def ToString(e:Int):String =
     { 
         return e match

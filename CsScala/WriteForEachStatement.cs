@@ -39,15 +39,7 @@ namespace CsScala
                 writer.Write(" = __foreacharray(__foreachindex);\r\n");
 
                 info.WriteLoopOpening(writer);
-
-                if (foreachStatement.Statement is BlockSyntax)
-                    foreach (var statement in foreachStatement.Statement.As<BlockSyntax>().Statements)
-                        Core.Write(writer, statement);
-                else
-                    Core.Write(writer, foreachStatement.Statement);
-
-
-
+                Core.WriteStatementAsBlock(writer, foreachStatement.Statement, false);
                 info.WriteLoopClosing(writer);
 
                 writer.WriteLine("__foreachindex += 1;");
@@ -80,15 +72,7 @@ namespace CsScala
                 writer.Write(" = __foreachiterator.next();\r\n");
 
                 info.WriteLoopOpening(writer);
-
-                if (foreachStatement.Statement is BlockSyntax)
-                    foreach (var statement in foreachStatement.Statement.As<BlockSyntax>().Statements)
-                        Core.Write(writer, statement);
-                else
-                    Core.Write(writer, foreachStatement.Statement);
-
-
-
+                Core.WriteStatementAsBlock(writer, foreachStatement.Statement, false);
                 info.WriteLoopClosing(writer);
                 writer.WriteCloseBrace();
 
@@ -107,13 +91,7 @@ namespace CsScala
                 writer.Write(")\r\n");
                 writer.WriteOpenBrace();
                 info.WriteLoopOpening(writer);
-
-                if (foreachStatement.Statement is BlockSyntax)
-                    foreach (var statement in foreachStatement.Statement.As<BlockSyntax>().Statements)
-                        Core.Write(writer, statement);
-                else
-                    Core.Write(writer, foreachStatement.Statement);
-
+                Core.WriteStatementAsBlock(writer, foreachStatement.Statement, false);
                 info.WriteLoopClosing(writer);
                 writer.WriteCloseBrace();
                 info.WritePostLoop(writer);

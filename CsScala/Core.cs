@@ -96,7 +96,7 @@ namespace CsScala
             else if (node is EmptyStatementSyntax)
                 return; //ignore empty statements
             else if (node is DelegateDeclarationSyntax)
-                return; //don't write delegates - we convert them to types directly
+                return; //don't write delegates - TypeProcessor converts them to function types directly
             else if (node is DefaultExpressionSyntax)
                 WriteDefaultExpression.Go(writer, node.As<DefaultExpressionSyntax>());
             else if (node is GenericNameSyntax)
@@ -120,12 +120,37 @@ namespace CsScala
             writer.Write(";\r\n");
         }
 
-        public static void WriteBlock(ScalaWriter writer, BlockSyntax block)
+
+        public static void WriteBlock(ScalaWriter writer, BlockSyntax block, bool writeBraces = true)
         {
-            writer.WriteOpenBrace();
+            if (writeBraces)
+                writer.WriteOpenBrace();
+
             foreach (var statement in block.Statements)
                 Write(writer, statement);
-            writer.WriteCloseBrace();
+
+            TriviaProcessor.ProcessTrivias(writer, block.DescendantTrivia());
+
+            if (writeBraces)
+                writer.WriteCloseBrace();
+        }
+
+        public static void WriteStatementAsBlock(ScalaWriter writer, StatementSyntax statement, bool writeBraces = true)
+        {
+            if (statement is BlockSyntax)
+                WriteBlock(writer, statement.As<BlockSyntax>(), writeBraces);
+            else
+            {
+                if (writeBraces)
+                    writer.WriteOpenBrace();
+
+                Core.Write(writer, statement);
+                TriviaProcessor.ProcessTrivias(writer, statement.DescendantTrivia());
+
+                if (writeBraces)
+                    writer.WriteCloseBrace();
+            }
+
         }
 
 

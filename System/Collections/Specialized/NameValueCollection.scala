@@ -16,7 +16,13 @@ class NameValueCollection
     return _map.get(name);
   }
   
-  def Keys:Traversable[String] = {
+  def AllKeys:Traversable[String] = {
     return _map.keySet().asScala;
   }
+  
+  def update(name:String, value:String)
+  {
+    _map.put(name, value);
+  }
+  
 }

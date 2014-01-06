@@ -117,6 +117,10 @@ class DateTime(d:Date)
   {
     return new DateTime(new Date(span.TotalMillisecondsL + _d.getTime()));
   }
+  def AddYears(num:Double):DateTime =
+  {
+    return new DateTime(new Date(TimeSpan.FromYears(num).TotalMillisecondsL + this._d.getTime()));
+  }
   def AddDays(num:Double):DateTime =
   {
     return new DateTime(new Date(TimeSpan.FromDays(num).TotalMillisecondsL + this._d.getTime()));

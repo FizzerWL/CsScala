@@ -12,9 +12,6 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, ObjectCreationExpressionSyntax expression)
         {
-            if (expression.ArgumentList == null)
-                throw new Exception("Types must be initialized with parenthesis. Object initialization syntax is not supported. " + Utility.Descriptor(expression));
-
             var model = Program.GetModel(expression);
             var type = model.GetTypeInfo(expression).Type;
 
@@ -47,15 +44,18 @@ namespace CsScala
                 writer.Write(TypeProcessor.ConvertType(expression.Type));
                 writer.Write("(");
 
-                bool first = true;
-                foreach (var param in TranslateParameters(translateOpt, expression.ArgumentList.Arguments, expression))
+                if (expression.ArgumentList != null)
                 {
-                    if (first)
-                        first = false;
-                    else
-                        writer.Write(", ");
+                    bool first = true;
+                    foreach (var param in TranslateParameters(translateOpt, expression.ArgumentList.Arguments, expression))
+                    {
+                        if (first)
+                            first = false;
+                        else
+                            writer.Write(", ");
 
-                    param.Write(writer);
+                        param.Write(writer);
+                    }
                 }
 
                 writer.Write(")");

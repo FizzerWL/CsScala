@@ -20,9 +20,17 @@ class MemoryStream(input:InputStream, output:OutputStream) extends Stream(input,
   {
     this(null, new ByteArrayOutputStream());
   }
+  
+  def this(sizeEstimate:Int)
+  {
+    this(null, new ByteArrayOutputStream(sizeEstimate));
+  }
 
+  var _overrideArray:Array[Byte] = null;
   def ToArray():Array[Byte] =
   {
+    if (_overrideArray != null)
+      return _overrideArray;
     return _output.asInstanceOf[ByteArrayOutputStream].toByteArray();
   }
   
@@ -33,5 +41,7 @@ class MemoryStream(input:InputStream, output:OutputStream) extends Stream(input,
     
     _output.asInstanceOf[ByteArrayOutputStream].reset();
   }
+  
+  def Length:Int = ToArray().length;
   
 }

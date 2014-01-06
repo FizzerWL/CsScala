@@ -30,6 +30,8 @@ object Regex {
     {
       return input.replaceAll(pattern, replace);
     }
+  
+  def IsMatch(pattern:String, input:String, opts:Int):Boolean = new Regex(pattern, opts).IsMatch(input);
 }
 
 class Regex(pattern: String, options: Int = 0) {

@@ -45,6 +45,18 @@ object CsScala
         case e: NumberFormatException => return false;
       }
     }
+    def TryParseLong(s:String, out:CsRef[Long]):Boolean =
+    {
+      try
+      {
+        out.Value = s.toLong;
+        return true;
+      }
+      catch
+      {
+        case e: NumberFormatException => return false;
+      }
+    }
     def TryParseFloat(s:String, out:CsRef[Float]):Boolean =
     {
       try
@@ -62,6 +74,18 @@ object CsScala
       try
       {
         out.Value = s.toDouble;
+        return true;
+      }
+      catch
+      {
+        case e: NumberFormatException => return false;
+      }
+    }
+    def TryParseBoolean(s:String, out:CsRef[Boolean]):Boolean =
+    {
+      try
+      {
+        out.Value = s.toBoolean;
         return true;
       }
       catch
@@ -249,10 +273,8 @@ object CsScala
     {
       return java.lang.Character.toLowerCase(c);
     }
-    def IsLetterOrDigit(c:Char):Boolean = 
-    {
-      return c.isLetterOrDigit;
-    }
+    def IsLetterOrDigit(c:Char):Boolean = c.isLetterOrDigit; 
+    def IsDigit(c:Char):Boolean = c.isDigit;
     
     def ExceptionMessage(e:Exception):String =
     {
@@ -281,6 +303,20 @@ object CsScala
       else
         return i.toString();
     }
+    def NullableToString(i:java.lang.Float):String =
+    {
+      if (i == null)
+        return "";
+      else
+        return i.toString();
+    }
+    def NullableToString(i:java.lang.Double):String =
+    {
+      if (i == null)
+        return "";
+      else
+        return i.toString();
+    }
     
     def ExceptionToString(ex:Exception):String =
     {
@@ -291,5 +327,24 @@ object CsScala
         return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n");
       }
     }
+    
+    def Concat(strs:Traversable[String]):String = strs.mkString("");
+    
+ 
+    def IndexOfAny(str:String, chars:Array[Char]):Int = 
+    {
+      var i = 0;
+      while (i < str.length())
+      {
+        val char = str.charAt(i)
+        for(c <- chars)
+          if (c == char)
+            return i;
+        i += 1;
+      }
+      
+      return -1;
+    }
+      
     
 }

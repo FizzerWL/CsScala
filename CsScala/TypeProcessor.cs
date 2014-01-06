@@ -59,7 +59,11 @@ namespace CsScala
             if (attrs.ContainsKey("ReplaceWithType"))
                 return attrs["ReplaceWithType"];
 
-            return TryConvertType(TryGetTypeSymbol(node));
+            var sym = TryGetTypeSymbol(node);
+
+            if (sym == null)
+                throw new Exception("Could not get type of " + node.ToString() + " at " + Utility.Descriptor(node));
+            return TryConvertType(sym);
         }
 
         private static TypeSymbol TryGetTypeSymbol(SyntaxNode node)

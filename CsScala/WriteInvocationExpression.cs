@@ -114,6 +114,15 @@ namespace CsScala
             else if (translateOpt != null && translateOpt.ExtensionNamespace == "")
                 extensionNamespace = null;
 
+            var memberType = memberReferenceExpressionOpt == null ? null : model.GetTypeInfo(memberReferenceExpressionOpt.Expression).Type;
+            var isNullableEnum = memberType != null && (memberType.Name == "Nullable" && memberType.ContainingNamespace.FullName() == "System") && memberType.As<NamedTypeSymbol>().TypeArguments.Single().TypeKind == TypeKind.Enum;
+            if (isNullableEnum && methodSymbol.Name == "ToString")
+            {
+                extensionNamespace = null; //override Translations.xml for nullable enums. We want them to convert to the enum's ToString method
+                methodName = "toString";
+            }
+
+
             if (extensionNamespace != null)
             {
                 writer.Write(extensionNamespace);
@@ -139,15 +148,14 @@ namespace CsScala
             {
                 if (memberReferenceExpressionOpt != null)
                 {
-                    var memberType = model.GetTypeInfo(memberReferenceExpressionOpt.Expression).Type;
-
                     //Check against lowercase toString since it gets replaced with the lowered version before we get here
-                    if (methodName == "toString" && memberType.TypeKind == TypeKind.Enum)
+                    if (methodName == "toString" && (memberType.TypeKind == TypeKind.Enum || isNullableEnum))
                     {
+                        var enumType = memberType.TypeKind == TypeKind.Enum ? memberType : memberType.As<NamedTypeSymbol>().TypeArguments.Single();
 
                         //calling ToString() on an enum forwards to our enum's special ToString method
-                        writer.Write(memberType.ContainingNamespace.FullNameWithDot());
-                        writer.Write(WriteType.TypeName((NamedTypeSymbol)memberType));
+                        writer.Write(enumType.ContainingNamespace.FullNameWithDot());
+                        writer.Write(WriteType.TypeName((NamedTypeSymbol)enumType));
                         writer.Write(".ToString(");
                         Core.Write(writer, memberReferenceExpressionOpt.Expression);
                         writer.Write(")");

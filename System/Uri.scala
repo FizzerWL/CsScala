@@ -5,11 +5,17 @@ import java.net.URL
 class Uri(str: String) {
   val _url = new URL(str);
 
+  override def toString(): String = _url.toString()
+
   def Query: String = _url.getQuery();
-
-  override def toString(): String =
+  def Host:String = _url.getHost();
+  def PathAndQuery:String = 
     {
-      return _url.toString();
+      val q = _url.getQuery();
+      if (q == null)
+        return _url.getPath();
+      else
+        return _url.getPath() + "?" + q;
     }
-
+  def Authority:String = _url.getAuthority();
 }

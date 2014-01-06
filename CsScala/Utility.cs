@@ -40,6 +40,10 @@ namespace CsScala
             if (dlg != null)
                 return dlg.Modifiers;
 
+            var type = member as BaseTypeDeclarationSyntax;
+            if (type != null)
+                return type.Modifiers;
+
             throw new Exception("Need handler for member of type " + member.GetType().Name);
         }
 

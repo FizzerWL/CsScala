@@ -18,15 +18,7 @@ namespace CsScala
             Core.Write(writer, ifStatement.Condition);
             writer.Write(")\r\n");
 
-
-            if (ifStatement.Statement is BlockSyntax)
-                Core.Write(writer, ifStatement.Statement);
-            else
-            {
-                writer.WriteOpenBrace();
-                Core.Write(writer, ifStatement.Statement);
-                writer.WriteCloseBrace();
-            }
+            Core.WriteStatementAsBlock(writer, ifStatement.Statement);
 
             if (ifStatement.Else != null)
             {
@@ -36,7 +28,7 @@ namespace CsScala
                 if (ifStatement.Else.Statement is BlockSyntax)
                 {
                     writer.Write("\r\n");
-                    Core.Write(writer, ifStatement.Else.Statement);
+                    Core.WriteBlock(writer, ifStatement.Else.Statement.As<BlockSyntax>());
                 }
                 else if (ifStatement.Else.Statement is IfStatementSyntax)
                 {
@@ -46,9 +38,7 @@ namespace CsScala
                 else
                 {
                     writer.Write("\r\n");
-                    writer.WriteOpenBrace();
-                    Core.Write(writer, ifStatement.Else.Statement);
-                    writer.WriteCloseBrace();
+                    Core.WriteStatementAsBlock(writer, ifStatement.Else.Statement);
                 }
             }
 

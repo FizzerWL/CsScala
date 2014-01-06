@@ -2,6 +2,8 @@ package System.Web;
 import System.Collections.Generic.Dictionary
 import System.NotImplementedException
 import java.util.HashMap
+import System.Web.SessionState.HttpSessionState
+import System.Web.UI.Page
 
 object HttpContext {
 
@@ -11,12 +13,13 @@ object HttpContext {
   def Current_=(v:HttpContext) = _threadContext.set(v);
 }
 
-class HttpContext 
+class HttpContext
 {
 
-  var Request = new HttpRequest();
-  var Response = new HttpResponse();
-  var Items = new HttpItems();
+  final val Request = new HttpRequest();
+  final val Response = new HttpResponse();
+  final val Items = new HttpItems();
+  final val Session = new HttpSessionState();
 }
 
 class HttpItems {
@@ -24,6 +27,7 @@ class HttpItems {
   
   def Contains(key:String):Boolean = _hash.containsKey(key)
   def Add(key:String, value:Any) { _hash.put(key, value); }
+  def Remove(key:String) { _hash.remove(key); }
   
   def apply(key:String):Any = _hash.get(key);
 }

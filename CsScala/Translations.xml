@@ -12,10 +12,10 @@
   <Method SourceObject="System.String" Match="EndsWith" ArgumentTypes="string System.StringComparison" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="ToLower" ReplaceWith="toLowerCase" />
   <Method SourceObject="System.String" Match="ToUpper" ReplaceWith="toUpperCase" />
-  <Method SourceObject="System.String" Match="Replace" ReplaceWith="replaceAll" />
-  <Method SourceObject="System.String" Match="Replace" ArgumentTypes="char char" ReplaceWith="replace" />
+  <Method SourceObject="System.String" Match="Replace" ReplaceWith="replace" />
   <Method SourceObject="System.String" Match="Substring" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="IndexOf" ReplaceWith="indexOf" />
+  <Method SourceObject="System.String" Match="IndexOfAny" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="Trim" ReplaceWith="trim" />
   <Method SourceObject="System.String" Match="Trim" ArgumentTypes="char[]" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="TrimEnd" ExtensionNamespace="System.CsScala" />
@@ -54,11 +54,6 @@
   <Type Match="System.Collections.Generic.Stack" ReplaceWith="scala.collection.mutable.Stack" />
   <Method SourceObject="System.Collections.Generic.Stack" Match="Push" ReplaceWith="push" />
   <Method SourceObject="System.Collections.Generic.Stack" Match="Pop" ReplaceWith="pop" />
-
-  <Method SourceObject="System.IO.MemoryStream" Match=".ctor" ArgumentTypes="int">
-    <Argument Location="0" Action="DeleteIfPresent" />
-  </Method>
-
 
   <Method SourceObject="System.Linq.Enumerable" Match="Contains" ReplaceWith="Contains" ExtensionNamespace="System.CsScala" />
 

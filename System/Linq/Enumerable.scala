@@ -228,12 +228,15 @@ object Enumerable
   
   def Single[T](a:Traversable[T]):T =
   {
-    val size = a.size;
-    if (size == 0)
+    val it = a.toIterator;
+    
+    if (!it.hasNext)
       throw new Exception("Single called on empty collection");
-    if (a.size > 1)
+    
+    val ret = it.next;
+    if (it.hasNext)
       throw new Exception("Single called with too many elements");
-    return a.head;
+    return ret;
   }
   def Single[T](a:Traversable[T], pred:T=>Boolean):T =
   {
@@ -255,12 +258,20 @@ object Enumerable
   }
   def SingleOrDefault[T >: Null](a:Traversable[T]):T =
   {
-    val size = a.size;
-    if (size == 0)
+    if (a == null)
+      throw new Exception("SingleOrDefault called on null");
+   
+    val it = a.toIterator;
+    
+    if (!it.hasNext)
       return null;
-    if (a.size > 1)
+    
+    val ret = it.next;
+    
+    if (it.hasNext)
       throw new Exception("Single called with too many elements");
-    return a.head;
+    
+    return ret;
   }
   def SingleOrDefault[T >: Null](a:Traversable[T], pred:T=>Boolean):T =
   {

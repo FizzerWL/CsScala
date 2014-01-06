@@ -34,6 +34,10 @@ object TimeSpan
   {
     return new TimeSpan((days * 86400000).toLong);
   }
+  def FromYears(years:Double):TimeSpan = 
+  {
+    return new TimeSpan((years * 3.15569e10).toLong);
+  }
 }
 
 class TimeSpan(mills:Long = 0)

@@ -115,6 +115,9 @@ namespace CsScala
             foreach (var t in allTypes.Select(o => o.ContainingNamespace.FullNameWithDot() + WriteType.TypeName(o)))
                 AllTypes.Add(t);
 
+            if (StaticConstructors.Count == 0)
+                return; //no need for it.
+
             using (var writer = new ScalaWriter("CsRoot", "Constructors"))
             {
                 writer.WriteLine(@"package CsRoot;

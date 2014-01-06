@@ -19,13 +19,7 @@ namespace CsScala
             Core.Write(writer, statement.Expression);
             writer.Write(", () =>\r\n");
             writer.WriteOpenBrace();
-
-            if (statement.Statement is BlockSyntax)
-                foreach (var s in statement.Statement.As<BlockSyntax>().Statements)
-                    Core.Write(writer, s);
-            else
-                Core.Write(writer, statement.Statement);
-
+            Core.WriteStatementAsBlock(writer, statement.Statement, false);
             writer.Indent--;
             writer.WriteIndent();
             writer.Write("});\r\n");

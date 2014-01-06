@@ -49,7 +49,7 @@ namespace CsScala
                 TypeState.Instance.AllMembers = partials.Select(o => o.Syntax).Cast<TypeDeclarationSyntax>().SelectMany(o => o.Members).Where(o => !Program.DoNotWrite.ContainsKey(o)).ToList();
 
                 var allMembersToWrite = TypeState.Instance.AllMembers
-                    .Where(member => !(member is ClassDeclarationSyntax)
+                    .Where(member => !(member is TypeDeclarationSyntax)
                         && !(member is EnumDeclarationSyntax)
                         && !(member is DelegateDeclarationSyntax))
                     .ToList();
@@ -169,14 +169,7 @@ namespace CsScala
                     if (!staticMembers && ctorOpt != null && ctorOpt.Body != null && ctorOpt.Body.As<BlockSyntax>().Statements.Count > 0)
                     {
                         writer.WriteLine();
-                        writer.WriteOpenBrace();
-
-                        foreach (var statement in ctorOpt.Body.As<BlockSyntax>().Statements)
-                            Core.Write(writer, statement);
-
-                        TriviaProcessor.ProcessTrivias(writer, ctorOpt.Body.DescendantTrivia());
-
-                        writer.WriteCloseBrace();
+                        Core.WriteBlock(writer, ctorOpt.Body.As<BlockSyntax>(), true); //render braces so local ctor variables don't bleed out into fields
                     }
 
 

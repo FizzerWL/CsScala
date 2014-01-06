@@ -81,6 +81,17 @@ class StringBuilder(sb:java.lang.StringBuilder)
   {
     sb.delete(startAt, startAt + count);
   }
+  def Replace(from:String, to:String):StringBuilder = 
+  {
+    var index = sb.indexOf(from);
+    while (index != -1)
+    {
+        sb.replace(index, index + from.length(), to);
+        index += to.length();
+        index = sb.indexOf(from, index);
+    }
+    return this;
+  }
   
   def apply(i:Int):Char = sb.charAt(i);
 }

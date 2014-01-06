@@ -52,15 +52,7 @@ namespace CsScala
             writer.WriteOpenBrace();
 
             info.WriteLoopOpening(writer);
-
-            if (forStatement.Statement is BlockSyntax)
-            {
-                foreach (var statement in forStatement.Statement.As<BlockSyntax>().Statements)
-                    Core.Write(writer, statement);
-            }
-            else
-                Core.Write(writer, forStatement.Statement);
-
+            Core.WriteStatementAsBlock(writer, forStatement.Statement, false);
             info.WriteLoopClosing(writer);
 
             foreach (var iterator in forStatement.Incrementors)

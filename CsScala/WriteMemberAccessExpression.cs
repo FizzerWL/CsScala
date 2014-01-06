@@ -41,7 +41,11 @@ namespace CsScala
                 }
                 else
                 {
-                    var val = System.Type.GetType(typeStr).GetField(memberName).GetValue(null);
+                    var field = System.Type.GetType(typeStr).GetField(memberName);
+
+                    if (field == null)
+                        throw new Exception("Cannot use " + memberName + " as a field.  If you're passing a function, wrap a closure around it. " + Utility.Descriptor(expression));
+                    var val = field.GetValue(null);
                     if (val is string)
                         writer.Write("\"" + val + "\"");
                     else

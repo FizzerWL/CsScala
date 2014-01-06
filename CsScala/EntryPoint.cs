@@ -105,11 +105,23 @@ Options available:
 
                 Environment.ExitCode = 0;
             }
-            catch (Exception ex)
+            catch (AggregateException agex)
             {
+                Environment.ExitCode = 1;
+
+                Exception ex = agex;
+                while (ex is AggregateException)
+                    ex = ((AggregateException)ex).InnerException;
+
                 Console.WriteLine("\nException:");
                 Console.WriteLine(ex);
+            }
+            catch (Exception ex)
+            {
                 Environment.ExitCode = 1;
+
+                Console.WriteLine("\nException:");
+                Console.WriteLine(ex);
             }
         }
 

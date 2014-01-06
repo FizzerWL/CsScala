@@ -19,16 +19,7 @@ namespace CsScala
                 throw new Exception("Using statements must reference a local variable. " + Utility.Descriptor(usingStatement));
 
             writer.WriteLine("try");
-            writer.WriteOpenBrace();
-
-            if (usingStatement.Statement is BlockSyntax)
-                foreach (var s in usingStatement.Statement.As<BlockSyntax>().Statements)
-                    Core.Write(writer, s);
-            else
-                Core.Write(writer, usingStatement.Statement);
-
-            writer.WriteCloseBrace();
-
+            Core.WriteStatementAsBlock(writer, usingStatement.Statement);
             writer.WriteLine("finally");
             writer.WriteOpenBrace();
             writer.WriteLine(resource + ".Dispose();");

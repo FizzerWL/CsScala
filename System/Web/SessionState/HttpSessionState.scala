@@ -1,11 +1,19 @@
 package System.Web.SessionState;
 import System.NotImplementedException;
 
-class HttpSessionState
-{
+class HttpSessionState {
 
-	def apply(k:String):Any =
-	{
-		throw new NotImplementedException();
-	}
+  //TODO
+  def apply(k: String): Any =
+    {
+      return null;
+    }
+  def update(k: String, v: Any) {
+    
+  }
+
+  def Remove(k: String) 
+  { 
+     
+  }
 }

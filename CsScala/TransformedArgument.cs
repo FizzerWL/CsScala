@@ -38,6 +38,8 @@ namespace CsScala
                 }
 
                 Core.Write(writer, this.ArgumentOpt.Expression);
+
+                WriteEnum.Check(this.ArgumentOpt.Expression);
             }
         }
     }

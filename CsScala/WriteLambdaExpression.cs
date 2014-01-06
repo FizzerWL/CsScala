@@ -87,6 +87,8 @@ namespace CsScala
                             Core.Write(writer, statement);
                     }
 
+                    TriviaProcessor.ProcessTrivias(writer, body.DescendantTrivia());
+
                     writer.WriteCloseBrace();
 
                     if (!returnsVoid)

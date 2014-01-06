@@ -24,6 +24,7 @@ namespace CsScala
                 writer.WriteLine("final val " + WriteIdentifierName.TransformIdentifier(value.Syntax.Identifier.ValueText) + ":Int = " + value.Value + ";");
 
             writer.WriteLine();
+            writer.WriteLine(@"def ToString(n:java.lang.Integer):String = if (n == null) """" else ToString(n.intValue());");
 
             writer.WriteLine("def ToString(e:Int):String =");
             writer.WriteOpenBrace();
@@ -71,5 +72,36 @@ namespace CsScala
         }
 
 
+
+        public static void Check(SyntaxNode node)
+        {
+            //Check for enums being converted to objects.  There are common methods in .net that accept objects just to call .ToString() on them, such as Console.WriteLine and HttpResponse.Write.  In these cases, we would miss our enum-to-string conversion that ensures the strings are used instead of the number.  To work around this, you should call .ToString() on the enum before passing it in.  It's a good idea to do this anyway for performance, so we just fail instead of doing the conversion automatically.  This check is a bit overzealous, as there are also legitimate reasons to conver enums to objects, but we'd rather be safe and reject a legitimate use than have code behave incorrectly.
+
+            var expression = node as ExpressionSyntax;
+            if (expression == null)
+                return;
+
+            var typeInfo = Program.GetModel(node).GetTypeInfo(expression);
+
+            if (typeInfo.Type == null || typeInfo.ConvertedType == null || typeInfo.Type == typeInfo.ConvertedType || typeInfo.Type.BaseType == null)
+                return;
+            if (typeInfo.ConvertedType.SpecialType != Roslyn.Compilers.SpecialType.System_Object)
+                return;
+
+            if (typeInfo.Type.BaseType.SpecialType != Roslyn.Compilers.SpecialType.System_Enum)
+            {
+                if (typeInfo.Type.Name != "Nullable" || typeInfo.Type.ContainingNamespace.FullName() != "System")
+                    return;
+
+                var nullableType = typeInfo.Type.As<NamedTypeSymbol>().TypeArguments.Single();
+
+                if (nullableType.BaseType.SpecialType != Roslyn.Compilers.SpecialType.System_Enum)
+                    return;
+
+            }
+
+
+            throw new Exception("Enums cannot convert to objects.  Use .ToString() if you're using the enum as a string. " + Utility.Descriptor(node) + ", expr=" + expression.ToString());
+        }
     }
 }

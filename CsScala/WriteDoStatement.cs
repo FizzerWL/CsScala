@@ -17,13 +17,7 @@ namespace CsScala
             writer.WriteLine("do");
             writer.WriteOpenBrace();
             info.WriteLoopOpening(writer);
-
-            if (statement.Statement is BlockSyntax)
-                foreach (var s in statement.Statement.As<BlockSyntax>().Statements)
-                    Core.Write(writer, s);
-            else
-                Core.Write(writer, statement.Statement);
-
+            Core.WriteStatementAsBlock(writer, statement.Statement, false);
             info.WriteLoopClosing(writer);
             writer.WriteCloseBrace();
 
