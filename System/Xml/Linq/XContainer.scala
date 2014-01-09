@@ -6,7 +6,7 @@ import scala.collection.JavaConverters._
 
 abstract class XContainer(elem:Element) extends XNode(elem)
 {
-  val _elem = elem; //null if we're an XDocument
+  val _elem = elem; //null if we're an XDocument, which overrides our methods so these should never be called.
   
   def Add(obj:Any)
   {
@@ -30,7 +30,11 @@ abstract class XContainer(elem:Element) extends XNode(elem)
   }
   def Element(name:String):XElement =
   {
-    return new XElement(_elem.getChild(name));
+    val child = _elem.getChild(name);
+    if (child == null)
+      return null;
+    else
+      return new XElement(child);
   }
 
   def DescendantNodes():Traversable[XNode] =

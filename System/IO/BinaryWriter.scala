@@ -87,8 +87,9 @@ class BinaryWriter(_s:Stream)
   
   def Write(s:String)
   {
-    Write7BitEncodedInteger(s.length);
+    val bytes = Encoding.UTF8.GetBytes(s);
+    Write7BitEncodedInteger(bytes.length);
     
-    Write(Encoding.UTF8.GetBytes(s));
+    Write(bytes);
   }
 }

@@ -20,7 +20,7 @@ object DateTime
   }
   
   //final val _dateFormat = new SimpleDateFormat("MM/d/yyyy hh:mm:ss a");
-  final val _dateFormat = new SimpleDateFormat("MM/d/yyyy HH:mm:ss");
+  final val _dateFormat = new SimpleDateFormat("M/d/yyyy HH:mm:ss");
 }
 
 class DateTime(d:Date)

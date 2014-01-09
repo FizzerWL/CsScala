@@ -162,7 +162,14 @@ namespace CsScala
 
                     writer.WriteOpenBrace();
 
-                    foreach (var member in membersToWrite)
+                    var fields = membersToWrite.OfType<FieldDeclarationSyntax>().ToList();
+                    var nonFields = membersToWrite.Except(fields);
+
+                    fields = SortFields(fields);
+
+                    foreach (var member in fields)
+                        Core.Write(writer, member);
+                    foreach (var member in nonFields)
                         Core.Write(writer, member);
 
 
@@ -176,6 +183,47 @@ namespace CsScala
                     writer.WriteCloseBrace();
                 }
             }
+        }
+
+        private static List<FieldDeclarationSyntax> SortFields(List<FieldDeclarationSyntax> fields)
+        {
+            if (fields.Count == 0)
+                return fields;
+
+            var dependencies = fields.ToDictionary(o => Program.GetModel(o).GetDeclaredSymbol(o.Declaration.Variables.First()).As<FieldSymbol>(), o => new { Syntax = o, Dependicies = new List<FieldSymbol>() });
+
+            
+
+            foreach(var dep in dependencies)
+            {
+
+                foreach (var fieldDepend in dep.Value.Syntax.DescendantNodes().OfType<ExpressionSyntax>().Select(o => Program.GetModel(o).GetSymbolInfo(o).Symbol).OfType<FieldSymbol>())
+                    if (dependencies.ContainsKey(fieldDepend))
+                        dep.Value.Dependicies.Add(fieldDepend);
+            }
+
+            var ret = new List<FieldDeclarationSyntax>();
+            var symbolsAdded = new HashSet<FieldSymbol>();
+
+            while (dependencies.Count > 0)
+                foreach(var dep in dependencies.ToList())
+                {
+                    for(int i=0;i<dep.Value.Dependicies.Count;i++)
+                    {
+                        if (symbolsAdded.Contains(dep.Value.Dependicies[i]))
+                            dep.Value.Dependicies.RemoveAt(i--);
+
+                    }
+
+                    if (dep.Value.Dependicies.Count == 0)
+                    {
+                        ret.Add(dep.Value.Syntax);
+                        symbolsAdded.Add(dep.Key);
+                        dependencies.Remove(dep.Key);
+                    }
+                }
+
+            return ret;
         }
 
         private static string TypeParameter(TypeParameterSyntax type)

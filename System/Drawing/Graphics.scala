@@ -4,21 +4,16 @@ import System.NotImplementedException;
 
 object Graphics
 {
-  	def FromImage(bmp:Bitmap):Graphics =
-	{
-		throw new NotImplementedException();
-	}
-
+  	def FromImage(bmp:Bitmap):Graphics = new Graphics(bmp);
 }
 
-class Graphics
+class Graphics(bmp:Bitmap)
 {
 
 	var InterpolationMode:Int = 0;
 	
 	def Dispose()
 	{
-		
 	}
 	
 	def Clear(c:Color)

@@ -6,6 +6,8 @@ import System.NotImplementedException
 
 class XElement(elem:Element) extends XContainer(elem)
 {
+  if (elem == null)
+    throw new Exception("null element");
   def this(name:String)
   {
     this(new Element(name));

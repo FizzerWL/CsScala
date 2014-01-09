@@ -1,6 +1,6 @@
 package System.Drawing;
 
-class Brush
+abstract class Brush
 {
 
 	

@@ -329,6 +329,16 @@ object Box
 class Box
 {
     private var _width:Float = 0;
+
+    var IsRectangular:Boolean = true;
+    var Characters:Array[Char] = Array[Char]('a', 'b');
+
+    var MultipleOne:Int = 0;
+    var MultipleTwo:Int = 0;
+    var ReadonlyInt:Int = 3;
+    var UninitializedDate:System.DateTime = new System.DateTime();
+    var UnitializedNullableInt:java.lang.Integer = null;
+    var UninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
     def Width:Float =
     {
         return _width;
@@ -349,16 +359,6 @@ class Box
     {
         return 4;
     }
-
-    var IsRectangular:Boolean = true;
-    var Characters:Array[Char] = Array[Char]('a', 'b');
-
-    var MultipleOne:Int = 0;
-    var MultipleTwo:Int = 0;
-    var ReadonlyInt:Int = 3;
-    var UninitializedDate:System.DateTime = new System.DateTime();
-    var UnitializedNullableInt:java.lang.Integer = null;
-    var UninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
 
     {
         System.Console.WriteLine(""ctor"");
@@ -3139,6 +3139,35 @@ object Utilities
   
 }");
         }
+
+        [TestMethod]
+        public void FieldOrder()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+
+namespace Blargh
+{
+    public static class Utilities
+    {
+        const int Four = Three + 1;
+        const int Three = Two + One;
+        const int Two = One + 1;
+        const int One = 1;
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Utilities
+{
+    final val One:Int = 1;
+    final val Two:Int = Blargh.Utilities.One + 1;
+    final val Three:Int = Blargh.Utilities.Two + Blargh.Utilities.One;
+    final val Four:Int = Blargh.Utilities.Three + 1;
+}");
+        }
+
     }
 
 }

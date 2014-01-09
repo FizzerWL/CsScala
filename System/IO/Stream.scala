@@ -34,5 +34,6 @@ class Stream(input:InputStream, output:OutputStream, textinput:Reader, textoutpu
   def Read(bytes:Array[Byte], offset:Int, length:Int):Int =
   {
     return _input.read(bytes, offset, length);
+      
   }
 }

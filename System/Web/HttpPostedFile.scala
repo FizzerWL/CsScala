@@ -2,8 +2,9 @@ package System.Web
 
 import System.IO.Stream
 
-class HttpPostedFile {
-  final val ContentLength:Int = 0;
-  final val InputStream:Stream = null;
+class HttpPostedFile(contentLength:Int, stream:Stream) 
+{
+  final val ContentLength = contentLength;
+  final val InputStream = stream;
 
 }

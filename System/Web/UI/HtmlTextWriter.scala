@@ -8,7 +8,8 @@ class HtmlTextWriter(est:Int) {
 
   def Write(str:String)
   {
-    sb.append(str);
+    if (str != null)
+      sb.append(str);
   }
   def Write(s:Int)
   {
@@ -34,6 +35,9 @@ class HtmlTextWriter(est:Int) {
   {
     sb.append("\n");
   }
+  
+  def Position():Int = sb.length;
+  def GetSubstring(start:Int):String = sb.substring(start);
   
   def ToString():String = sb.toString();
 }

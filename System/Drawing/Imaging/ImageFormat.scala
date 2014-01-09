@@ -4,10 +4,11 @@ object ImageFormat
 {
 
 	
-	val Jpeg:ImageFormat = null;
-	val Png:ImageFormat = null;
+	val Jpeg = new ImageFormat("jpg");
+	val Png = new ImageFormat("png");
 }
 
-class ImageFormat
+class ImageFormat(str:String)
 {
+  final val Str = str;
 }

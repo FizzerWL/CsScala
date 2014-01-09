@@ -1,41 +1,63 @@
 package System.Xml.Linq
 
-
 import org.jdom2._
 import org.jdom2.input._
 import java.io.StringReader
 import System.Xml.XmlNodeType
+import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
-object XDocument
-{
-  def Parse(str:String):XDocument = 
-  {
-    return new XDocument(new SAXBuilder().build(new StringReader(str)));
-  }
-  def Load(str:String):XDocument = 
-  {
-    return new XDocument(new SAXBuilder().build(str));
-  }
-  
-  def Factory(content:Content):XNode =
-  {
-    return content match
+object XDocument {
+  def Parse(str: String): XDocument =
     {
-    case e: Comment => new XComment(e)
-    case e: Element => new XElement(e)
-    //case e: Attribute => new XAttribute(e)
-    };
-  }
+      return new XDocument(new SAXBuilder().build(new StringReader(str)));
+    }
+  def Load(str: String): XDocument =
+    {
+      return new XDocument(new SAXBuilder().build(str));
+    }
+
+  def Factory(content: Content): XNode =
+    {
+      return content match {
+        case e: Comment => new XComment(e)
+        case e: Element => new XElement(e)
+        //case e: Attribute => new XAttribute(e)
+      };
+    }
 }
 
-class XDocument(_doc:Document) extends XContainer(null)
-{
-  def this()
-  {
+class XDocument(_doc: Document) extends XContainer(null) {
+  def this() {
     this(new Document());
   }
+
+  final val Root: XElement = new XElement(_doc.getRootElement());
+
+  def NodeType: Int = XmlNodeType.Document;
   
-  final val Root:XElement = new XElement(_doc.getRootElement());  
-  
-  def NodeType:Int = XmlNodeType.Document;
+  override def Elements():Traversable[XElement] =
+  {
+    return Array(Root);
+  }
+  override def Elements(name:String):Traversable[XElement] =
+  {
+    return Array(Element(name));
+  }
+  override def Attributes():Traversable[XAttribute] =
+  {
+    return Array[XAttribute]();
+  }
+  override def Element(name:String):XElement =
+  {
+    if (Root.Name.LocalName == name)
+      return Root;
+    else
+      return null;
+  }
+
+  override def DescendantNodes():Traversable[XNode] =
+  {
+    return Array[XNode](Root) ++ Root.DescendantNodes();
+  }
+
 }

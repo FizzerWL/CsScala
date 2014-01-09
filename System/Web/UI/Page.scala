@@ -19,4 +19,5 @@ abstract class Page extends Control {
   {
     
   }
+  
 }
