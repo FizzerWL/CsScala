@@ -288,6 +288,7 @@ namespace Blargh
         public int MultipleOne, MultipleTwo;
         public readonly int ReadonlyInt = 3;
         public DateTime UninitializedDate;
+        public DateTime? UninitializedNullableDate;
         public int? UnitializedNullableInt;
         public TimeSpan UninitializedTimeSpan;
         public static DateTime StaticUninitializedDate;
@@ -337,6 +338,7 @@ class Box
     var MultipleTwo:Int = 0;
     var ReadonlyInt:Int = 3;
     var UninitializedDate:System.DateTime = new System.DateTime();
+    var UninitializedNullableDate:System.DateTime = null;
     var UnitializedNullableInt:java.lang.Integer = null;
     var UninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
     def Width:Float =
@@ -932,8 +934,8 @@ package anonymoustypes;
 
 class Anon_Field1_Int__Field2_System_Text_StringBuilder(_Field1:Int, _Field2:System.Text.StringBuilder)
 {
-    var Field1:Int = _Field1;
-    var Field2:System.Text.StringBuilder = _Field2;
+    final var Field1:Int = _Field1;
+    final var Field2:System.Text.StringBuilder = _Field2;
 }"
 
   
@@ -1242,7 +1244,7 @@ class KeyValueList[K, V] extends System.IEquatable[K]
     {
         _list.RemoveAt(index);
     }
-    def Equals(other:K):Boolean =
+    def equals(other:K):Boolean =
     {
         throw new System.NotImplementedException();
     }
@@ -1746,9 +1748,9 @@ namespace Blargh
             test("StringComparison c = StringComparison.OrdinalIgnoreCase; Console.WriteLine(c);");
             test("StringComparison? c = StringComparison.OrdinalIgnoreCase; Console.WriteLine(c);");
 
-            
+
         }
-        
+
 
         [TestMethod]
         public void NestedEnum()
@@ -2021,7 +2023,7 @@ class Derived extends Blargh.TopLevel
 
     override def VirtualProperty:String =
     {
-        return super.VirtualProperty + ""Derived:VirtualProperty"";
+        return System.CsScala.NullCheck(super.VirtualProperty) + ""Derived:VirtualProperty"";
     }
 
     override def toString():String =
@@ -2851,11 +2853,11 @@ object Bar
         Foo.Bar.Method1(Array(1, 2));
         Foo.Bar.Method1(Array(1, 2, 3));
         Foo.Bar.Method1(Array(1, 2, 3, 4));
-        Foo.Bar.Method2(1);
+        Foo.Bar.Method2(1, Array());
         Foo.Bar.Method2(1, Array(2));
         Foo.Bar.Method2(1, Array(2, 3));
         Foo.Bar.Method2(1, Array(2, 3, 4));
-        Foo.Bar.Method3(1, 2);
+        Foo.Bar.Method3(1, 2, Array());
         Foo.Bar.Method3(1, 2, Array(3));
         Foo.Bar.Method3(1, 2, Array(3, 4));
     }

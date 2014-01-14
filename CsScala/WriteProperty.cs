@@ -34,18 +34,12 @@ namespace CsScala
 
                 }
 
-                if (property.Modifiers.Any(SyntaxKind.AbstractKeyword))
+                if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || region.Body == null)
                     writer.Write(";\r\n");
                 else
                 {
                     writer.Write(" =\r\n");
-
-                    writer.WriteOpenBrace();
-
-                    foreach (var statement in region.Body.As<BlockSyntax>().Statements)
-                        Core.Write(writer, statement);
-
-                    writer.WriteCloseBrace();
+                    Core.WriteBlock(writer, region.Body.As<BlockSyntax>());
                 }
 
 

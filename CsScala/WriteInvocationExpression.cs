@@ -188,6 +188,7 @@ namespace CsScala
             }
 
             bool inParams = false;
+            bool foundParamsArray = false;
             foreach (var arg in TranslateParameters(translateOpt, invocationExpression.ArgumentList.Arguments, invocationExpression))
             {
                 if (firstParameter)
@@ -195,10 +196,15 @@ namespace CsScala
                 else
                     writer.Write(", ");
 
-                if (!inParams && IsParamsArgument(invocationExpression, arg.ArgumentOpt, methodSymbol) && TypeProcessor.ConvertType(model.GetTypeInfo(arg.ArgumentOpt.Expression).Type).StartsWith("Array[") == false)
+                if (!inParams && IsParamsArgument(invocationExpression, arg.ArgumentOpt, methodSymbol))
                 {
-                    inParams = true;
-                    writer.Write("Array(");
+                    foundParamsArray = true;
+
+                    if (!TypeProcessor.ConvertType(model.GetTypeInfo(arg.ArgumentOpt.Expression).Type).StartsWith("Array["))
+                    {
+                        inParams = true;
+                        writer.Write("Array(");
+                    }
                 }
 
 
@@ -218,6 +224,8 @@ namespace CsScala
 
             if (inParams)
                 writer.Write(")");
+            else if (!foundParamsArray && methodSymbol.Parameters.Any() && methodSymbol.Parameters.Last().IsParams)
+                writer.Write(", Array()"); //params method called without any params argument.  Send an empty array.
 
 
             writer.Write(")");

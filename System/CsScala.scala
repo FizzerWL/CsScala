@@ -167,6 +167,7 @@ object CsScala
     {
       return s == null || s.trim().isEmpty();
     }
+    def IsWhiteSpace(c:Char):Boolean = c.isWhitespace;
     
     def Split(str:String, chrs:Array[Char], options:Int):Array[String] =
     {
@@ -331,9 +332,9 @@ object CsScala
     def Concat(strs:Traversable[String]):String = strs.mkString("");
     
  
-    def IndexOfAny(str:String, chars:Array[Char]):Int = 
+    def IndexOfAny(str:String, chars:Array[Char], startIndex:Int = 0):Int = 
     {
-      var i = 0;
+      var i = startIndex;
       while (i < str.length())
       {
         val char = str.charAt(i)
@@ -345,6 +346,8 @@ object CsScala
       
       return -1;
     }
+    
+    @inline def NullCheck(str:String):String = if (str == null) "" else str; 
       
     
 }

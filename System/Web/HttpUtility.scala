@@ -16,7 +16,10 @@ object HttpUtility
   
   def HtmlEncode(s:String):String =
   {
-    return StringEscapeUtils.escapeHtml4(s);
+    if (s == null)
+      return "";
+    
+    return StringEscapeUtils.escapeHtml4(s).replace("'", "&#39;");
   }
   
   def HtmlAttributeEncode(s:String):String = 

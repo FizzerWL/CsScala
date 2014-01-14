@@ -16,7 +16,7 @@ namespace CsScala
             writer.Write("(");
 
             bool first = true;
-            foreach (var field in expression.Initializers.OrderBy(o => o.NameEquals.Name.Identifier.ValueText))
+            foreach (var field in expression.Initializers.OrderBy(o => o.Name()))
             {
                 if (first)
                     first = false;
@@ -73,7 +73,7 @@ namespace CsScala
                         writer.Write(", ");
 
                     writer.Write("_");
-                    writer.Write(field.Name);
+                    writer.Write(WriteIdentifierName.TransformIdentifier(field.Name));
                     writer.Write(TypeProcessor.ConvertTypeWithColon(field.Type));
                 }
                 writer.Write(")\r\n");
@@ -86,11 +86,11 @@ namespace CsScala
                 foreach (var field in fields)
                 {
                     writer.WriteIndent();
-                    writer.Write("var ");
-                    writer.Write(field.Name);
+                    writer.Write("final var ");
+                    writer.Write(WriteIdentifierName.TransformIdentifier(field.Name));
                     writer.Write(TypeProcessor.ConvertTypeWithColon(field.Type));
                     writer.Write(" = _");
-                    writer.Write(field.Name);
+                    writer.Write(WriteIdentifierName.TransformIdentifier(field.Name));
                     writer.Write(";\r\n");
                 }
 

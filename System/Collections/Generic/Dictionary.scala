@@ -18,6 +18,13 @@ class Dictionary[K, V](initialMap:HashMap[K,V]) extends Traversable[KeyValuePair
       this(new HashMap[K,V]());
   }
   
+  def this(other:Dictionary[K,V])
+  {
+    this(other.Count);
+    for(pair <- other)
+      Add(pair.Key, pair.Value);
+  }
+  
   def Add(k:K, v:V)
   {
     if (ContainsKey(k))

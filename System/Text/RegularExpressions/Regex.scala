@@ -4,33 +4,8 @@ import System.NotImplementedException
 import java.util.regex.Pattern
 
 object Regex {
-  def Replace(pattern: String, input: String, eval: Match => String): String =
-    {
-      val m = new Regex(pattern)._pattern.matcher(input);
-
-      var strindex = 0;
-      val ret = new StringBuffer(input.length());
-      while (m.find()) {
-        val start = m.start();
-        val end = m.end();
-        
-        
-        ret.append(input, strindex, start);
-        ret.append(eval(new Match(m)));
-
-        strindex = end;
-      }
-
-      ret.append(input, strindex, input.length());
-
-      return ret.toString();
-
-    }
-  def Replace(pattern: String, input: String, replace: String): String =
-    {
-      return input.replaceAll(pattern, replace);
-    }
-  
+  def Replace(pattern: String, input: String, eval: Match => String): String = new Regex(pattern).Replace(input, eval);
+  def Replace(pattern: String, input: String, replace: String): String = input.replaceAll(pattern, replace);
   def IsMatch(pattern:String, input:String, opts:Int):Boolean = new Regex(pattern, opts).IsMatch(input);
 }
 
@@ -59,6 +34,25 @@ class Regex(pattern: String, options: Int = 0) {
     }
   
   def Replace(input:String, eval:Match => String):String = { 
-    throw new NotImplementedException();
+    
+      val m = _pattern.matcher(input);
+
+      var strindex = 0;
+      val ret = new StringBuffer(input.length());
+      while (m.find()) {
+        val start = m.start();
+        val end = m.end();
+        
+        
+        ret.append(input, strindex, start);
+        ret.append(eval(new Match(m)));
+
+        strindex = end;
+      }
+
+      ret.append(input, strindex, input.length());
+
+      return ret.toString();
+
   }
 }

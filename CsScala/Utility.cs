@@ -269,5 +269,13 @@ namespace CsScala
             else
                 throw new Exception(constraint.GetType().Name);
         }
+
+        public static string Name(this AnonymousObjectMemberDeclaratorSyntax member)
+        {
+            if (member.NameEquals != null)
+                return member.NameEquals.Name.Identifier.ValueText;
+            else
+                return member.Expression.ToString();
+        }
     }
 }

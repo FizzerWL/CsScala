@@ -54,6 +54,8 @@
   <Type Match="System.Collections.Generic.Stack" ReplaceWith="scala.collection.mutable.Stack" />
   <Method SourceObject="System.Collections.Generic.Stack" Match="Push" ReplaceWith="push" />
   <Method SourceObject="System.Collections.Generic.Stack" Match="Pop" ReplaceWith="pop" />
+  <Method SourceObject="System.Collections.Generic.Stack" Match="Peek" ReplaceWith="First" ExtensionNamespace="System.Linq.Enumerable" />
+  <Property SourceObject="System.Collections.Generic.Stack" Match="Count" ReplaceWith="length" />
 
   <Method SourceObject="System.Linq.Enumerable" Match="Contains" ReplaceWith="Contains" ExtensionNamespace="System.CsScala" />
 

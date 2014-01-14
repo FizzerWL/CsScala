@@ -99,6 +99,12 @@ object Enumerable
         return c;
     return null;
   }
+  def FirstOrDefault[T >: Null](a:Traversable[T]):T =
+  {
+    for(c <- a)
+      return c;
+    return null;
+  }
   def ElementAt[T](a:Traversable[T], index:Int):T =
   {
     var i = index;

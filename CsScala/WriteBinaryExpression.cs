@@ -73,7 +73,8 @@ namespace CsScala
 
                 Action<ExpressionSyntax> write = e =>
                     {
-                        var type = Program.GetModel(expression).GetTypeInfo(e);
+                        var model = Program.GetModel(expression);
+                        var type = model.GetTypeInfo(e);
 
                         //Check for enums being converted to strings by string concatenation
                         if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && type.Type.TypeKind == TypeKind.Enum)
@@ -99,6 +100,13 @@ namespace CsScala
                             Core.Write(writer, e);
                             writer.Write(")");
                         }
+                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && !(e is BinaryExpressionSyntax) && type.Type.SpecialType == Roslyn.Compilers.SpecialType.System_String && CouldBeNullString(model, e))
+                        {
+                            //In .net, concatenating a null string does not alter the output. However, in the JVM, it produces the "null" string. To counter this, we must check non-const strings.
+                            writer.Write("System.CsScala.NullCheck(");
+                            Core.Write(writer, e);
+                            writer.Write(")");
+                        }
                         else
                             Core.Write(writer, e);
                     };
@@ -112,6 +120,35 @@ namespace CsScala
 
 
         }
+
+        private static bool CouldBeNullString(SemanticModel model, ExpressionSyntax e)
+        {
+            if (model.GetConstantValue(e).HasValue)
+                return false; //constants are never null
+
+            //For in-line conditions, just recurse on both results.
+            var cond = e as ConditionalExpressionSyntax;
+            if (cond != null)
+                return CouldBeNullString(model, cond.WhenTrue) || CouldBeNullString(model, cond.WhenFalse);
+
+            var paren = e as ParenthesizedExpressionSyntax;
+            if (paren != null)
+                return CouldBeNullString(model, paren.Expression);
+
+            var invoke = e as InvocationExpressionSyntax;
+            if (invoke != null)
+            {
+                var methodSymbol = model.GetSymbolInfo(invoke).Symbol;
+                //Hard-code some well-known functions as an optimization
+                if (methodSymbol.Name == "HtmlEncode" && methodSymbol.ContainingNamespace.FullName() == "System.Web")
+                    return false;
+                if (methodSymbol.Name == "ToString")
+                    return false;
+            }
+
+            return true;
+        }
+
 
         private static bool IsException(TypeSymbol typeSymbol)
         {

@@ -39,6 +39,8 @@ namespace CsScala
 
             if (methodName == "ToString")
                 methodName = "toString";
+            else if (methodName == "Equals")
+                methodName = "equals";
 
             writer.Write(methodName);
 

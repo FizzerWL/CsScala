@@ -4,6 +4,13 @@ package System.Collections.Generic
 class HashSet[T] extends Traversable[T] 
 {
   val _set = new java.util.HashSet[T]();
+  
+  def this(initial:Traversable[T])
+  {
+    this();
+    for(e <- initial)
+      Add(e);
+  }
 
   def Add(t:T):Boolean =
   {

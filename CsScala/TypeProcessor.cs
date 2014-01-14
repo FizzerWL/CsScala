@@ -313,10 +313,10 @@ namespace CsScala
             if (typeSymbol.IsValueType == false)
                 return false;
 
-            var scalaType = TryConvertType(typeSymbol);
-            if (scalaType.StartsWith("java.lang"))
-                return false; //nullable types
+            if (typeSymbol.Name == "Nullable" && typeSymbol.ContainingNamespace.FullName() == "System")
+                return false; //nullable types are reference types in .net
 
+            var scalaType = TryConvertType(typeSymbol);
             return !IsPrimitiveType(scalaType);
         }
 
