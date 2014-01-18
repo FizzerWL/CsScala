@@ -4,9 +4,9 @@ import System.NotImplementedException
 import java.util.regex.Pattern
 
 object Regex {
-  def Replace(pattern: String, input: String, eval: Match => String): String = new Regex(pattern).Replace(input, eval);
-  def Replace(pattern: String, input: String, replace: String): String = input.replaceAll(pattern, replace);
-  def IsMatch(pattern:String, input:String, opts:Int):Boolean = new Regex(pattern, opts).IsMatch(input);
+  def Replace(input:String, pattern:String, eval: Match => String): String = new Regex(pattern).Replace(input, eval);
+  def Replace(input:String, pattern:String, replace: String): String = input.replaceAll(pattern, replace);
+  def IsMatch(input:String, pattern:String, opts:Int):Boolean = new Regex(pattern, opts).IsMatch(input);
 }
 
 class Regex(pattern: String, options: Int = 0) {

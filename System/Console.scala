@@ -3,7 +3,8 @@ package System
 object Console {
   def WriteLine(s:String)
   {
-    java.lang.System.out.println(s);
+    if (s != null)
+      java.lang.System.out.println(s);
   }
   
   def WriteLine(i:Int)
@@ -17,6 +18,11 @@ object Console {
   def WriteLine(i:Boolean)
   {
     java.lang.System.out.println(i.toString());
+  }
+  def WriteLine(o:Any)
+  {
+    if (o != null)
+      java.lang.System.out.println(o.toString());
   }
   
   def Write(s:String)

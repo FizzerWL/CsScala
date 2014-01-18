@@ -6,24 +6,24 @@ object Color
 {
   def FromArgb(a:Int, r:Int, g:Int, b:Int):Color = 
   {
-    return new Color(a,r,g,b);
+    return new Color(a.toByte,r.toByte,g.toByte,b.toByte);
   }
   def FromArgb(r:Int, g:Int, b:Int):Color = 
   {
-    return new Color(255,r,g,b);
+    return new Color(255.toByte,r.toByte,g.toByte,b.toByte);
   }
   
-  val Black:Color = new Color(255, 0, 0, 0);
-  val Green:Color = new Color(255, 0, 255, 0);
+  val Black:Color = new Color(255.toByte, 0, 0, 0);
+  val Green:Color = new Color(255.toByte, 0, 255.toByte, 0);
   val Transparent:Color = new Color(0,0,0,0);
-  val White:Color = new Color(255, 255, 255, 255);
+  val White:Color = new Color(255.toByte, 255.toByte, 255.toByte, 255.toByte);
 }
 
-class Color(a:Int = 0, r:Int = 0, g:Int = 0, b:Int = 0)
+class Color(a:Byte = 0, r:Byte = 0, g:Byte = 0, b:Byte = 0)
 {
 
-  val A:Int = a;
-  val R:Int = r;
-  val G:Int = g;
-  val B:Int = b;
+  val A = a;
+  val R = r;
+  val G = g;
+  val B = b;
 }

@@ -10,8 +10,10 @@ class Type(obj:Class[_])
   
   override def equals(other:Any):Boolean = 
   {
+    
     if (!other.isInstanceOf[Type])
       return false;
+    
     return other.asInstanceOf[Type]._obj == _obj;
   }
 }

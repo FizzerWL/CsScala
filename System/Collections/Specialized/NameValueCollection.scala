@@ -3,9 +3,9 @@ package System.Collections.Specialized
 import java.util.TreeMap
 import scala.collection.JavaConverters._
 
-class NameValueCollection 
+class NameValueCollection(caseInsensitive:Boolean = false) 
 {
-  val _map = new TreeMap[String, String]();
+  private val _map = new TreeMap[String, String]();
 
   def apply(index:Int):String = 
   {
@@ -13,7 +13,10 @@ class NameValueCollection
   }
   def apply(name:String):String = 
   {
-    return _map.get(name);
+    if (caseInsensitive)
+      return _map.get(name.toLowerCase());
+    else
+      return _map.get(name);
   }
   
   def AllKeys:Traversable[String] = {
@@ -22,7 +25,14 @@ class NameValueCollection
   
   def update(name:String, value:String)
   {
-    _map.put(name, value);
+    if (caseInsensitive)
+      _map.put(name.toLowerCase(), value);
+    else
+      _map.put(name, value);
   }
+  
+  def Count:Int = _map.size();
+  
+  override def toString():String = _map.toString();
   
 }

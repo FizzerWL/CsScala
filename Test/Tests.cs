@@ -1291,42 +1291,6 @@ class Derived extends Blargh.Top(4)
         }
 
         [TestMethod]
-        public void ObjectInitilization()
-        {
-            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
-using System.Text;
-
-namespace Blargh
-{
-    public static class Utilities
-    {
-        public static void SomeFunction()
-        {
-            var sb = new StringBuilder()
-            {
-                Capacity = 9
-            };
-        }
-    }
-}", @"
-package Blargh;
-" + WriteImports.StandardImports + @"
-
-object Utilities
-{
-    def SomeFunction()
-    {
-        var sb:System.Text.StringBuilder = new System.Text.StringBuilder()
-        {
-            Capacity = 9;
-        };
-    }
-}
-            
-            ");
-        }
-
-        [TestMethod]
         public void UsingStatement()
         {
 
@@ -2987,34 +2951,6 @@ class Foo
 ");
         }
 
-        [TestMethod]
-        public void ByteConstants()
-        {
-            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
-using System;
-
-namespace Blargh
-{
-    public static class Utilities
-    {
-        public static Byte SomeFunction()
-        {
-            return 200;
-        }
-    }
-}", @"
-package Blargh;
-" + WriteImports.StandardImports + @"
-
-object Utilities
-{
-    def SomeFunction():Byte =
-    {
-        return 200.toByte;
-    }
-}");
-        }
-
 
         [TestMethod]
         public void OverloadedMethods()
@@ -3170,6 +3106,52 @@ object Utilities
 }");
         }
 
-    }
+        [TestMethod]
+        public void Bytes()
+        {
+            //In .net, bytes are always unsigned. On the JVM, bytes are always signed.  Therefore, we need to take care in a few cases
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
 
+namespace Blargh
+{
+    public static class Utilities
+    {
+        public static void Foo()
+        {
+            byte b = 200;
+            int i = (int)b;
+            i = b;
+            var s = b.ToString();
+            s = b + ""foo"";
+            i = b >> 4;
+        }
+
+        public static Byte SomeFunction()
+        {
+            return 200;
+        }
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Utilities
+{
+    def Foo()
+    {
+        var b:Byte = 200.toByte;
+        var i:Int = System.CsScala.ByteToInt(b);
+        i = System.CsScala.ByteToInt(b);
+        var s:String = System.CsScala.ByteToString(b);
+        s = System.CsScala.ByteToString(b) + ""foo"";
+        i = System.CsScala.ByteToInt(b) >> 4;
+    }
+    def SomeFunction():Byte =
+    {
+        return 200.toByte;
+    }
+}");
+        }
+    }
 }

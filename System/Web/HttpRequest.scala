@@ -16,8 +16,7 @@ class HttpRequest
 	var HttpMethod = "GET";
 	final val Cookies = new HttpCookieCollection();
 	final val Headers = new NameValueCollection();
-	final val QueryString = new NameValueCollection(); 
-	final val Form = new NameValueCollection();
+	final val QueryString = new NameValueCollection(true); 
 	final val Files = new HttpFileCollection();
 	
 	private var _url:Uri = null;
@@ -27,7 +26,24 @@ class HttpRequest
 	  return _url;
 	}
 	
-	var InputStream:Stream = null;
+	var _form:NameValueCollection = null;
+	var GetForm:()=>NameValueCollection = null;
+	def Form:NameValueCollection = {
+	  if (_form == null)
+	    _form = GetForm();
+	  
+	  return _form;
+	}
+	
+	
+	var GetInputStream:()=>Stream = null;
+	var _inputStream:Stream = null;
+	def InputStream:Stream = {
+	  if (_inputStream == null)
+	    _inputStream = GetInputStream();
+
+	  return _inputStream;
+	}
 	
 	
 	def Params(str:String):String = CsScala.Coalesce(Form(str), QueryString(str));

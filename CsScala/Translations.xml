@@ -8,6 +8,7 @@
   <Type Match="System.Type" ReplaceWith="system.TypeCS" />
 
   <Method SourceObject="System.String" Match="StartsWith" ReplaceWith="startsWith" />
+  <Method SourceObject="System.String" Match="StartsWith" ArgumentTypes="string System.StringComparison" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="EndsWith" ReplaceWith="endsWith" />
   <Method SourceObject="System.String" Match="EndsWith" ArgumentTypes="string System.StringComparison" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="ToLower" ReplaceWith="toLowerCase" />
@@ -69,6 +70,9 @@
 
   <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Int">
     <MatchTypeParameter TypeParameterIndex="1" Match="int" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Int">
+    <MatchTypeParameter TypeParameterIndex="1" Match="short" />
   </Method>
   <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_String">
     <MatchTypeParameter TypeParameterIndex="1" Match="string" />

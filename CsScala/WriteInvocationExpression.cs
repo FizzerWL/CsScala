@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CsScala.Translations;
+using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 
 namespace CsScala
@@ -149,22 +150,40 @@ namespace CsScala
                 if (memberReferenceExpressionOpt != null)
                 {
                     //Check against lowercase toString since it gets replaced with the lowered version before we get here
-                    if (methodName == "toString" && (memberType.TypeKind == TypeKind.Enum || isNullableEnum))
+                    if (methodName == "toString")
                     {
-                        var enumType = memberType.TypeKind == TypeKind.Enum ? memberType : memberType.As<NamedTypeSymbol>().TypeArguments.Single();
+                        if (memberType.TypeKind == TypeKind.Enum || isNullableEnum)
+                        {
+                            var enumType = memberType.TypeKind == TypeKind.Enum ? memberType : memberType.As<NamedTypeSymbol>().TypeArguments.Single();
 
-                        //calling ToString() on an enum forwards to our enum's special ToString method
-                        writer.Write(enumType.ContainingNamespace.FullNameWithDot());
-                        writer.Write(WriteType.TypeName((NamedTypeSymbol)enumType));
-                        writer.Write(".ToString(");
-                        Core.Write(writer, memberReferenceExpressionOpt.Expression);
-                        writer.Write(")");
+                            //calling ToString() on an enum forwards to our enum's special ToString method
+                            writer.Write(enumType.ContainingNamespace.FullNameWithDot());
+                            writer.Write(WriteType.TypeName((NamedTypeSymbol)enumType));
+                            writer.Write(".ToString(");
+                            Core.Write(writer, memberReferenceExpressionOpt.Expression);
+                            writer.Write(")");
 
-                        if (invocationExpression.ArgumentList.Arguments.Count > 0)
-                            throw new Exception("Enum's ToString detected with parameters.  These are not supported " + Utility.Descriptor(invocationExpression));
+                            if (invocationExpression.ArgumentList.Arguments.Count > 0)
+                                throw new Exception("Enum's ToString detected with parameters.  These are not supported " + Utility.Descriptor(invocationExpression));
 
-                        return;
+                            return;
+                        }
+
+                        if (memberType.SpecialType == SpecialType.System_Byte)
+                        {
+                            //Calling ToString on a byte needs to take special care since it's signed in the JVM
+                            writer.Write("System.CsScala.ByteToString(");
+                            Core.Write(writer, memberReferenceExpressionOpt.Expression);
+                            writer.Write(")");
+
+                            if (invocationExpression.ArgumentList.Arguments.Count > 0)
+                                throw new Exception("Byte's ToString detected with parameters.  These are not supported " + Utility.Descriptor(invocationExpression));
+
+                            return;
+                        }
+
                     }
+
                 }
 
                 if (subExpressionOpt != null)

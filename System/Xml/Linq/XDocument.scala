@@ -21,6 +21,7 @@ object XDocument {
       return content match {
         case e: Comment => new XComment(e)
         case e: Element => new XElement(e)
+        case e: Text => new XText(e)
         //case e: Attribute => new XAttribute(e)
       };
     }

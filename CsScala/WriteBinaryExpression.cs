@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsScala.Translations;
+using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 
 namespace CsScala
@@ -97,6 +98,13 @@ namespace CsScala
                         else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && IsException(type.Type)) //Check for exceptions being converted to strings by string concatenation
                         {
                             writer.Write("System.CsScala.ExceptionToString(");
+                            Core.Write(writer, e);
+                            writer.Write(")");
+                        }
+                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && type.Type.SpecialType == SpecialType.System_Byte && !Utility.IsNumeric(type.ConvertedType)) 
+                        {
+                            //bytes are signed in the JVM, so we need to take care when converting them to strings.  Exclude numeric types, since Core.Writer will convert these to ints
+                            writer.Write("System.CsScala.ByteToString(");
                             Core.Write(writer, e);
                             writer.Write(")");
                         }

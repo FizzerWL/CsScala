@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Roslyn.Compilers.CSharp;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Roslyn.Compilers;
 
 namespace CsScala
 {
@@ -276,6 +277,24 @@ namespace CsScala
                 return member.NameEquals.Name.Identifier.ValueText;
             else
                 return member.Expression.ToString();
+        }
+
+        public static bool IsNumeric(TypeSymbol typeSymbol)
+        {
+            switch (typeSymbol.SpecialType)
+            {
+                case SpecialType.System_Int16:
+                case SpecialType.System_Int32:
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt16:
+                case SpecialType.System_UInt32:
+                case SpecialType.System_UInt64:
+                case SpecialType.System_Double:
+                case SpecialType.System_Single:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 
 namespace CsScala
@@ -11,34 +12,37 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, SizeOfExpressionSyntax expression)
         {
-            var scalaType = TypeProcessor.ConvertType(expression.Type);
+            var type = Program.GetModel(expression).GetTypeInfo(expression.Type);
 
-            writer.Write(SizeOf(scalaType).ToString());
+            writer.Write(SizeOf(type.Type).ToString());
         }
 
-        private static int SizeOf(string scalaType)
+        private static int SizeOf(TypeSymbol type)
         {
-            switch (scalaType)
+            switch (type.SpecialType)
             {
-                case "Byte":
+                case SpecialType.System_Byte:
+                case SpecialType.System_SByte:
                     return 1;
-                case "Int":
-                    return 4;
-                case "Float":
-                    return 4;
-                case "Double":
-                    return 8;
-                case "Short":
+                case SpecialType.System_Int16:
+                case SpecialType.System_UInt16:
                     return 2;
-                case "Long":
+                case SpecialType.System_Int32:
+                case SpecialType.System_UInt32:
+                    return 4;
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt64:
                     return 8;
-                case "Char":
+                case SpecialType.System_Single:
+                    return 4;
+                case SpecialType.System_Double:
+                    return 8;
+                case SpecialType.System_Char:
                     return 2;
-                case "Boolean":
+                case SpecialType.System_Boolean:
                     return 1;
-
                 default:
-                    throw new Exception("Need handler for sizeof " + scalaType);
+                    throw new Exception("Need handler for sizeof " + type);
             }
         }
     }

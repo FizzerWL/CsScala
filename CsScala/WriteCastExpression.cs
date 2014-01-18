@@ -41,10 +41,22 @@ namespace CsScala
             }
             else if (TypeProcessor.IsPrimitiveType(srcTypeScala) && TypeProcessor.IsPrimitiveType(destTypeScala))
             {
-                //Casting between primitives is handled in scala bo the .toXX functions
-                Core.Write(writer, expression.Expression);
-                writer.Write(".to");
-                writer.Write(destTypeScala);
+                if (srcTypeScala == "Byte")
+                {
+                    //JVM's bytes are signed, so we must take care when upcasting
+                    writer.Write("System.CsScala.ByteTo");
+                    writer.Write(destTypeScala);
+                    writer.Write("(");
+                    Core.Write(writer, expression.Expression);
+                    writer.Write(")");
+                }
+                else
+                {
+                    //Casting between primitives is handled in scala bo the .toXX functions
+                    Core.Write(writer, expression.Expression);
+                    writer.Write(".to");
+                    writer.Write(destTypeScala);
+                }
             }
             else
             {

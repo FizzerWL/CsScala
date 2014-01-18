@@ -1,43 +1,49 @@
 package System.Web.UI
 
 import System.DateTime
+import System.IO.TextWriter
+import java.io.Writer
+import java.io.StringWriter
 
-class HtmlTextWriter(est:Int) {
+class HtmlTextWriter(writer:StringWriter) extends TextWriter(writer) 
+{
+  def this(estimate:Int)
+  {
+    this(new StringWriter(estimate))
+  }
   
-  val sb = new StringBuilder(est);
 
   def Write(str:String)
   {
     if (str != null)
-      sb.append(str);
+      writer.append(str);
   }
   def Write(s:Int)
   {
-    sb.append(s);
+    writer.append(s.toString());
   }
   def Write(s:Long)
   {
-    sb.append(s);
+    writer.append(s.toString());
   }
   
   def Write(d:DateTime)
   {
     if (d != null)
-    	sb.append(d.toString());
+    	writer.append(d.toString());
   }
   
   def Write(b:Boolean)
   {
-    sb.append(b);
+    writer.append(if (b) "true" else "false");
   }
   
   def WriteLine()
   {
-    sb.append("\n");
+    writer.append("\n");
   }
   
-  def Position():Int = sb.length;
-  def GetSubstring(start:Int):String = sb.substring(start);
-  
-  def ToString():String = sb.toString();
+  def Position():Int = writer.getBuffer().length;
+  def GetSubstring(start:Int):String = writer.getBuffer().substring(start);
+  def ToString():String = writer.toString();
 }

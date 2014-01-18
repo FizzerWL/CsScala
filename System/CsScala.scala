@@ -7,6 +7,7 @@ import scala.reflect._
 import java.util.ArrayList
 import scala.collection.JavaConverters._
 import org.apache.http.util.ExceptionUtils
+import java.nio.ByteOrder
 
 object CsScala 
 {
@@ -28,6 +29,7 @@ object CsScala
     def ToByteArray(uuid:UUID):Array[Byte] = 
     {
       val bb = ByteBuffer.wrap(new Array[Byte](16));
+      bb.order(ByteOrder.LITTLE_ENDIAN);
       bb.putLong(uuid.getMostSignificantBits());
       bb.putLong(uuid.getLeastSignificantBits());
       return bb.array();
@@ -99,7 +101,7 @@ object CsScala
       return s == null || s.isEmpty();
     }
     
-    def GetType(obj:Any):Type =
+    def GetType(obj:AnyRef):Type =
     {
       return new Type(obj.getClass());
     }
@@ -347,7 +349,9 @@ object CsScala
       return -1;
     }
     
-    @inline def NullCheck(str:String):String = if (str == null) "" else str; 
+    @inline def NullCheck(str:String):String = if (str == null) "" else str;
+    @inline def ByteToInt(b:Byte):Int = b & 0xFF;
+    @inline def ByteToString(b:Byte):String = (b & 0xFF).toString();
       
     
 }

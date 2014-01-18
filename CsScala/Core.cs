@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 
 namespace CsScala
@@ -15,6 +16,30 @@ namespace CsScala
             if (Program.DoNotWrite.ContainsKey(node))
                 return;
 
+            var exprOpt = node as ExpressionSyntax;
+            string postFactory = null;
+
+            if (exprOpt != null)
+            {
+                var type = Program.GetModel(node).GetTypeInfo(exprOpt);
+
+                if (type.Type != null && type.Type.SpecialType == SpecialType.System_Byte && type.ConvertedType.SpecialType != SpecialType.System_Byte && Utility.IsNumeric(type.ConvertedType))
+                {
+                    //Bytes are signed in the JVM, so we have to take care when up-converting them
+                    writer.Write("System.CsScala.ByteTo");
+                    writer.Write(TypeProcessor.ConvertType(type.ConvertedType));
+                    writer.Write("(");
+                    postFactory = ")";
+                }
+            }
+            
+
+            Factory(writer, node, isConst);
+            writer.Write(postFactory);
+        }
+
+        private static void Factory(ScalaWriter writer, SyntaxNode node, bool isConst)
+        {
             if (node is MethodDeclarationSyntax)
                 WriteMethod.Go(writer, node.As<MethodDeclarationSyntax>());
             else if (node is PropertyDeclarationSyntax)

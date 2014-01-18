@@ -15,12 +15,13 @@ namespace CsScala
             var model = Program.GetModel(expression);
             var type = model.GetTypeInfo(expression).Type;
 
+            if (expression.Initializer != null)
+                throw new Exception("Object initializers are not supported " + Utility.Descriptor(expression));
+
             if (type.SpecialType == Roslyn.Compilers.SpecialType.System_Object)
             {
                 //new object() results in the CsObject type being made.  This is only really useful for locking
                 writer.Write("new CsObject()");
-                if (expression.Initializer != null)
-                    throw new Exception("Initializers cannot be used with Object " + Utility.Descriptor(expression));
             }
             else if (type.OriginalDefinition.As<NamedTypeSymbol>().SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
             {
@@ -29,9 +30,6 @@ namespace CsScala
                     writer.Write("null");
                 else
                     Core.Write(writer, expression.ArgumentList.Arguments.Single().Expression);
-
-                if (expression.Initializer != null)
-                    throw new Exception("Initializers cannot be used with nullable types " + Utility.Descriptor(expression));
             }
             else
             {
@@ -60,21 +58,6 @@ namespace CsScala
 
                 writer.Write(")");
 
-                if (expression.Initializer != null)
-                {
-                    writer.Write("\r\n");
-                    writer.WriteOpenBrace();
-                    foreach (var e in expression.Initializer.Expressions)
-                    {
-                        writer.WriteIndent();
-                        Core.Write(writer, e);
-                        writer.Write(";\r\n");
-                    }
-
-                    writer.Indent--;
-                    writer.WriteIndent();
-                    writer.Write("}");
-                }
             }
         }
 

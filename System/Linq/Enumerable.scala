@@ -66,6 +66,10 @@ object Enumerable
   {
     return a.map(fn).min;
   }
+  def Min[T](a:Traversable[T], fn:T=>Float):Float =
+  {
+    return a.map(fn).min;
+  }
   
   def GroupBy[S,K](a:Traversable[S], fn:S=>K):Traversable[IGrouping[K,S]] =
   {
@@ -332,6 +336,10 @@ object Enumerable
     return a.map(fn).max;
   }
   def Max[T](a:Traversable[T], fn:T=>Int):Int =
+  {
+    return a.map(fn).max;
+  }
+  def Max[T](a:Traversable[T], fn:T=>Float):Float =
   {
     return a.map(fn).max;
   }

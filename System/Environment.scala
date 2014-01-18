@@ -13,4 +13,5 @@ object Environment
 
   final val OSVersion = new OperatingSystem();
   
+  var ExitCode:Int = 0;
 }

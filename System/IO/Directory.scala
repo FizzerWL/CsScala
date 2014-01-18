@@ -38,8 +38,9 @@ object Directory {
       if (option == SearchOption.AllDirectories) {
         val ret = new ArrayList[String]();
         WalkFiles(path, ret);
-        return ret.toArray().asInstanceOf[Array[String]];
-      } else {
+        return ret.toArray(Array[String]());
+      }
+      else {
         val files = new java.io.File(path).listFiles();
         if (files == null)
           return new Array[String](0);
@@ -123,7 +124,8 @@ object Directory {
     if (!recur) {
       if (!new java.io.File(path).delete())
         throw new IOException("Delete failed");
-    } else
+    }
+    else
       DeleteRecursive(new java.io.File(path));
   }
 }

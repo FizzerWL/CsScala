@@ -14,6 +14,11 @@ object HttpUtility
     return URLEncoder.encode(s, "UTF-8");
   }
   
+  def UrlDecode(s:String):String = 
+  {
+    return URLDecoder.decode(s, "UTF-8");
+  }
+  
   def HtmlEncode(s:String):String =
   {
     if (s == null)
