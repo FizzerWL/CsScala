@@ -3,142 +3,89 @@ package System
 import java.util.Date
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import org.joda.time.format.DateTimeFormat
 
 
 object DateTime
 {
-  def Now:DateTime =
-  {
-    return new DateTime(new Date());
-  }
-  
-  val MinValue = new DateTime(0);
+  val MinValue = new DateTime(0L);
   val MaxValue = new DateTime(3155378975999999999L);
-  def Parse(s:String):DateTime =
-  {
-    return new DateTime(new Date(s));
-  }
+  def Parse(s:String):DateTime = new DateTime(new org.joda.time.DateTime(new java.util.Date(s).getTime()));
+  def Now:DateTime = new DateTime(org.joda.time.DateTime.now());
   
-  //final val _dateFormat = new SimpleDateFormat("MM/d/yyyy hh:mm:ss a");
-  final val _dateFormat = new SimpleDateFormat("M/d/yyyy HH:mm:ss");
+  final val _dateFormat = DateTimeFormat.forPattern("M/d/yyyy HH:mm:ss");
+  
+  final val _ticksDiff = 621355968000000000L - 288000000000L;
+                         
 }
 
-class DateTime(d:Date)
+class DateTime(d:org.joda.time.DateTime, extraTicks:Long = 0)
 {
-  val _d:Date = d;
+  val _d = d;
+  val _extraTicks = extraTicks;
   
   if (_d == null)
     throw new ArgumentNullException("Null date");
   
   def this(year:Int, month:Int, day:Int)
   {
-    this(new Date(year - 1900, month - 1, day));
+    this(new org.joda.time.DateTime(year, month, day, 0, 0));
   }
   
   def this(ticks:Long)
   {
-    this(new Date(ticks / 10000));
+    this(new org.joda.time.DateTime((ticks - DateTime._ticksDiff) / 10000L), ticks % 10000);
   }
+  
+  def Ticks:Long = _d.getMillis() * 10000 + DateTime._ticksDiff + extraTicks;
+
+    
   def this()
   {
-    this(new Date(0))
+    this(new org.joda.time.DateTime(0L))
+  }
+  
+  def this(jd:java.util.Date)
+  {
+    this(new org.joda.time.DateTime(jd.getTime()));
   }
   
   override def equals(other:Any):Boolean = 
   {
     if (!other.isInstanceOf[DateTime])
       return false;
-    return other.asInstanceOf[DateTime]._d.getTime() == _d.getTime();
+    
+    val otherDate = other.asInstanceOf[DateTime];
+    
+    return _d.getMillis() == otherDate._d.getMillis() && _extraTicks == otherDate._extraTicks;
   }
   
-  override def toString():String =
-  {
-    return DateTime._dateFormat.format(_d);
-  }
+  override def toString():String = DateTime._dateFormat.print(_d);
   
   def toString(format:String):String =
   {
     val sdf = format.replace('f', 'S') //milliseconds are f in .net and S in SimpleDateFormat
-    return new SimpleDateFormat(sdf).format(_d);
+    return DateTimeFormat.forPattern(sdf).print(_d);
   }
-  def ToShortDateString():String =
-  {
-    return Year + "/" + Month + "/" + Day;
-  }
+  def ToShortDateString():String = Year + "/" + Month + "/" + Day;
 
+  def Year:Int = _d.getYear();
+  def Month:Int = _d.getMonthOfYear();
+  def Day:Int = _d.getDayOfMonth();
+  def Hour:Int = _d.getHourOfDay();
+  def Minute:Int = _d.getMinuteOfHour();
+  def Second:Int = _d.getSecondOfMinute();
 
-  def Year:Int =
-  {
-    return _d.getYear() + 1900;
-  }
-  def Month:Int =
-  {
-    return _d.getMonth() + 1;
-  }
-  def Day:Int =
-  {
-    return _d.getDay();
-  }
-  def Hour:Int =
-  {
-    return _d.getHours();
-  }
-  def Minute:Int =
-  {
-    return _d.getMinutes();
-  }
-  def Second:Int =
-  {
-    return _d.getSeconds();
-  }
-  def Ticks:Long =
-  {
-    return _d.getTime() * 10000;
-  }
+  def Subtract(other:DateTime):TimeSpan = new TimeSpan(this.Ticks - other.Ticks);
+  def Subtract(other:TimeSpan):DateTime = new DateTime(this.Ticks - other.Ticks);
+  def Add(span:TimeSpan):DateTime = new DateTime(Ticks + span.Ticks);
+  def AddYears(num:Double):DateTime = Add(TimeSpan.FromYears(num));
+  def AddDays(num:Double):DateTime = Add(TimeSpan.FromDays(num)); 
+  def AddHours(num:Double):DateTime = Add(TimeSpan.FromHours(num));
+  def AddMinutes(num:Double):DateTime = Add(TimeSpan.FromMinutes(num));
+  def AddMilliseconds(num:Double):DateTime = Add(TimeSpan.FromMilliseconds(num));
+  def AddSeconds(num:Double):DateTime = Add(TimeSpan.FromSeconds(num));
 
-  def ToUniversalTime():DateTime = 
-  {
-    return this; //TODO
-  }
-  def ToLocalTime():DateTime = 
-  {
-    return this; //TODO
-  }
-  
-  def Subtract(other:DateTime):TimeSpan =
-  {
-    return TimeSpan.FromMillisecondsL(this._d.getTime() - other._d.getTime());
-  }
-  def Subtract(other:TimeSpan):DateTime =
-  {
-    throw new NotImplementedException();
-  }
-  def Add(span:TimeSpan):DateTime =
-  {
-    return new DateTime(new Date(span.TotalMillisecondsL + _d.getTime()));
-  }
-  def AddYears(num:Double):DateTime =
-  {
-    return new DateTime(new Date(TimeSpan.FromYears(num).TotalMillisecondsL + this._d.getTime()));
-  }
-  def AddDays(num:Double):DateTime =
-  {
-    return new DateTime(new Date(TimeSpan.FromDays(num).TotalMillisecondsL + this._d.getTime()));
-  }
-  def AddHours(num:Double):DateTime =
-  {
-    return new DateTime(new Date(TimeSpan.FromHours(num).TotalMillisecondsL + this._d.getTime()));
-  }
-  def AddMinutes(num:Double):DateTime =
-  {
-    return new DateTime(new Date(TimeSpan.FromMinutes(num).TotalMillisecondsL + this._d.getTime()));
-  }
-  def AddMilliseconds(num:Double):DateTime =
-  {
-    return new DateTime(new Date((num + this._d.getTime()).toLong));
-  }
-  def AddSeconds(num:Double):DateTime =
-  {
-    return new DateTime(new Date(TimeSpan.FromSeconds(num).TotalMillisecondsL + this._d.getTime()));
-  }
+  def ToUniversalTime():DateTime = this;  //TODO
+  def ToLocalTime():DateTime = this; //TODO
 }

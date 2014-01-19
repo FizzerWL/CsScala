@@ -2,103 +2,40 @@ package System
 
 object TimeSpan
 {
-  val MaxValue = new TimeSpan(922337203685477L);
-  val MinValue = new TimeSpan(-922337203685477L);
-  val Zero = new TimeSpan(0);
+  final val MaxValue = new TimeSpan(9223372036854775807L);
+  final val MinValue = new TimeSpan(-9223372036854775808L);
+  final val Zero = new TimeSpan(0);
   
-  def FromTicks(ticks:Long):TimeSpan = 
-  {
-    return new TimeSpan(ticks / 10000);
-  }
-  def FromMilliseconds(mills:Double):TimeSpan = 
-  {
-    return new TimeSpan(mills.toLong);
-  }
-  def FromMillisecondsL(mills:Long):TimeSpan = 
-  {
-    return new TimeSpan(mills);
-  }
-  def FromSeconds(secs:Double):TimeSpan = 
-  {
-    return new TimeSpan((secs * 1000).toLong);
-  }
-  def FromMinutes(mins:Double):TimeSpan = 
-  {
-    return new TimeSpan((mins * 60000).toLong);
-  }
-  def FromHours(hours:Double):TimeSpan = 
-  {
-    return new TimeSpan((hours * 3600000).toLong);
-  }
-  def FromDays(days:Double):TimeSpan = 
-  {
-    return new TimeSpan((days * 86400000).toLong);
-  }
-  def FromYears(years:Double):TimeSpan = 
-  {
-    return new TimeSpan((years * 3.15569e10).toLong);
-  }
+  def FromTicks(ticks:Long):TimeSpan = new TimeSpan(ticks);
+  def FromMilliseconds(mills:Double):TimeSpan = new TimeSpan((mills * 10000.0).toLong);
+  def FromSeconds(secs:Double):TimeSpan = new TimeSpan((secs * 10000000.0).toLong);
+  def FromMinutes(mins:Double):TimeSpan = new TimeSpan((mins * 6000000000.0).toLong);
+  def FromHours(hours:Double):TimeSpan = new TimeSpan((hours * 36000000000.0).toLong);
+  def FromDays(days:Double):TimeSpan = new TimeSpan((days * 864000000000.0).toLong);
+  def FromYears(years:Double):TimeSpan = new TimeSpan((years * 3.15569e14).toLong);
 }
 
-class TimeSpan(mills:Long = 0)
+class TimeSpan(ticks:Long = 0)
 {
-  val TotalMillisecondsL:Long = mills;
+  final val Ticks:Long = ticks;
   
   override def toString():String =
   {
-    return TotalMillisecondsL + "ms";
+    return TotalDays.toInt + "." + Hours + ":" + Minutes + ":" + Seconds + "." + Milliseconds;
   }
 
-  def Ticks:Long =
-  {
-    return TotalMillisecondsL * 10000;
-  }
-  def TotalMilliseconds:Double =
-  {
-    return TotalMillisecondsL;
-  }
-  def TotalSeconds:Double = 
-  {
-    return TotalMillisecondsL / 1000.0;
-  }
-  def TotalMinutes:Double = 
-  {
-    return TotalMillisecondsL / 60000.0;
-  }
-  def TotalHours:Double = 
-  {
-    return TotalMillisecondsL / 3600000.0;
-  }
-  def TotalDays:Double = 
-  {
-    return TotalMillisecondsL / 86400000.0;
-  }
+  def TotalMilliseconds:Double = Ticks / 10000.0;
+  def TotalSeconds:Double = Ticks / 10000000.0; 
+  def TotalMinutes:Double = Ticks / 600000000.0;
+  def TotalHours:Double = Ticks / 36000000000.0;
+  def TotalDays:Double = Ticks / 864000000000.0;
 
+  def Days:Int = (Ticks / 864000000000L).toInt;
+  def Hours:Int = ((Ticks / 36000000000L) % 24).toInt;
+  def Minutes:Int = ((Ticks / 600000000L) % 60).toInt;
+  def Seconds:Int = ((Ticks / 10000000L) % 60).toInt;
+  def Milliseconds:Int = ((Ticks / 10000000000L) % 1000).toInt;
   
-  def Days:Int = 
-  {
-    return (TotalMillisecondsL / 86400000).toInt;
-  }
-  def Hours:Int = 
-  {
-    return (TotalMillisecondsL / 3600000).toInt;
-  }
-  def Minutes:Int = 
-  {
-    return (TotalMillisecondsL / 60000).toInt;
-  }
-  def Seconds:Int = 
-  {
-    return (TotalMillisecondsL / 1000).toInt;
-  }
-  
-  
-  def Add(span:TimeSpan):TimeSpan =
-  {
-    return new TimeSpan(TotalMillisecondsL + span.TotalMillisecondsL);
-  }
-  def Subtract(span:TimeSpan):TimeSpan =
-  {
-    return new TimeSpan(TotalMillisecondsL - span.TotalMillisecondsL);
-  }
+  def Add(span:TimeSpan):TimeSpan = new TimeSpan(Ticks + span.Ticks);
+  def Subtract(span:TimeSpan):TimeSpan = new TimeSpan(Ticks - span.Ticks);
 }
