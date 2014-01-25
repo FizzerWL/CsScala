@@ -29,7 +29,7 @@ class HashSet[T] extends Traversable[T]
   
   def foreach[U](fn:T=>U)
   {
-    var it = _set.iterator();
+    val it = _set.iterator();
     while (it.hasNext())
       fn(it.next());
   }
@@ -37,5 +37,18 @@ class HashSet[T] extends Traversable[T]
   def Count:Int = 
   {
     return _set.size;
+  }
+  
+  override def equals(other:Any):Boolean = {
+    if (!other.isInstanceOf[HashSet[T]])
+      return false;
+    val o = other.asInstanceOf[HashSet[T]];
+    if (o.Count != this.Count)
+      return false;
+    val it = _set.iterator();
+    while (it.hasNext())
+      if (!o.Contains(it.next()))
+        return false;
+    return true;
   }
 }

@@ -1,11 +1,10 @@
 package System.Net.Mail;
 import System.NotImplementedException;
+import java.util.ArrayList
 
-class MailAddressCollection
-{
+class MailAddressCollection {
 
-	def Add(addr:MailAddress)
-	{
-		throw new NotImplementedException();
-	}
+  final val _coll = new ArrayList[MailAddress]();
+  def Add(addr: MailAddress) { _coll.add(addr); }
+    
 }

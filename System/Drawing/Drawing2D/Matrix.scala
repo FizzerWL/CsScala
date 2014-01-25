@@ -11,6 +11,15 @@ class Matrix(m11: Float = 1, m12: Float = 0, m21: Float = 0, m22: Float = 1, dx:
   val _m = new AffineTransform(m11, m12, m21, m22, dx, dy);
   
   
+  override def equals(other: Any): Boolean =
+    {
+      if (!other.isInstanceOf[Matrix])
+        return false;
+      val o = other.asInstanceOf[Matrix];
+      return o._m == _m;
+    }
+  override def hashCode(): Int = _m.hashCode();
+  
   def Elements:Array[Float] = {
     val doubles = new Array[Double](6);
     _m.getMatrix(doubles); //m00 m10 m01 m11 m02 m12

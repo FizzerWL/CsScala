@@ -1,7 +1,8 @@
 package System.IO;
 import System.NotImplementedException;
+import java.io.InputStream
 
-class FileStream(reader:java.io.Reader) extends Stream(null, null, reader, null)
+class FileStream(input:InputStream) extends Stream(input, null, null, null)
 {
 
 }

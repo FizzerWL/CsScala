@@ -18,4 +18,12 @@ class Uri(str: String) {
         return _url.getPath() + "?" + q;
     }
   def Authority:String = _url.getAuthority();
+  
+  override def equals(other:Any):Boolean = 
+  {
+    if (!other.isInstanceOf[Uri])
+      return false;
+    return other.asInstanceOf[Uri]._url.equals(_url);
+  }
+  override def hashCode():Int = _url.hashCode();
 }

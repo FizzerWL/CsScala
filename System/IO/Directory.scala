@@ -11,7 +11,7 @@ object Directory {
     }
 
   def CreateDirectory(path: String) {
-    if (!new java.io.File(path).mkdir())
+    if (!new java.io.File(path).mkdirs())
       throw new IOException("Directory could not be created");
   }
 

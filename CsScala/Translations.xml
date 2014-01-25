@@ -16,6 +16,8 @@
   <Method SourceObject="System.String" Match="Replace" ReplaceWith="replace" />
   <Method SourceObject="System.String" Match="Substring" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="IndexOf" ReplaceWith="indexOf" />
+  <Method SourceObject="System.String" Match="IndexOf" ArgumentTypes="string System.StringComparison" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.String" Match="IndexOf" ArgumentTypes="string int System.StringComparison" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="IndexOfAny" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="Trim" ReplaceWith="trim" />
   <Method SourceObject="System.String" Match="Trim" ArgumentTypes="char[]" ExtensionNamespace="System.CsScala" />

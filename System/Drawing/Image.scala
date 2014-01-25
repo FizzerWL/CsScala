@@ -5,9 +5,15 @@ import System.IO.Stream
 import System.NotImplementedException
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
+import System.ArgumentException
 
 object Image {
-  def FromStream(s: Stream): Image = new Image(ImageIO.read(s._input));
+  def FromStream(s: Stream): Image = {
+    val img = ImageIO.read(s._input);
+    if (img == null)
+      throw new ArgumentException("Image failed to parse");
+    return new Image(img);
+  } 
 
 }
 

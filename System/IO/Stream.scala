@@ -5,10 +5,10 @@ import java.io._;
 
 class Stream(input:InputStream, output:OutputStream, textinput:Reader, textoutput:Writer)
 {
-  val _input:InputStream = input;
-  val _output:OutputStream = output;
-  val _textinput:Reader = textinput;
-  val _textoutput:Writer = textoutput;
+  var _input:InputStream = input;
+  var _output:OutputStream = output;
+  var _textinput:Reader = textinput;
+  var _textoutput:Writer = textoutput;
 
   def Dispose()
   {

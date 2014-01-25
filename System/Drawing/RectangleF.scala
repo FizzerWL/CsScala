@@ -8,4 +8,12 @@ class RectangleF(x:Float = 0, y:Float = 0, w:Float = 0, h:Float = 0)
 	var Width:Float = w;
 	var Height:Float = h;
 	
+	override def equals(other:Any):Boolean =
+	  {
+	    if (!other.isInstanceOf[RectangleF])
+	      return false;
+	    val o = other.asInstanceOf[RectangleF];
+	    return o.X == X && o.Y == Y && o.Width == Width && o.Height == Height;
+	  }
+	override def hashCode():Int = (X + Y + Width + Height).toInt;
 }

@@ -25,7 +25,7 @@ object File {
   }
   def OpenRead(path: String): FileStream =
     {
-      return new FileStream(new FileReader(path));
+      return new FileStream(new FileInputStream(path));
     }
   def ReadAllBytes(path: String): Array[Byte] =
     {

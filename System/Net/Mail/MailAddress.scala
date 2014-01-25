@@ -3,7 +3,6 @@ import System.NotImplementedException;
 
 class MailAddress(addr:String, displayAs:String = "")
 {
-
-	throw new NotImplementedException();
-	
+  final val Address = addr;
+  final val DisplayAs = displayAs;
 }

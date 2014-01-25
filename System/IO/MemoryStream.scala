@@ -11,11 +11,6 @@ class MemoryStream(input:InputStream, output:OutputStream) extends Stream(input,
     this(new ByteArrayInputStream(bytes), null);
   }
   
-  class MemoryStreamByteArrayOutputStream extends ByteArrayOutputStream
-  {
-    
-  }
-  
   def this()
   {
     this(null, new ByteArrayOutputStream());
@@ -36,10 +31,12 @@ class MemoryStream(input:InputStream, output:OutputStream) extends Stream(input,
   
   def Seek(offset:Long, loc:Int)
   {
+    //This assumes you're seeking and output stream back to the beginning to begin using it as inputstream.  Other uses are not supported.
     if (loc != SeekOrigin.Begin || offset != 0)
       throw new NotImplementedException("TODO");
     
-    _output.asInstanceOf[ByteArrayOutputStream].reset();
+    _input = new ByteArrayInputStream(ToArray());
+    _output = null;
   }
   
   def Length:Int = ToArray().length;

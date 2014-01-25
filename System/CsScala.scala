@@ -9,24 +9,21 @@ import scala.collection.JavaConverters._
 import org.apache.http.util.ExceptionUtils
 import java.nio.ByteOrder
 
-object CsScala 
-{
-    val cscontinue = new Breaks;
-    val csbreak = new Breaks;
+object CsScala {
+  val cscontinue = new Breaks;
+  val csbreak = new Breaks;
 
+  val ushortMaxValue = 65535;
+  val ushortMinValue = 0;
+  val uintMinValue = 0;
+  val uintMaxValue = 4294967295L;
 
-    val ushortMaxValue = 65535;
-    val ushortMinValue = 0;
-    val uintMinValue = 0;
-    val uintMaxValue = 4294967295L;
-
-
-    def Join(seperator:String, strs:Traversable[String]):String =
+  def Join(seperator: String, strs: Traversable[String]): String =
     {
       return strs.mkString(seperator);
     }
-    
-    def ToByteArray(uuid:UUID):Array[Byte] = 
+
+  def ToByteArray(uuid: UUID): Array[Byte] =
     {
       val bb = ByteBuffer.wrap(new Array[Byte](16));
       bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -34,144 +31,131 @@ object CsScala
       bb.putLong(uuid.getLeastSignificantBits());
       return bb.array();
     }
-    
-    def TryParseInt(s:String, out:CsRef[Int]):Boolean =
+
+  def TryParseInt(s: String, out: CsRef[Int]): Boolean =
     {
-      try
-      {
+      try {
         out.Value = s.toInt;
         return true;
       }
-      catch
-      {
+      catch {
         case e: NumberFormatException => return false;
       }
     }
-    def TryParseLong(s:String, out:CsRef[Long]):Boolean =
+  def TryParseLong(s: String, out: CsRef[Long]): Boolean =
     {
-      try
-      {
+      try {
         out.Value = s.toLong;
         return true;
       }
-      catch
-      {
+      catch {
         case e: NumberFormatException => return false;
       }
     }
-    def TryParseFloat(s:String, out:CsRef[Float]):Boolean =
+  def TryParseFloat(s: String, out: CsRef[Float]): Boolean =
     {
-      try
-      {
+      try {
         out.Value = s.toFloat;
         return true;
       }
-      catch
-      {
+      catch {
         case e: NumberFormatException => return false;
       }
     }
-    def TryParseDouble(s:String, out:CsRef[Double]):Boolean =
+  def TryParseDouble(s: String, out: CsRef[Double]): Boolean =
     {
-      try
-      {
+      try {
         out.Value = s.toDouble;
         return true;
       }
-      catch
-      {
+      catch {
         case e: NumberFormatException => return false;
       }
     }
-    def TryParseBoolean(s:String, out:CsRef[Boolean]):Boolean =
+  def TryParseBoolean(s: String, out: CsRef[Boolean]): Boolean =
     {
-      try
-      {
+      try {
         out.Value = s.toBoolean;
         return true;
       }
-      catch
-      {
+      catch {
         case e: NumberFormatException => return false;
       }
     }
-    
-    def IsNullOrEmpty(s:String):Boolean = 
+
+  def IsNullOrEmpty(s: String): Boolean =
     {
       return s == null || s.isEmpty();
     }
-    
-    def GetType(obj:AnyRef):Type =
+
+  def GetType(obj: AnyRef): Type =
     {
       return new Type(obj.getClass());
     }
-    
-    def Sort[T](buf:ArrayBuffer[T], cmp:(T,T)=>Int)
+
+  def Sort[T](buf: ArrayBuffer[T], cmp: (T, T) => Int) {
+    buf.sortWith((f, s) => cmp(f, s) < 0);
+  }
+
+  def Sort(buf: ArrayBuffer[Int]) {
+    buf.sortBy(a => a);
+  }
+
+  def Contains[T](a: Traversable[T], item: T): Boolean =
     {
-      buf.sortWith((f,s) => cmp(f,s) < 0);
-    }
-    
-    def Sort(buf:ArrayBuffer[Int])
-    {
-      buf.sortBy(a => a);
-    }
-    
-    def Contains[T](a:Traversable[T], item:T):Boolean =
-    {
-      for(e <- a)
+      for (e <- a)
         if (e == item)
           return true;
       return false;
     }
-    
-    def ToArray[T:ClassTag](buf:ArrayList[T]):Array[T] =
+
+  def ToArray[T: ClassTag](buf: ArrayList[T]): Array[T] =
     {
       return buf.toArray().asInstanceOf[Array[T]];
     }
-    
-    def IsNaN(d:Double):Boolean =
+
+  def IsNaN(d: Double): Boolean =
     {
       return d.isNaN();
     }
-    
-    def IsInfinity(d:Double):Boolean =
+
+  def IsInfinity(d: Double): Boolean =
     {
       return d.isInfinity;
     }
-    
-    def StringContains(haystack:String, needle:String):Boolean =
+
+  def StringContains(haystack: String, needle: String): Boolean =
     {
       return haystack.indexOf(needle) != -1;
     }
-    
-    def As[T >: Null :ClassTag](item:Any):T =
+
+  def As[T >: Null: ClassTag](item: Any): T =
     {
       var c = classTag[T].runtimeClass;
-      
+
       if (c.isInstance(item))
         return item.asInstanceOf[T];
       else
         return null;
-      
+
     }
-    
-    def Equals(str1:String, str2:String, comparison:Int):Boolean = 
+
+  def Equals(str1: String, str2: String, comparison: Int): Boolean =
     {
-      if (comparison == StringComparison.OrdinalIgnoreCase)
-      {
+      if (comparison == StringComparison.OrdinalIgnoreCase) {
         return str1.equalsIgnoreCase(str2);
       }
       else
-    	  throw new NotImplementedException("mode = " + comparison);
+        throw new NotImplementedException("mode = " + comparison);
     }
-    
-    def IsNullOrWhiteSpace(s:String):Boolean =
+
+  def IsNullOrWhiteSpace(s: String): Boolean =
     {
       return s == null || s.trim().isEmpty();
     }
-    def IsWhiteSpace(c:Char):Boolean = c.isWhitespace;
-    
-    def Split(str:String, chrs:Array[Char], options:Int):Array[String] =
+  def IsWhiteSpace(c: Char): Boolean = c.isWhitespace;
+
+  def Split(str: String, chrs: Array[Char], options: Int): Array[String] =
     {
       var ret = str.split(chrs);
       if (options == StringSplitOptions.RemoveEmptyEntries)
@@ -179,34 +163,33 @@ object CsScala
       else
         return ret;
     }
-    def EndsWith(str:String, endsWith:String, comparison:Int):Boolean =
+  def EndsWith(str: String, endsWith: String, comparison: Int): Boolean =
     {
       if (comparison == StringComparison.OrdinalIgnoreCase)
         return str.regionMatches(true, str.length - endsWith.length, endsWith, 0, endsWith.length);
       else
-    	throw new NotImplementedException();
+        throw new NotImplementedException();
     }
-    def StartsWith(str:String, startsWith:String, comparison:Int):Boolean =  
+  def StartsWith(str: String, startsWith: String, comparison: Int): Boolean =
     {
       if (comparison == StringComparison.OrdinalIgnoreCase)
         return str.regionMatches(true, 0, startsWith, 0, startsWith.length);
       else
-    	throw new NotImplementedException();
+        throw new NotImplementedException();
     }
-    
-    def Coalesce[T >: Null](a:T, b:T):T =
+
+  def Coalesce[T >: Null](a: T, b: T): T =
     {
       if (a == null)
         return b;
       else
         return a;
     }
-    
-    def Contains[T](a:Array[T], item:T):Boolean =
+
+  def Contains[T](a: Array[T], item: T): Boolean =
     {
       var i = 0;
-      while (i < a.length)
-      {
+      while (i < a.length) {
         if (a(i) == item)
           return true;
         i += 1;
@@ -232,7 +215,7 @@ object CsScala
 
       return str.substring(i, e + 1);
     }
-    def TrimEnd(str:String, chars:Array[Char]):String =
+  def TrimEnd(str: String, chars: Array[Char]): String =
     {
       if (str.length == 0)
         return str;
@@ -246,7 +229,7 @@ object CsScala
 
       return str.substring(0, e + 1);
     }
-    def TrimStart(str:String, chars:Array[Char]):String =
+  def TrimStart(str: String, chars: Array[Char]): String =
     {
       if (str.length == 0)
         return str;
@@ -255,31 +238,30 @@ object CsScala
       while (Contains(chars, str(i)) && i < str.length)
         i += 1;
 
-      
       return str.substring(i);
 
     }
-    def Remove(s:String, startIndex:Int):String =
+  def Remove(s: String, startIndex: Int): String =
     {
       return s.substring(0, startIndex);
     }
-    def Remove(s:String, startIndex:Int, count:Int):String =
+  def Remove(s: String, startIndex: Int, count: Int): String =
     {
       return s.substring(0, startIndex) + s.substring(startIndex + count);
     }
-    
-    def IsUpper(c:Char):Boolean = 
+
+  def IsUpper(c: Char): Boolean =
     {
       return java.lang.Character.isUpperCase(c);
     }
-    def ToLower(c:Char):Char = 
+  def ToLower(c: Char): Char =
     {
       return java.lang.Character.toLowerCase(c);
     }
-    def IsLetterOrDigit(c:Char):Boolean = c.isLetterOrDigit; 
-    def IsDigit(c:Char):Boolean = c.isDigit;
-    
-    def ExceptionMessage(e:Exception):String =
+  def IsLetterOrDigit(c: Char): Boolean = c.isLetterOrDigit;
+  def IsDigit(c: Char): Boolean = c.isDigit;
+
+  def ExceptionMessage(e: Exception): String =
     {
       val msg = e.getMessage();
       if (msg == null)
@@ -287,71 +269,83 @@ object CsScala
       else
         return msg;
     }
-    
-    def Substring(s:String, startIndex:Int, len:Int):String =
+
+  def Substring(s: String, startIndex: Int, len: Int): String =
     {
       return s.substring(startIndex, len + startIndex);
     }
-    
-    def Substring(s:String, startIndex:Int):String =
+
+  def Substring(s: String, startIndex: Int): String =
     {
       return s.substring(startIndex);
     }
-    
-    //Simulates the C# method of returning an empty string for null nullables
-    def NullableToString(i:java.lang.Integer):String =
+
+  //Simulates the C# method of returning an empty string for null nullables
+  def NullableToString(i: java.lang.Integer): String =
     {
       if (i == null)
         return "";
       else
         return i.toString();
     }
-    def NullableToString(i:java.lang.Float):String =
+  def NullableToString(i: java.lang.Float): String =
     {
       if (i == null)
         return "";
       else
         return i.toString();
     }
-    def NullableToString(i:java.lang.Double):String =
+  def NullableToString(i: java.lang.Double): String =
     {
       if (i == null)
         return "";
       else
         return i.toString();
     }
-    
-    def ExceptionToString(ex:Exception):String =
+
+  def ExceptionToString(ex: Exception): String =
     {
       if (ex == null)
         return "";
-      else
-      {
+      else {
         return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n");
       }
     }
-    
-    def Concat(strs:Traversable[String]):String = strs.mkString("");
-    
- 
-    def IndexOfAny(str:String, chars:Array[Char], startIndex:Int = 0):Int = 
+
+  def Concat(strs: Traversable[String]): String = strs.mkString("");
+
+  def IndexOf(str:String, needle:String, compType:Int):Int =
+  {
+    if (compType == StringComparison.OrdinalIgnoreCase)
+      return str.toLowerCase().indexOf(needle.toLowerCase());
+    else
+      return str.indexOf(needle);
+  }
+  def IndexOfAny(str: String, chars: Array[Char], startIndex: Int = 0): Int =
     {
       var i = startIndex;
-      while (i < str.length())
-      {
+      while (i < str.length()) {
         val char = str.charAt(i)
-        for(c <- chars)
+        for (c <- chars)
           if (c == char)
             return i;
         i += 1;
       }
-      
+
       return -1;
     }
-    
-    @inline def NullCheck(str:String):String = if (str == null) "" else str;
-    @inline def ByteToInt(b:Byte):Int = b & 0xFF;
-    @inline def ByteToString(b:Byte):String = (b & 0xFF).toString();
-      
-    
+
+  @inline def NullCheck(str: String): String = if (str == null) "" else str;
+  @inline def ByteToInt(b: Byte): Int = b & 0xFF;
+  @inline def ByteToString(b: Byte): String = (b & 0xFF).toString();
+
+  //ABCD -> DCBA
+  def SwapEndian(i: Int): Int = ((i & 0xff) << 24) + ((i & 0xff00) << 8) + ((i & 0xff0000) >> 8) + ((i >> 24) & 0xff);
+  //ABCDEFGH -> HGFEDCBA
+  def SwapEndian(i: Long): Long = {
+      ((i & 0xff) << 56) + ((i & 0xff00) << 40) + ((i & 0xff0000) << 24) + ((i & 0xff000000) << 8)
+    + ((i & 0xff00000000L) >> 8) + ((i & 0xff0000000000L) >> 24) + ((i & 0xff000000000000L) >> 40) + ((i & 0xff00000000000000L) >> 56);  
+
+  }
+  def SwapEndian(u:UUID):UUID = new UUID(SwapEndian(u.getMostSignificantBits()), SwapEndian(u.getLeastSignificantBits()));
 }

@@ -26,6 +26,8 @@ class List[T:ClassTag](initialList:ArrayList[T]) extends Traversable[T]
       _list.add(e);
   }
   
+  override def toString():String = _list.toString();
+  
   
   def Count:Int = _list.size();
   def Add(a:T) { _list.add(a); }
@@ -164,7 +166,7 @@ class List[T:ClassTag](initialList:ArrayList[T]) extends Traversable[T]
 
   def Sort(startAt:Int, length:Int, comparer:IComparer[T])
   {
-    Collections.sort(_list.subList(startAt, length), new Cmp2(comparer));
+    Collections.sort(_list.subList(startAt, startAt + length), new Cmp2(comparer));
   }
 
   def Sort()

@@ -19,14 +19,22 @@ class BinaryReader(s:Stream)
     return ret;
   }
   
-  private var _internalBuffer = new Array[Byte](256);
-  private final val _byteBuffer = ByteBuffer.wrap(_internalBuffer);
-  _byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+  private var _internalBuffer:Array[Byte] = null;
+  private var _byteBuffer:ByteBuffer = null;
+  
+  def MakeBuffer(size:Int)
+  {
+    _internalBuffer = new Array[Byte](size);
+    _byteBuffer = ByteBuffer.wrap(_internalBuffer);
+    _byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+  }
+  MakeBuffer(256);
   
   private def FillInternalBuffer(num:Int):Array[Byte] =
   {
     if (num > _internalBuffer.length)
-        _internalBuffer = new Array[Byte](num);
+      MakeBuffer(num);
+        
     
     val numRead = s._input.read(_internalBuffer, 0, num);
     if (numRead != num)
@@ -36,22 +44,17 @@ class BinaryReader(s:Stream)
   
   def Read7BitEncodedInt():Int =
   {
-	var num = 0;
+    var num = 0;
 	var num2 = 0;
-	var num3 = 0;
-	var loop = true;
-	do
+	while (num2 != 35)
 	{
-		if (num2 == 0x23)
-			throw new InvalidOperationException();
-		
-		num3 = this.ReadByte();
-		num |= (num3 & 0x7f) << num2;
+		var b = this.ReadByte();
+		num |= (b & 127).toInt << num2;
 		num2 += 7;
+		if ((b & 128) == 0)
+			return num;
 	}
-	while ((num3 & 0x80) != 0);
-
-	return num;
+	throw new Exception("Format_Bad7BitInt32");
   }
   
   def ReadDouble():Double =
@@ -92,6 +95,8 @@ class BinaryReader(s:Stream)
   def ReadString():String =
   {
     val length = this.Read7BitEncodedInt();
+    if (length == 0)
+      return "";
 	val bytes = this.FillInternalBuffer(length);
 	
 	return new String(bytes, 0, length, "UTF-8");

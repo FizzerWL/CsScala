@@ -16,4 +16,5 @@ class Type(obj:Class[_])
     
     return other.asInstanceOf[Type]._obj == _obj;
   }
+  override def hashCode():Int = _obj.hashCode();
 }

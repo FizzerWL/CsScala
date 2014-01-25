@@ -26,4 +26,12 @@ class Color(a:Byte = 0, r:Byte = 0, g:Byte = 0, b:Byte = 0)
   val R = r;
   val G = g;
   val B = b;
+  
+  override def equals(other:Any):Boolean = {
+    if (!other.isInstanceOf[Color])
+      return false;
+    val o = other.asInstanceOf[Color];
+    return o.A == a && o.R == r && o.G == g && o.B == b;
+  }
+  override def hashCode():Int = a + r + g + b;
 }
