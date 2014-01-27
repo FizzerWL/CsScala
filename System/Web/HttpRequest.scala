@@ -10,19 +10,20 @@ class HttpRequest
 {
 
 	var UrlReferrer:Uri = null;
-	var UserHostAddress:String = "TODO";
-	var UserAgent:String = "TODO";
-	var RawUrl = "";
+	var UserHostAddress:String = null;
+	var UserAgent:String = null;
+	var RawUrl:String = null;
 	var HttpMethod = "GET";
 	final val Cookies = new HttpCookieCollection();
 	final val Headers = new NameValueCollection();
 	final val QueryString = new NameValueCollection(true); 
 	final val Files = new HttpFileCollection();
 	
+	var _fullUrl:String = null;
 	private var _url:Uri = null;
 	def Url:Uri = {
 	  if (_url == null)
-	    _url = new Uri(RawUrl);
+	    _url = new Uri(_fullUrl);
 	  return _url;
 	}
 	

@@ -162,7 +162,7 @@ object Enumerable
   }
   def OrderByDescending[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
   {
-    return a.toBuffer.sortBy(fn);
+    return a.toBuffer.sortBy((o:T) => -fn(o));
   }
   
   def OfType[T,K:ClassTag](a:Traversable[T]):Traversable[K] =

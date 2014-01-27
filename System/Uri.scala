@@ -7,7 +7,13 @@ class Uri(str: String) {
 
   override def toString(): String = _url.toString()
 
-  def Query: String = _url.getQuery();
+  def Query: String = {
+    val q = _url.getQuery();
+    if (q == null || q.length() == 0)
+      return "";
+    else
+      return "?" + q;
+  }
   def Host:String = _url.getHost();
   def PathAndQuery:String = 
     {

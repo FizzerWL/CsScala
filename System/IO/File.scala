@@ -32,6 +32,7 @@ object File {
       var f = new RandomAccessFile(path, "r");
       val ret = new Array[Byte](f.length().toInt);
       f.readFully(ret);
+      f.close();
       return ret;
     }
   def ReadAllText(path: String): String =
@@ -47,6 +48,7 @@ object File {
           fileData.append(String.valueOf(buf, 0, numRead));
       } while (numRead != -1);
       reader.close();
+      freader.close();
       return fileData.toString();
     }
   def WriteAllBytes(path: String, bytes: Array[Byte]) =
@@ -65,8 +67,8 @@ object File {
 
   def GetAttributes(path: String): Int =
     {
-    return if (new File(path).canWrite()) FileAttributes.Normal else FileAttributes.ReadOnly;
-      
+      return if (new File(path).canWrite()) FileAttributes.Normal else FileAttributes.ReadOnly;
+
     }
   def SetAttributes(path: String, attrs: Int) {
     new File(path).setReadable(attrs == FileAttributes.Normal);

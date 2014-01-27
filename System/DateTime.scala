@@ -18,9 +18,11 @@ object DateTime {
   final val MinValueMillis = MinValue._d.getMillis();
   final val MaxValueMillis = MaxValue._d.getMillis();
 
-  final val _patterns = Array("M/d/yyyy HH:mm:ss",
+  private final val _patterns = Array("M/d/yyyy HH:mm:ss",
     "M/d/yyyy hh:mm:ss a",
     "yyyy/MM/dd HH:mm:ss",
+    "E, d MMM yyyy HH:mm:ss",
+    "E, d MMM yyyy HH:mm:ss Z",
     "yyyy/MM/dd",
     "M/d/yyyy",
     "yyyy-MM-dd");
@@ -86,6 +88,8 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
 
   def toString(format: String): String =
     {
+      if (format == null || format.length() == 0)
+        return toString();
       val sdf = format.replace('f', 'S') //milliseconds are f in .net and S in SimpleDateFormat
       return DateTimeFormat.forPattern(sdf).print(_d);
     }
@@ -116,5 +120,5 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   def ToUniversalTime(): DateTime = if (Kind == DateTimeKind.Utc) this else new DateTime(_d.minus(TimeZoneOffsetMillis), extraTicks, DateTimeKind.Utc);
   def ToLocalTime(): DateTime = if (Kind == DateTimeKind.Local) this else new DateTime(_d.plus(TimeZoneOffsetMillis), extraTicks, DateTimeKind.Local);
 
-  def getMillis():Long = if (Kind == DateTimeKind.Utc) _d.getMillis() else _d.getMillis() - TimeZoneOffsetMillis;
+  def getMillis(): Long = if (Kind == DateTimeKind.Utc) _d.getMillis() else _d.getMillis() - TimeZoneOffsetMillis;
 }
