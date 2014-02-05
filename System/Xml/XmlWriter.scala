@@ -4,6 +4,9 @@ import System.Text.StringBuilder
 import System.NotImplementedException
 import javax.xml.stream.XMLOutputFactory
 import java.io.StringWriter
+import org.jdom2.Document
+import org.jdom2.Element
+import org.jdom2.output.XMLOutputter
 
 object XmlWriter {
   def Create(sb: StringBuilder, settings: XmlWriterSettings): XmlWriter =
@@ -15,26 +18,40 @@ object XmlWriter {
 
 }
 
-class XmlWriter(buf: StringWriter) {
-  final val _writer = XMLOutputFactory.newInstance().createXMLStreamWriter(buf);
+//This class avoids using XMLStreamWriter since it doesn't seem to encode newlines within attribute values 
 
+class XmlWriter(buf: StringWriter) {
+  final val _doc = new Document();
+  final var _currElement:Element = null;
+
+  final var _flushed = false;
   def Flush() {
+    if (_flushed)
+      throw new Exception("Cannot flush twice");
+    buf.write(new XMLOutputter().outputString(_doc))
+    _flushed = true;
   }
 
   def WriteAttributeString(localName: String, value: String) {
-    _writer.writeAttribute(localName, value)
+    _currElement.setAttribute(localName, value);
   }
 
   def WriteStartElement(name: String) {
-    _writer.writeStartElement(name)
+    val p = _currElement;
+    _currElement = new Element(name);
+    (if (p == null) _doc else p).addContent(_currElement);
   }
 
   def WriteEndElement() {
-    _writer.writeEndElement();
+    val parent = _currElement.getParent();
+    if (parent == null || parent == _doc)
+      _currElement = null;
+    else
+      _currElement = parent.asInstanceOf[Element];
   }
 
   def WriteString(text: String) {
-    _writer.writeCharacters(text);
+    _currElement.setText(text);
   }
 
 }

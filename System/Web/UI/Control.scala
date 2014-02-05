@@ -46,11 +46,12 @@ abstract class Control {
       else {
         val pos = writer.Position;
         Render(writer);
-        val newCache = new ControlCache(writer.GetSubstring(pos), DateTime.Now.AddMinutes(CacheFor));
+        val newCache = new ControlCache(writer.GetSubstring(pos), DateTime.Now.AddSeconds(CacheFor));
         Control.Cache.put(getClass(), newCache);
-        CacheLock.unlock();
-        println("Releasing lock " + CacheLock);
       }
+      val lock = CacheLock;
+      if (lock.isHeldByCurrentThread())
+        lock.unlock();
     }
   }
   def OnInit(args: EventArgs) {}
@@ -94,14 +95,12 @@ abstract class Control {
     TryGetCache();
     if (_cache == null)
     {
-      println("Getting lock " + CacheLock);
       CacheLock.lock();
       TryGetCache();
     }
   }
-  
-  def TryGetCache()
-  {
+
+  def TryGetCache() {
     _cache = Control.Cache.get(getClass());
     if (_cache != null && _cache.Expires.Ticks < DateTime.Now.Ticks)
       _cache = null;

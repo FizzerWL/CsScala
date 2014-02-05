@@ -41,6 +41,12 @@ class BinaryWriter(_s:Stream)
     WriteInternalBuffer(2);
   }
   
+  def Write(l:Long)
+  {
+    _byteBuffer.putLong(0, l);
+    WriteInternalBuffer(8);
+  }
+  
   def Write(f:Float)
   {
     _byteBuffer.putFloat(0, f);

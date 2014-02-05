@@ -5,6 +5,7 @@ import org.jdom2.input._
 import java.io.StringReader
 import System.Xml.XmlNodeType
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
+import org.jdom2.output.XMLOutputter
 
 object XDocument {
   def Parse(str: String): XDocument =
@@ -22,7 +23,6 @@ object XDocument {
         case e: Comment => new XComment(e)
         case e: Element => new XElement(e)
         case e: Text => new XText(e)
-        //case e: Attribute => new XAttribute(e)
       };
     }
 }
@@ -60,5 +60,5 @@ class XDocument(_doc: Document) extends XContainer(null) {
   {
     return Array[XNode](Root) ++ Root.DescendantNodes();
   }
-
+  override def toString():String = new XMLOutputter().outputString(_doc);
 }

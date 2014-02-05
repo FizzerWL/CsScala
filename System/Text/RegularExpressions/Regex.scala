@@ -23,15 +23,8 @@ class Regex(pattern: String, options: Int = 0) {
       return ret;
     }
 
-  def IsMatch(input: String): Boolean =
-    {
-      return _pattern.matcher(input).matches();
-    }
-
-  def Match(input: String): Match =
-    {
-      return new Match(_pattern.matcher(input));
-    }
+  def IsMatch(input: String): Boolean = _pattern.matcher(input).matches();
+  def Match(input: String): Match = new Match(_pattern.matcher(input));
   
   def Replace(input:String, eval:Match => String):String = { 
     

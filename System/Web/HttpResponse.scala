@@ -15,7 +15,7 @@ class HttpResponse {
 
   final val Cookies = new HttpCookieCollection();
   var StatusCode: Int = 200;
-  var ContentType = "text/html";
+  var ContentType = "text/html; charset=utf-8";
 
   var _writer:HtmlTextWriter = null;
   def Write(s: String) {

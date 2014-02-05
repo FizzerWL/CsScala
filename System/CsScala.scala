@@ -23,15 +23,6 @@ object CsScala {
       return strs.mkString(seperator);
     }
 
-  def ToByteArray(uuid: UUID): Array[Byte] =
-    {
-      val bb = ByteBuffer.wrap(new Array[Byte](16));
-      bb.order(ByteOrder.LITTLE_ENDIAN);
-      bb.putLong(uuid.getMostSignificantBits());
-      bb.putLong(uuid.getLeastSignificantBits());
-      return bb.array();
-    }
-
   def TryParseInt(s: String, out: CsRef[Int]): Boolean =
     {
       try {
@@ -339,13 +330,6 @@ object CsScala {
   @inline def ByteToInt(b: Byte): Int = b & 0xFF;
   @inline def ByteToString(b: Byte): String = (b & 0xFF).toString();
 
-  //ABCD -> DCBA
-  def SwapEndian(i: Int): Int = ((i & 0xff) << 24) + ((i & 0xff00) << 8) + ((i & 0xff0000) >> 8) + ((i >> 24) & 0xff);
-  //ABCDEFGH -> HGFEDCBA
-  def SwapEndian(i: Long): Long = {
-      ((i & 0xff) << 56) + ((i & 0xff00) << 40) + ((i & 0xff0000) << 24) + ((i & 0xff000000) << 8)
-    + ((i & 0xff00000000L) >> 8) + ((i & 0xff0000000000L) >> 24) + ((i & 0xff000000000000L) >> 40) + ((i & 0xff00000000000000L) >> 56);  
-
-  }
-  def SwapEndian(u:UUID):UUID = new UUID(SwapEndian(u.getMostSignificantBits()), SwapEndian(u.getLeastSignificantBits()));
+  def SwapEndian(i: Int): Int = java.lang.Integer.reverseBytes(i);
+  def SwapEndian(i: Long): Long = java.lang.Long.reverseBytes(i);  
 }

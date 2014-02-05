@@ -32,7 +32,8 @@ class StringBuilder(sb:java.lang.StringBuilder)
   }
   def Append(s:String)
   {
-    sb.append(s);
+    if (s != null)
+      sb.append(s);
   }
   def AppendLine(s:String = null)
   {
@@ -47,7 +48,8 @@ class StringBuilder(sb:java.lang.StringBuilder)
   }
   def Append(s:String, offset:Int, len:Int)
   {
-    throw new NotImplementedException();
+    if (s != null)
+      sb.append(s, offset, offset + len);
   }
   
   def Insert(index:Int, c:Char)
@@ -56,7 +58,8 @@ class StringBuilder(sb:java.lang.StringBuilder)
   }
   def Insert(index:Int, s:String)
   {
-    sb.insert(index, s);
+    if (s != null)
+      sb.insert(index, s);
   }
   
   def Length:Int =

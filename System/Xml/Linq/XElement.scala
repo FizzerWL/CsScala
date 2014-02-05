@@ -3,6 +3,7 @@ package System.Xml.Linq
 import org.jdom2._
 import System.Xml.XmlNodeType
 import System.NotImplementedException
+import org.jdom2.output.XMLOutputter
 
 class XElement(elem:Element) extends XContainer(elem)
 {
@@ -42,4 +43,6 @@ class XElement(elem:Element) extends XContainer(elem)
   {
     throw new NotImplementedException("stub");
   }
+  override def toString():String = new XMLOutputter().outputString(elem);
+
 }
