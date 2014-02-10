@@ -294,12 +294,12 @@ object CsScala {
         return i.toString();
     }
 
-  def ExceptionToString(ex: Exception): String =
+  def ExceptionToString(ex: Throwable): String =
     {
       if (ex == null)
         return "";
       else {
-        return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n");
+        return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n") /*+  "\n\n" + ExceptionToString(ex.getCause()) */;
       }
     }
 

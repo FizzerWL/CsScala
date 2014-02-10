@@ -8,14 +8,8 @@ import java.io._;
 
 object HttpWebRequest
 {
-  def Create(url:String):WebRequest =
-  {
-    return Create(new Uri(url));
-  }
-  def Create(url:Uri):WebRequest =
-  {
-    return new HttpWebRequest(url._url.openConnection().asInstanceOf[HttpURLConnection])
-  }
+  def Create(url:String):WebRequest = Create(new Uri(url));
+  def Create(url:Uri):WebRequest = new HttpWebRequest(url._url.openConnection().asInstanceOf[HttpURLConnection])
 }
 class HttpWebRequest(_req:HttpURLConnection) extends WebRequest 
 {
@@ -35,13 +29,10 @@ class HttpWebRequest(_req:HttpURLConnection) extends WebRequest
   
   var CookieContainer:CookieContainer = null;
   
-  def GetResponse():WebResponse =
-  {
-    return new HttpWebResponse(_req, CookieContainer);
-  }
-  
-  def GetRequestStream():Stream =
-  {
-    return new Stream(null, _req.getOutputStream(), null, null);
-  }
+  def GetResponse():WebResponse = new HttpWebResponse(_req, CookieContainer, false);
+  def GetRequestStream():Stream = 
+    {
+      _req.setDoOutput(true);
+      return new Stream(null, _req.getOutputStream(), null, null);
+    }
 }

@@ -86,11 +86,17 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
 
   override def toString(): String = DateTime._dateFormat.print(_d);
 
+  //Note: This toString implementation only supports a small subset of possible format strings.  Be sure to test any you need extensively.
   def toString(format: String): String =
     {
       if (format == null || format.length() == 0)
         return toString();
+      
+      if (format == "d")
+        return ToShortDateString();
+      
       val sdf = format.replace('f', 'S') //milliseconds are f in .net and S in SimpleDateFormat
+        .replace("ddd", "E"); //day of week is ddd in .net, and E in SimpleDateFormat. (note this will break other strings like "dddd", which are not supported) 
       return DateTimeFormat.forPattern(sdf).print(_d);
     }
   def ToShortDateString(): String = Year + "/" + Month + "/" + Day;

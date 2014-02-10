@@ -5,6 +5,7 @@ import System.Uri
 import System.CsScala
 import System.IO.Stream
 import java.net.URI
+import System.IO.MemoryStream
 
 class HttpRequest
 {
@@ -41,7 +42,12 @@ class HttpRequest
 	var _inputStream:Stream = null;
 	def InputStream:Stream = {
 	  if (_inputStream == null)
-	    _inputStream = GetInputStream();
+	  {
+	    if (GetInputStream == null)
+	      _inputStream = new MemoryStream(Array[Byte]());
+	    else
+	      _inputStream = GetInputStream();
+	  }
 
 	  return _inputStream;
 	}

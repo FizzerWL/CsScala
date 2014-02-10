@@ -38,7 +38,7 @@ class Regex(pattern: String, options: Int = 0) {
         
         
         ret.append(input, strindex, start);
-        ret.append(eval(new Match(m)));
+        ret.append(eval(new Match(m, false)));
 
         strindex = end;
       }

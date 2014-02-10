@@ -5,11 +5,11 @@ import java.util.HashMap
 import java.util.ArrayList
 
 //Unfortunately, Matcher does not provide a way to get the group names. The only way to know what the group names are is guess and check if it throws, so this algorithm is a bit inefficient.  It could be made simpler by using reflection to read the group names.
-class GroupCollection(matcher: Matcher) {
+class GroupCollection(matcher: Matcher, findNext:Boolean) {
 
   var _currIndex = 0;
 
-  val _isEmpty = !matcher.find();
+  val _isEmpty = if (findNext) !matcher.find() else false;
 
   private def tryGetGroupName(name: String): String =
     {
@@ -33,6 +33,9 @@ class GroupCollection(matcher: Matcher) {
 
   def apply(name: String): Group =
     {
+      if (!findNext)
+        return new Group(tryGetGroupName(name));
+      
       if (_isEmpty)
         throw new Exception("Regex did not match");
 
@@ -53,6 +56,9 @@ class GroupCollection(matcher: Matcher) {
       throw new Exception("never");
     }
   def apply(index: Int): Group = {
+    if (!findNext)
+      return new Group(matcher.group(index));
+    
     if (_isEmpty)
       throw new Exception("Regex did not match");
 
