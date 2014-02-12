@@ -10,7 +10,7 @@ CsScala aims to support 90% of an average C# codebase.  You should expect going 
 
 # Limitations
 
-Flat-out not supported: goto, yield, unsafe code, operator overloads, implicit cast operators, overloaded constructors, events.
+Flat-out not supported: goto, yield, unsafe code, operator overloads, implicit cast operators, overloaded constructors, events, initializer blocks.
 
 ### Static Constructors
 
@@ -55,9 +55,6 @@ In Scala, all constructor arguments are visible throughout the class's implement
 
 ### Can't define overloaded functions with default parameters
 C#'s method overloading is much more advanced than Scala's.  Scala does not allow using default parameters and overloading together.
-
-### Can't use "this" in initializer blocks
-Both C# and Scala allow defining an initializer block after an object allocation that initializes its fields/properties.  However, C# allows the "this" keyword to access the current scope whereas Scala does not.
 
 ### Base class libraries
 CsScala comes with an implementation of many BCL functions.  The BCL is quite large, so obviously not all functions/classes are implemented.  You should browse through the provided code to see if everything your code references is implemented.  You may have to implement the missing functions yourself.
