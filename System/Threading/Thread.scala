@@ -24,7 +24,7 @@ class Thread(_t: java.lang.Thread) {
 
   var Name: String = _t.getName();
   def ManagedThreadId: Int = _t.getId().toInt;
-  val IsAlive: Boolean = _t.isAlive(); //.getState() != java.lang.Thread.State.TERMINATED;
+  def IsAlive: Boolean = _t.isAlive(); //.getState() != java.lang.Thread.State.TERMINATED;
 
   def Start() = _t.start();
 

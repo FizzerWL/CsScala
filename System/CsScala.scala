@@ -299,7 +299,7 @@ object CsScala {
       if (ex == null)
         return "";
       else {
-        return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n") /*+  "\n\n" + ExceptionToString(ex.getCause()) */;
+        return ex.getClass().getName() + ": " + ex.getMessage() + "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n") + (if (ex.getCause() == ex) "" else ("\n\n" + ExceptionToString(ex.getCause())));
       }
     }
 

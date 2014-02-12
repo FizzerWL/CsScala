@@ -21,13 +21,17 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) {
       return out.Value != null;
     }
 
+  def TryAdd(key: K, value: V): Boolean =
+    {
+      return _map.putIfAbsent(key, value) == null;
+    }
+
   def GetOrAdd(k: K, add: K => V): V =
     {
       var ret = _map.get(k);
       if (ret != null)
         return ret;
-      else
-      {
+      else {
         ret = add(k);
         val prev = _map.putIfAbsent(k, ret);
         if (prev != null)
@@ -45,10 +49,9 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) {
         return r;
     }
 
-  def AddOrUpdate(k: K, add: V, update: (K, V) => V) 
-  {
+  def AddOrUpdate(k: K, add: V, update: (K, V) => V) {
     val item = _map.putIfAbsent(k, add);
-    
+
     if (item != null)
       _map.put(k, update(k, item));
   }

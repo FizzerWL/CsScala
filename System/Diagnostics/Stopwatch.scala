@@ -13,12 +13,8 @@ class Stopwatch
 {
   var _started = java.lang.System.nanoTime();
   
-  def Elapsed:TimeSpan = 
-  {
-    return TimeSpan.FromMilliseconds((java.lang.System.nanoTime() - _started) / 1000000.0);
-  }
-  
-  val ElapsedMilliseconds:Long = 0;
+  def Elapsed:TimeSpan = TimeSpan.FromMilliseconds((java.lang.System.nanoTime() - _started) / 1000000.0);
+  def ElapsedMilliseconds:Long = (java.lang.System.nanoTime() - _started) / 1000000L;
   
   def Restart()
   {
