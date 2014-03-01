@@ -25,7 +25,7 @@ class HttpRequest
 	def Url:Uri = {
 	  if (_url == null)
 	    _url = new Uri(_fullUrl);
-	  return _url;
+	  return _url; 
 	}
 	
 	var _form:NameValueCollection = null;

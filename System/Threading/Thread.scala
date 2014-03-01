@@ -22,7 +22,9 @@ class Thread(_t: java.lang.Thread) {
     this(new java.lang.Thread(new ThreadRunnable(fn)));
   }
 
-  var Name: String = _t.getName();
+  def Name: String = _t.getName();
+  def Name_=(v:String) { _t.setName(v); }
+  
   def ManagedThreadId: Int = _t.getId().toInt;
   def IsAlive: Boolean = _t.isAlive(); //.getState() != java.lang.Thread.State.TERMINATED;
 

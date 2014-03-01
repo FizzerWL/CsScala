@@ -142,6 +142,14 @@ namespace Blargh
                 Console.WriteLine(3);
 
             }
+
+            while (true)
+            {
+                switch (4)
+                {
+                    case 4: break;
+                }
+            }
         }
     }
 }", @"
@@ -206,6 +214,14 @@ object Utilities
             }
         }
 
+        while (true)
+        {
+            4 match
+            {
+                case 4 =>
+                case _ =>
+            }
+        }
     }
 }");
         }
@@ -2166,14 +2182,14 @@ package Blargh;
 
 object Utilities
 {
-    def ToQueue[T](array:Traversable[T]):scala.collection.mutable.Queue[T] =
+    def ToQueue[T](array:Traversable[T]):System.Collections.Generic.Queue[T] =
     {
-        var queue:scala.collection.mutable.Queue[T] = new scala.collection.mutable.Queue[T]();
+        var queue:System.Collections.Generic.Queue[T] = new System.Collections.Generic.Queue[T]();
         for (a <- array)
         {
-            queue.enqueue(a);
+            queue.Enqueue(a);
         }
-        queue.dequeue();
+        queue.Dequeue();
         Blargh.Utilities.Foo[Long]();
         return queue;
     }
@@ -2230,11 +2246,11 @@ object Utilities
 {
     def SomeFunction()
     {
-        var queue:scala.collection.mutable.Queue[Int] = new scala.collection.mutable.Queue[Int]();
-        queue.enqueue(4);
-        queue.enqueue(2);
-        System.Console.WriteLine(queue.dequeue());
-        queue.clear();
+        var queue:System.Collections.Generic.Queue[Int] = new System.Collections.Generic.Queue[Int](10);
+        queue.Enqueue(4);
+        queue.Enqueue(2);
+        System.Console.WriteLine(queue.Dequeue());
+        queue.Clear();
 
         var list:System.Collections.Generic.List[String] = new System.Collections.Generic.List[String](3);
         list.Add(""Three"");

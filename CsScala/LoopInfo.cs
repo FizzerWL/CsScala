@@ -14,24 +14,24 @@ namespace CsScala
             if (!IsLoopSyntax(loopSyntax))
                 throw new Exception("LoopInfo constructed on non-loop");
 
-            Recurse(loopSyntax);
+            Recurse(loopSyntax, false);
         }
 
         private bool HasContinue;
         private bool HasBreak;
 
-        void Recurse(SyntaxNode node)
+        void Recurse(SyntaxNode node, bool isInSwitch)
         {
             if (node is ContinueStatementSyntax)
                 HasContinue = true;
-            else if (node is BreakStatementSyntax)
+            else if (node is BreakStatementSyntax && !isInSwitch) //ignore break statements in a switch, since they apply to breaking the switch and not the loop
                 HasBreak = true;
             else
             {
                 foreach (var child in node.ChildNodes())
                 {
                     if (!IsLoopSyntax(child)) //any breaks or continues in child loops will belong to that loop, so we can skip recusing into them.
-                        Recurse(child);
+                        Recurse(child, isInSwitch || child is SwitchStatementSyntax);
                 }
             }
         }

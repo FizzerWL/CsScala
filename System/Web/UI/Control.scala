@@ -7,6 +7,8 @@ import com.google.common.cache.CacheBuilder
 import System.DateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantLock
+import java.util.ArrayList
+import java.util.concurrent.TimeUnit
 
 class ControlCache(html: String, expires: DateTime) {
   val Html = html;
@@ -88,14 +90,17 @@ abstract class Control {
   }
 
   var _cache: ControlCache = null;
-  def DetermineCache() {
+  def DetermineCache(locksOwn:ArrayList[ReentrantLock]) {
     if (CacheFor == 0)
       return ;
 
     TryGetCache();
     if (_cache == null)
     {
-      CacheLock.lock();
+      val lock = CacheLock;
+      if (!lock.tryLock(10000, TimeUnit.MILLISECONDS))
+        throw new Exception("Gave up waiting for lock");
+      locksOwn.add(lock);
       TryGetCache();
     }
   }
