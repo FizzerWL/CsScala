@@ -7,10 +7,12 @@ import System.Web.HttpCookie
 import java.util.HashMap
 import com.google.common.cache.Cache
 import java.util.UUID
+import System.Net.Dns
 
 object HttpSessionState {
   final val Sessions = CacheBuilder.newBuilder().expireAfterAccess(20, TimeUnit.MINUTES).build().asInstanceOf[Cache[String, HashMap[String, Any]]];
 
+  final val SessionKey = "jses_" + Dns.GetHostName();
 }
 
 class HttpSessionState {
@@ -20,7 +22,7 @@ class HttpSessionState {
 
       val ctx = HttpContext.Current;
 
-      val cookie = ctx.Request.Cookies("jses");
+      val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
       if (cookie == null)
         return null;
@@ -34,10 +36,10 @@ class HttpSessionState {
   def update(k: String, v: Any) {
     val ctx = HttpContext.Current;
 
-    var cookie = ctx.Request.Cookies("jses");
+    var cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie == null) {
-      cookie = new HttpCookie("jses", UUID.randomUUID().toString());
+      cookie = new HttpCookie(HttpSessionState.SessionKey, UUID.randomUUID().toString());
       ctx.Response.Cookies.Add(cookie);
     }
 
@@ -53,7 +55,7 @@ class HttpSessionState {
 
   def Renew(ctx: HttpContext) {
 
-    val cookie = ctx.Request.Cookies("jses");
+    val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie != null)
       HttpSessionState.Sessions.getIfPresent(cookie.Value)
@@ -63,7 +65,7 @@ class HttpSessionState {
   def Remove(k: String) {
     val ctx = HttpContext.Current;
 
-    val cookie = ctx.Request.Cookies("jses");
+    val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie != null) {
       val cache = HttpSessionState.Sessions.getIfPresent(cookie.Value);

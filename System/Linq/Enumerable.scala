@@ -386,6 +386,11 @@ object Enumerable
     return a.drop(numToSkip);
   }
   
+  def Reverse[T](a:Traversable[T]):Traversable[T] =
+  {
+    return a.toBuffer.reverse;
+  }
+  
 }
 
 

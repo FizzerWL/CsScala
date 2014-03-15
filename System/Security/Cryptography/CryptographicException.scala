@@ -1,6 +1,6 @@
 package System.Security.Cryptography
 
-class CryptographicException extends java.lang.Exception
+class CryptographicException(ex:Exception) extends java.lang.Exception(ex)
 {
 
 }

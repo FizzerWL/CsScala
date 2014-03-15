@@ -1532,6 +1532,7 @@ namespace Blargh
             Foo(3);
             int? n = (int?)null;
 			n.ToString();
+            var s = ""hi "" + n;
         }
 
         public static int? Foo(int? i)
@@ -1560,6 +1561,7 @@ object Utilities
         Blargh.Utilities.Foo(3);
         var n:java.lang.Integer = null;
 		System.CsScala.NullableToString(n);
+        var s:String = ""hi "" + System.CsScala.NullCheck(n);
     }
     def Foo(i:java.lang.Integer):java.lang.Integer =
     {

@@ -43,6 +43,8 @@ namespace CsScala
                 methodName = "equals";
             else if (methodName == "GetHashCode")
                 methodName = "hashCode";
+            else if (methodName == "Main")
+                methodName = "main";
 
             writer.Write(methodName);
 

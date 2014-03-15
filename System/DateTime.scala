@@ -99,7 +99,7 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
         .replace("ddd", "E"); //day of week is ddd in .net, and E in SimpleDateFormat. (note this will break other strings like "dddd", which are not supported) 
       return DateTimeFormat.forPattern(sdf).print(_d);
     }
-  def ToShortDateString(): String = Year + "/" + Month + "/" + Day;
+  def ToShortDateString(): String = DateTimeFormat.forPattern("M/d/yyyy").print(_d);
 
   def ToLongString(): String = toString() + " Ticks=" + Ticks + ", Kind=" + DateTimeKind.toString(Kind) + ", ms=" + _d.getMillis();
 
@@ -109,6 +109,7 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   def Hour: Int = _d.getChronology().hourOfDay().get(_d.getMillis());
   def Minute: Int = _d.getChronology().minuteOfHour().get(_d.getMillis());
   def Second: Int = _d.getChronology().secondOfMinute().get(_d.getMillis());
+  def Millisecond: Int = _d.getChronology().millisOfSecond().get(_d.getMillis());
 
   def Subtract(other: DateTime): TimeSpan = new TimeSpan(this.Ticks - other.Ticks);
   def Subtract(other: TimeSpan): DateTime = new DateTime(this.Ticks - other.Ticks, Kind);

@@ -46,6 +46,10 @@ class StringBuilder(sb:java.lang.StringBuilder)
   {
     sb.append(i);
   }
+  def Append(i:Double)
+  {
+    sb.append(i);
+  }
   def Append(s:String, offset:Int, len:Int)
   {
     if (s != null)

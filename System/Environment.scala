@@ -4,10 +4,8 @@ import java.util.Date
 
 object Environment 
 {
-  def TickCount:Int =
-  {
-    return new Date().getTime().toInt;
-  }
+  def TickCount:Int = new Date().getTime().toInt;
+  def CurrentDirectory:String = java.lang.System.getProperty("user.dir");
   
   final val NewLine:String = "\n";
 
