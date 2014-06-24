@@ -4,11 +4,22 @@ import System.CsRef
 import System.NotImplementedException
 import java.util.concurrent.ConcurrentHashMap
 import scala.collection.JavaConverters._
+import System.Collections.Generic.KeyValuePair
 
-class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) {
+class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversable[KeyValuePair[K, V]] {
   def this() {
     this(new ConcurrentHashMap[K, V]());
   }
+
+  def foreach[U](fn: KeyValuePair[K, V] => U) {
+    val it = _map.entrySet().iterator();
+    while (it.hasNext())
+    {
+      val e = it.next();
+      fn(new KeyValuePair(e.getKey(), e.getValue()));
+    }
+  }
+
   def TryGetValue(k: K, out: CsRef[V]): Boolean =
     {
       out.Value = _map.get(k);
@@ -59,9 +70,14 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) {
   def Keys: Traversable[K] = {
     return _map.keySet().asScala;
   }
+  def Values:Traversable[V] = {
+    return _map.values().asScala;
+  }
 
   def Clear() {
     _map.clear();
   }
+
+  def Count: Int = _map.size();
 
 }

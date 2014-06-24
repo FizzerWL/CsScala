@@ -27,12 +27,19 @@ namespace CsScala
                 if (catchBlock == null)
                     throw new Exception("throw statement with no exception name, and could not locate a catch block " + Utility.Descriptor(statement));
 
-                var exName = WriteIdentifierName.TransformIdentifier(catchBlock.Declaration.Identifier.ValueText);
+                if (catchBlock.Declaration == null)
+                    writer.Write("__ex");
+                else
+                {
+                    var exName = WriteIdentifierName.TransformIdentifier(catchBlock.Declaration.Identifier.ValueText);
 
-                if (string.IsNullOrWhiteSpace(exName))
-                    exName = "__ex";
+                    if (string.IsNullOrWhiteSpace(exName))
+                        writer.Write("__ex");
+                    else
+                        writer.Write(exName);
+                }
 
-                writer.Write(exName);
+                
             }
             else
                 Core.Write(writer, statement.Expression);

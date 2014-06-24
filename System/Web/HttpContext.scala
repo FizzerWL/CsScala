@@ -20,6 +20,7 @@ class HttpContext
   final val Response = new HttpResponse();
   final val Items = new HttpItems();
   final val Session = new HttpSessionState();
+  final var Log:StringBuffer = null;
 }
 
 class HttpItems {
@@ -30,4 +31,5 @@ class HttpItems {
   def Remove(key:String) { _hash.remove(key); }
   
   def apply(key:String):Any = _hash.get(key);
+  def update(key:String, value:Any) { _hash.put(key, value); }
 }

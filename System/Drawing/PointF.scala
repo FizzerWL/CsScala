@@ -15,4 +15,6 @@ class PointF(x:Float = 0, y:Float = 0)
 	    return o.X == X && o.Y == Y;
 	  }
 	override def hashCode():Int = X.toInt + Y.toInt;
+	
+	override def toString():String = "{" + X + "," + Y + "}";
 }

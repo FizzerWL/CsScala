@@ -39,6 +39,10 @@ class HashSet[T] extends Traversable[T]
     return _set.size;
   }
   
+  def Clear() {
+    _set.clear();
+  }
+  
   override def equals(other:Any):Boolean = {
     if (!other.isInstanceOf[HashSet[T]])
       return false;

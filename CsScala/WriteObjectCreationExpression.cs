@@ -23,7 +23,7 @@ namespace CsScala
                 //new object() results in the CsObject type being made.  This is only really useful for locking
                 writer.Write("new CsObject()");
             }
-            else if (type.OriginalDefinition.As<NamedTypeSymbol>().SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
+            else if (type.OriginalDefinition is NamedTypeSymbol && type.OriginalDefinition.As<NamedTypeSymbol>().SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
             {
                 //new'ing up a Nullable<T> has special sematics in C#.  If we're calling this with no parameters, just use null. Otherwise just use the parameter.
                 if (expression.ArgumentList.Arguments.Count == 0)

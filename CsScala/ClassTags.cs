@@ -87,7 +87,7 @@ namespace CsScala
                 }
 
                 //invokeTags is now filled with the invoked methods tags.  See if those line up with our own tags.
-                var tagIndexes = invokeTags.Select(o => invokeMethod.TypeParameters.IndexOf(invokeMethod.TypeParameters.Single(z => z.ToString() == o)));
+                var tagIndexes = invokeTags.Select(o => invokeMethod.TypeParameters.IndexOf(invokeMethod.TypeParameters.FirstOrDefault(z => z.ToString() == o))).Where(o => o != -1);
                 foreach (var retTag in tagIndexes.Select(o => invokeMethod.TypeArguments[o].ToString()))
                     ret.Add(retTag);
             }

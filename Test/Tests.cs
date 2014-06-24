@@ -2554,10 +2554,10 @@ object Utilities
     def SomeFunction()
     {
         var i:Int = -3;
-        System.Console.WriteLine(""false "" + Blargh.Utilities.IsFour(i));
+        System.Console.WriteLine(""false "" + System.CsScala.BooleanToString(Blargh.Utilities.IsFour(i)));
         i += 6;
         var b:Boolean = Blargh.Utilities.IsFour(i);
-        System.Console.WriteLine(""true "" + b);
+        System.Console.WriteLine(""true "" + System.CsScala.BooleanToString(b));
         Blargh.Utilities.IsFour(5);
     }
 
@@ -3168,6 +3168,41 @@ object Utilities
     def SomeFunction():Byte =
     {
         return 200.toByte;
+    }
+}");
+        }
+
+        [TestMethod]
+        public void BoolToString()
+        {
+            //.net produces "True" and "False" when converting booleans to strings, scala gives lowercase versions.
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+
+namespace Blargh
+{
+    public static class Utilities
+    {
+        public static void Foo()
+        {
+            var b = true;
+            var s = """" + b;
+            s = b + """";
+            s = b.ToString();
+        }
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Utilities
+{
+    def Foo()
+    {
+        var b:Boolean = true;
+        var s:String = """" + System.CsScala.BooleanToString(b);
+        s = System.CsScala.BooleanToString(b) + """";
+        s = System.CsScala.BooleanToString(b);
     }
 }");
         }

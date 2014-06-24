@@ -122,6 +122,12 @@ namespace CsScala
                             Core.Write(writer, e);
                             writer.Write(")");
                         }
+                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && !(e is BinaryExpressionSyntax) && type.Type.SpecialType == SpecialType.System_Boolean)
+                        {
+                            writer.Write("System.CsScala.BooleanToString(");
+                            Core.Write(writer, e);
+                            writer.Write(")");
+                        }
                         else
                             Core.Write(writer, e);
                     };
