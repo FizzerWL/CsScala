@@ -2,7 +2,7 @@ package System
 
 class Random 
 {
-  val _rnd = new java.util.Random();
+  val _rnd = new java.security.SecureRandom();
   def Next(max:Int):Int =
   {
     return _rnd.nextInt(max);

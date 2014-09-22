@@ -30,7 +30,7 @@ class HttpWebRequest(_req:HttpURLConnection) extends WebRequest
   var CookieContainer:CookieContainer = null;
   
   def GetResponse():WebResponse = new HttpWebResponse(_req, CookieContainer, false);
-  def GetRequestStream():Stream = 
+  def GetRequestStream(): Stream = 
     {
       _req.setDoOutput(true);
       return new Stream(null, _req.getOutputStream(), null, null);
