@@ -4,9 +4,10 @@ import System.NotImplementedException
 import System.DateTime
 import System.Web.UI.HtmlTextWriter
 
-class RedirectException(url:String) extends java.lang.Exception
+class RedirectException(url:String, httpCode:Int = 302) extends java.lang.Exception
 {
   final val Url = url;
+  final val HttpCode = httpCode;
 }
 
 class ResponseEndException extends java.lang.Exception { }

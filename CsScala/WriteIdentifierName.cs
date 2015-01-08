@@ -33,6 +33,9 @@ namespace CsScala
 
         public static string TransformIdentifier(string ident)
         {
+            if (ident.StartsWith("@"))
+                return TransformIdentifier(ident.Substring(1));
+
             if (ident.EndsWith("_"))
                 return ident + "cs";
 

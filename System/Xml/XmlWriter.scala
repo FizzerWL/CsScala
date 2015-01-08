@@ -7,6 +7,7 @@ import java.io.StringWriter
 import org.jdom2.Document
 import org.jdom2.Element
 import org.jdom2.output.XMLOutputter
+import org.jdom2.output.Format
 
 object XmlWriter {
   def Create(sb: StringBuilder, settings: XmlWriterSettings): XmlWriter =
@@ -28,7 +29,7 @@ class XmlWriter(buf: StringWriter) {
   def Flush() {
     if (_flushed)
       throw new Exception("Cannot flush twice");
-    buf.write(new XMLOutputter().outputString(_doc))
+    buf.write(new XMLOutputter(Format.getCompactFormat().setOmitDeclaration(true)).outputString(_doc))
     _flushed = true;
   }
 

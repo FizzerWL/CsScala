@@ -156,6 +156,14 @@ object Enumerable
   {
     return a.toBuffer.sortBy(fn);
   }
+  def OrderBy_Double[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
+  {
+    return a.toBuffer.sortBy(fn);
+  }
+  def OrderBy_Long[T](a:Traversable[T], fn:T=>Long):Traversable[T] =
+  {
+    return a.toBuffer.sortBy(fn);
+  }
   def OrderBy_String[T](a:Traversable[T], fn:T=>String):Traversable[T] =
   {
     return a.toBuffer.sortBy(fn);
@@ -391,6 +399,30 @@ object Enumerable
     return a.toBuffer.reverse;
   }
   
+  def Average[T](a:Traversable[T], fn:T=>Double):Double = 
+  {
+    var sum:Double = 0;
+    var count:Int = 0;
+    for (e <- a)
+    {
+      sum += fn(e);
+      count += 1;
+    }
+    return sum / count;
+  }
+  
+  
+  def Average[T](a:Traversable[Double]):Double = 
+  {
+    var sum:Double = 0;
+    var count:Int = 0;
+    for (e <- a)
+    {
+      sum += e;
+      count += 1;
+    }
+    return sum / count;
+  }
 }
 
 

@@ -14,16 +14,12 @@ class Uri(str: String) {
     else
       return "?" + q;
   }
+  
+  def LocalPath:String = _url.getPath();
+  def PathAndQuery:String = _url.getPath() + Query;
   def Host:String = _url.getHost();
-  def PathAndQuery:String = 
-    {
-      val q = _url.getQuery();
-      if (q == null)
-        return _url.getPath();
-      else
-        return _url.getPath() + "?" + q;
-    }
   def Authority:String = _url.getAuthority();
+  def Scheme:String = _url.getProtocol();
   
   override def equals(other:Any):Boolean = 
   {

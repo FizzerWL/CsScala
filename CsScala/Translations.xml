@@ -22,6 +22,7 @@
   <Method SourceObject="System.String" Match="IndexOf" ArgumentTypes="string System.StringComparison" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="IndexOf" ArgumentTypes="string int System.StringComparison" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="IndexOfAny" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.String" Match="LastIndexOf" ReplaceWith="lastIndexOf" />
   <Method SourceObject="System.String" Match="Trim" ReplaceWith="trim" />
   <Method SourceObject="System.String" Match="Trim" ArgumentTypes="char[]" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="TrimEnd" ExtensionNamespace="System.CsScala" />
@@ -72,10 +73,10 @@
   <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_String">
     <MatchTypeParameter TypeParameterIndex="1" Match="string" />
   </Method>
-  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Long">
     <MatchTypeParameter TypeParameterIndex="1" Match="long" />
   </Method>
-  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Double">
     <MatchTypeParameter TypeParameterIndex="1" Match="double" />
   </Method>
   <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">

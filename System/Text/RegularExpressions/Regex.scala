@@ -7,6 +7,7 @@ object Regex {
   def Replace(input:String, pattern:String, eval: Match => String): String = new Regex(pattern).Replace(input, eval);
   def Replace(input:String, pattern:String, replace: String): String = input.replaceAll(pattern, replace);
   def IsMatch(input:String, pattern:String, opts:Int):Boolean = new Regex(pattern, opts).IsMatch(input);
+  def Escape(input:String):String = Pattern.quote(input);
 }
 
 class Regex(pattern: String, options: Int = 0) {
@@ -23,7 +24,7 @@ class Regex(pattern: String, options: Int = 0) {
       return ret;
     }
 
-  def IsMatch(input: String): Boolean = _pattern.matcher(input).matches();
+  def IsMatch(input: String): Boolean = _pattern.matcher(input).find();
   def Match(input: String): Match = new Match(_pattern.matcher(input));
   
   def Replace(input:String, eval:Match => String):String = { 

@@ -19,8 +19,8 @@ class NameValueCollection(caseInsensitive:Boolean = false)
       return _map.get(name);
   }
   
-  def AllKeys:Traversable[String] = {
-    return _map.keySet().asScala;
+  def AllKeys:Array[String] = {
+    return _map.keySet().asScala.toArray;
   }
   
   def update(name:String, value:String)

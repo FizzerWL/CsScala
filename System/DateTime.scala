@@ -29,6 +29,13 @@ object DateTime {
 
   final val _parser = new DateTimeFormatterBuilder().append(null, _patterns.map(DateTimeFormat.forPattern(_).getParser())).toFormatter();
   def Parse(s: String): DateTime = { val t = _parser.parseMillis(s); new DateTime(new Instant(t + _currZone.getOffset(t))) };
+  
+  def TryParse(s:String, out:CsRef[System.DateTime]):Boolean = {
+    try { out.Value = Parse(s); return true; }
+    catch {
+      case e: IllegalArgumentException => return false; 
+    }
+  }
 
   def Now: DateTime = new DateTime(Instant.now(), 0, DateTimeKind.Utc).ToLocalTime();
 

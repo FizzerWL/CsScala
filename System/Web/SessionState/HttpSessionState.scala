@@ -40,6 +40,7 @@ class HttpSessionState {
 
     if (cookie == null) {
       cookie = new HttpCookie(HttpSessionState.SessionKey, UUID.randomUUID().toString());
+      cookie.HttpOnly = true;
       ctx.Response.Cookies.Add(cookie);
     }
 
