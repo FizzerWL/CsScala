@@ -296,5 +296,10 @@ namespace CsScala
                     return false;
             }
         }
+
+        public static bool IsGenericType(this NamedTypeSymbol symbolOpt)
+        {
+            return symbolOpt != null && symbolOpt.IsGenericType && TypeProcessor.TypeArguments(symbolOpt).Any();
+        }
     }
 }

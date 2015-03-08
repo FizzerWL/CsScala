@@ -251,6 +251,7 @@ object CsScala {
     }
   def IsLetterOrDigit(c: Char): Boolean = c.isLetterOrDigit;
   def IsDigit(c: Char): Boolean = c.isDigit;
+  def IsLetter(c: Char):Boolean = c.isLetter;
 
   def ExceptionMessage(e: Exception): String =
     {

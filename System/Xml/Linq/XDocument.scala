@@ -6,17 +6,21 @@ import java.io.StringReader
 import System.Xml.XmlNodeType
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
 import org.jdom2.output.XMLOutputter
+import System.Xml.XmlException
 
 object XDocument {
 
-  
-  private final val _builder = new ThreadLocal[SAXBuilder]()
-  { override def initialValue():SAXBuilder = new SAXBuilder(); };
-  
-  
+  private final val _builder = new ThreadLocal[SAXBuilder]() { override def initialValue(): SAXBuilder = new SAXBuilder(); };
+
   val Outputter = new XMLOutputter();
 
-  def Parse(str: String): XDocument = new XDocument(_builder.get().build(new StringReader(str)));
+  def Parse(str: String): XDocument = {
+    try {
+      return new XDocument(_builder.get().build(new StringReader(str)));
+    } catch {
+      case ex: org.jdom2.input.JDOMParseException => throw new XmlException(ex.getMessage(), ex);
+    }
+  }
   def Load(str: String): XDocument = new XDocument(_builder.get().build(str));
 
   def Factory(content: Content): XNode =
@@ -32,6 +36,9 @@ object XDocument {
 class XDocument(_doc: Document) extends XContainer(null) {
   def this() {
     this(new Document());
+  }
+  def this(root:XElement) {
+    this(new Document(root._elem));
   }
 
   final val Root: XElement = new XElement(_doc.getRootElement());

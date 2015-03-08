@@ -5,6 +5,7 @@ using System.Reflection;
 using CsScala;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test;
+using System.Threading.Tasks;
 
 namespace UnitTestProject1
 {
@@ -367,7 +368,7 @@ class Box
     }
     def SetOnly:Float =
     {
-        throw new Exception(""No setter defined"");
+        throw new Exception(""No getter defined"");
     }
     def SetOnly_=(value:Float) =
     {
@@ -3203,6 +3204,43 @@ object Utilities
         var s:String = """" + System.CsScala.BooleanToString(b);
         s = System.CsScala.BooleanToString(b) + """";
         s = System.CsScala.BooleanToString(b);
+    }
+}");
+        }
+
+        /// <summary>
+        /// In .net, the Task class offers both a generic and non-generic version with the same name and namespace.  The JVM does not allow this, so we need to rename the non-generic one to NonGenericTask
+        /// </summary>
+        [TestMethod]
+        public void TaskVsNonGenericTask()
+        {
+            
+
+
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+using System.Threading.Tasks;
+
+namespace Blargh
+{
+    public static class Utilities
+    {
+        public static void Foo()
+        {
+            var t1 = new Task(null);
+            var t2 = new Task<int>(null);
+        }
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Utilities
+{
+    def Foo()
+    {
+        var t1:System.Threading.Tasks.NonGenericTask = new System.Threading.Tasks.NonGenericTask(null);
+        var t2:System.Threading.Tasks.Task[Int] = new System.Threading.Tasks.Task[Int](null);
     }
 }");
         }

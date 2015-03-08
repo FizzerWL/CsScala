@@ -200,9 +200,9 @@ namespace CsScala
 
             var typeStr = GenericTypeName(typeSymbol);
 
-            var trans = TypeTranslation.Get(typeStr);
+            var trans = TypeTranslation.Get(typeStr, named);
 
-            if (named != null && named.IsGenericType && !named.IsUnboundGenericType && TypeArguments(named).Any() && (trans == null || trans.SkipGenericTypes == false))
+            if (named.IsGenericType() && !named.IsUnboundGenericType && (trans == null || trans.SkipGenericTypes == false))
                 return TryConvertType(named.ConstructUnboundGenericType()) + "[" + string.Join(", ", TypeArguments(named).Select(o => TryConvertType(o))) + "]";
 
 
@@ -262,7 +262,7 @@ namespace CsScala
 
         }
 
-        private static IEnumerable<TypeSymbol> TypeArguments(NamedTypeSymbol named)
+        public static IEnumerable<TypeSymbol> TypeArguments(NamedTypeSymbol named)
         {
             if (named.ContainingType != null)
             {

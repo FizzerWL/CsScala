@@ -121,6 +121,8 @@
   <Property SourceObject="System.Exception" Match="Message" ExtensionMethod="System.CsScala.ExceptionMessage" />
   <Property SourceObject="System.Exception" Match="InnerException" ReplaceWith="getCause().asInstanceOf[java.lang.Exception]" />
 
+  <Type Match="System.Threading.Tasks.Task" MatchNonGenericTypesOnly="true" ReplaceWith="System.Threading.Tasks.NonGenericTask" />
+
   <NeedsClassTag Match="System.Linq.Enumerable.OfType" />
   <NeedsClassTag Match="System.Linq.Enumerable.ToArray" />
   <NeedsClassTag Match="System.Linq.Enumerable.ToList" />

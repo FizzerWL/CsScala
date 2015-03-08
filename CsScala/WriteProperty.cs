@@ -69,7 +69,7 @@ namespace CsScala
                     writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
                     writer.Write(" =\r\n");
                     writer.WriteOpenBrace();
-                    writer.WriteLine("throw new Exception(\"No setter defined\");");
+                    writer.WriteLine("throw new Exception(\"No getter defined\");");
                     writer.WriteCloseBrace();
                 }
 

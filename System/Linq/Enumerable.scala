@@ -351,6 +351,10 @@ object Enumerable
   {
     return a.map(fn).max;
   }
+  def Max[T](a:Traversable[T], fn:T=>Double):Double =
+  {
+    return a.map(fn).max;
+  }
   def Max(a:Traversable[DateTime]):DateTime =
   {
     return a.maxBy(_.Ticks);

@@ -132,7 +132,7 @@ namespace CsScala
             var symbol = Program.GetModel(expression).GetSymbolInfo(expression).Symbol;
             if (symbol is NamedTypeSymbol)
             {
-                var translateOpt = TypeTranslation.Get(symbol.ContainingNamespace.FullNameWithDot() + symbol.Name);
+                var translateOpt = TypeTranslation.Get(symbol.ContainingNamespace.FullNameWithDot() + symbol.Name, symbol.As<NamedTypeSymbol>());
 
                 if (translateOpt != null)
                     writer.Write(translateOpt.ReplaceWith);

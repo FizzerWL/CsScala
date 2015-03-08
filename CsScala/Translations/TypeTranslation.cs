@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Roslyn.Compilers.CSharp;
 
 namespace CsScala.Translations
 {
@@ -18,6 +19,7 @@ namespace CsScala.Translations
         public string Match { get; set; }
         public string ReplaceWith { get; set; }
         public bool SkipGenericTypes { get; set; }
+        public bool MatchNonGenericTypesOnly { get; set; }
 
         internal string Replace(Roslyn.Compilers.CSharp.NamedTypeSymbol typeInfo)
         {
@@ -38,17 +40,19 @@ namespace CsScala.Translations
         }
 
 
-        public static TypeTranslation Get(string typeStr)
+        public static TypeTranslation Get(string typeStr, NamedTypeSymbol symbolOpt)
         {
             var match = TranslationManager.MatchString(typeStr);
 
-            var matches = TranslationManager.Types.Where(o => o.Match == match).ToList();
+            var matches = TranslationManager.Types.Where(o => o.Match == match && (o.MatchNonGenericTypesOnly == false || symbolOpt.IsGenericType() == false)).ToList();
 
             if (matches.Count > 1)
                 throw new Exception("Multiple matches for " + match);
 
             return matches.SingleOrDefault();
         }
+
+        
 
     }
 }

@@ -12,4 +12,12 @@ class TaskFactory
 		return r;
 	}
 	
+	
+	def StartNew(fn:()=>Unit):NonGenericTask =
+	{
+		val r = new NonGenericTask(fn);
+		r.Start();
+		return r;
+	}
+	
 }

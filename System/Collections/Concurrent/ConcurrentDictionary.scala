@@ -13,8 +13,7 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
 
   def foreach[U](fn: KeyValuePair[K, V] => U) {
     val it = _map.entrySet().iterator();
-    while (it.hasNext())
-    {
+    while (it.hasNext()) {
       val e = it.next();
       fn(new KeyValuePair(e.getKey(), e.getValue()));
     }
@@ -26,16 +25,17 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
       return out.Value != null;
     }
 
+  def ContainsKey(k: K): Boolean = _map.containsKey(k);
+
   def TryRemove(k: K, out: CsRef[V]): Boolean =
     {
       out.Value = _map.remove(k);
       return out.Value != null;
     }
+  
+  def Remove(k:K):Boolean = _map.remove(k) != null;
 
-  def TryAdd(key: K, value: V): Boolean =
-    {
-      return _map.putIfAbsent(key, value) == null;
-    }
+  def TryAdd(key: K, value: V): Boolean = _map.putIfAbsent(key, value) == null;
 
   def GetOrAdd(k: K, add: K => V): V =
     {
@@ -43,6 +43,7 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
       if (ret != null)
         return ret;
       else {
+        //TODO: We should do a lock here, since we could call add and throw away its result.  If add has side-effects, this could be an issue
         ret = add(k);
         val prev = _map.putIfAbsent(k, ret);
         if (prev != null)
@@ -70,7 +71,7 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
   def Keys: Traversable[K] = {
     return _map.keySet().asScala;
   }
-  def Values:Traversable[V] = {
+  def Values: Traversable[V] = {
     return _map.values().asScala;
   }
 

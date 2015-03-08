@@ -8,8 +8,15 @@ import org.jdom2.output.XMLOutputter
 class XElement(elem: Element) extends XContainer(elem) {
   if (elem == null)
     throw new Exception("null element");
-  def this(name: String) {
+  def this(name: String, children:Any*) {
     this(new Element(name));
+    for(c <- children)
+    {
+      if (c.isInstanceOf[String])
+        this.Value = c.asInstanceOf[String];
+      else
+        this.Add(c);
+    }
   }
   def Attribute(name: String): XAttribute =
     {
@@ -25,10 +32,8 @@ class XElement(elem: Element) extends XContainer(elem) {
     _elem.setAttribute(name, value);
   }
 
-  def Value: String =
-    {
-      return _elem.getText();
-    }
+  def Value: String = _elem.getText();
+  def Value_=(str:String) = _elem.setText(str);
 
   def Name: XName = {
     return new XName(_elem.getName());
