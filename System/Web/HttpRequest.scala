@@ -54,4 +54,6 @@ class HttpRequest
 	
 	
 	def Params(str:String):String = CsScala.Coalesce(Form(str), QueryString(str));
+	
+	override def toString():String = HttpMethod + " for " + RawUrl + "  UserAgent=" + UserAgent;
 }

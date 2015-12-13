@@ -4,10 +4,8 @@ import System.Web.HttpResponse
 import System.Web.HttpContext
 
 abstract class UserControl extends Control {
-  
-  private val ctx = HttpContext.Current;
-  
-  final val Request = ctx.Request;
-  final val Response = ctx.Response;
-  
+
+  def Request = Context.Request;
+  def Response = Context.Response;
+
 }

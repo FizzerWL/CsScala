@@ -23,6 +23,7 @@ object DateTime {
     "yyyy/MM/dd HH:mm:ss",
     "E, d MMM yyyy HH:mm:ss",
     "E, d MMM yyyy HH:mm:ss Z",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
     "yyyy/MM/dd",
     "M/d/yyyy",
     "yyyy-MM-dd");

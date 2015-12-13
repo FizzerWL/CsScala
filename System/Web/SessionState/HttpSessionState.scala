@@ -4,24 +4,21 @@ import com.google.common.cache.CacheBuilder
 import java.util.concurrent.TimeUnit
 import System.Web.HttpContext
 import System.Web.HttpCookie
-import java.util.HashMap
+import java.util.concurrent.ConcurrentHashMap
 import com.google.common.cache.Cache
 import java.util.UUID
 import System.Net.Dns
 
 object HttpSessionState {
-  final val Sessions = CacheBuilder.newBuilder().expireAfterAccess(20, TimeUnit.MINUTES).build().asInstanceOf[Cache[String, HashMap[String, Any]]];
+  final val Sessions = CacheBuilder.newBuilder().expireAfterAccess(20, TimeUnit.MINUTES).build().asInstanceOf[Cache[String, ConcurrentHashMap[String, Any]]];
 
   final val SessionKey = "jses_" + Dns.GetHostName();
 }
 
-class HttpSessionState {
+class HttpSessionState(ctx:HttpContext) {
 
   def apply(k: String): Any =
     {
-
-      val ctx = HttpContext.Current;
-
       val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
       if (cookie == null)
@@ -34,8 +31,6 @@ class HttpSessionState {
       return cache.get(k);
     }
   def update(k: String, v: Any) {
-    val ctx = HttpContext.Current;
-
     var cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie == null) {
@@ -46,7 +41,7 @@ class HttpSessionState {
 
     var cache = HttpSessionState.Sessions.getIfPresent(cookie.Value);
     if (cache == null) {
-      cache = new HashMap[String, Any]();
+      cache = new ConcurrentHashMap[String, Any]();
       HttpSessionState.Sessions.put(cookie.Value, cache);
     }
 
@@ -64,8 +59,6 @@ class HttpSessionState {
   }
 
   def Remove(k: String) {
-    val ctx = HttpContext.Current;
-
     val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie != null) {

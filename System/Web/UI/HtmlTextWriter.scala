@@ -5,6 +5,7 @@ import System.IO.TextWriter
 import java.io.Writer
 import java.io.StringWriter
 import System.CsScala
+import System.TimeSpan
 
 class HtmlTextWriter(writer:StringWriter) extends TextWriter(writer) 
 {
@@ -30,6 +31,11 @@ class HtmlTextWriter(writer:StringWriter) extends TextWriter(writer)
     if (d != null)
     	writer.append(d.toString());
   }
+  def Write(t:TimeSpan)
+  {
+    if (t != null)
+      writer.append(t.toString());
+  }
   
   def Write(b:Boolean)
   {
@@ -37,6 +43,7 @@ class HtmlTextWriter(writer:StringWriter) extends TextWriter(writer)
   }
   
   def WriteLine() {  writer.append("\n"); }
+  def WriteLine(s:String) { Write(s); WriteLine(); }
   def Position():Int = writer.getBuffer().length;
   def GetSubstring(start:Int):String = writer.getBuffer().substring(start);
   def ToString():String = writer.toString();

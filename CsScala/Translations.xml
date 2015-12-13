@@ -87,6 +87,7 @@
   <Method SourceObject="System.Guid" Match="NewGuid" ReplaceWith="randomUUID" />
   <Method SourceObject="System.Guid" Match="ToByteArray" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.Guid" Match="Parse" ReplaceWith="fromString" />
+  <Property SourceObject="System.Guid" Match="Empty" ExtensionMethod="System.CsScala.EmptyGuid" />
 
   <Type Match="System.MulticastDelegate" ReplaceWith="Dynamic" />
   

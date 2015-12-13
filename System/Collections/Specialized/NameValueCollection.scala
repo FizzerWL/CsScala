@@ -7,10 +7,6 @@ class NameValueCollection(caseInsensitive:Boolean = false)
 {
   private val _map = new TreeMap[String, String]();
 
-  def apply(index:Int):String = 
-  {
-    return _map.get(index);
-  }
   def apply(name:String):String = 
   {
     if (caseInsensitive)
@@ -18,6 +14,9 @@ class NameValueCollection(caseInsensitive:Boolean = false)
     else
       return _map.get(name);
   }
+  
+  def GetKey(index:Int):String = _map.keySet().toArray()(index).asInstanceOf[String];
+  def apply(index:Int):String = _map.get(GetKey(index));
   
   def AllKeys:Array[String] = {
     return _map.keySet().asScala.toArray;

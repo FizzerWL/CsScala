@@ -19,8 +19,10 @@ class HttpContext
   final val Request = new HttpRequest();
   final val Response = new HttpResponse();
   final val Items = new HttpItems();
-  final val Session = new HttpSessionState();
+  final val Session = new HttpSessionState(this);
   final var Log:StringBuffer = null;
+  
+  override def toString():String = Request.toString();
 }
 
 class HttpItems {

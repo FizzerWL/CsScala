@@ -337,5 +337,7 @@ object CsScala {
   @inline def ByteToString(b: Byte): String = (b & 0xFF).toString();
 
   def SwapEndian(i: Int): Int = java.lang.Integer.reverseBytes(i);
-  def SwapEndian(i: Long): Long = java.lang.Long.reverseBytes(i);  
+  def SwapEndian(i: Long): Long = java.lang.Long.reverseBytes(i);
+  
+  def EmptyGuid():UUID = new UUID(0,0); 
 }

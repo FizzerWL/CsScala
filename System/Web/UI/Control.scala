@@ -20,7 +20,9 @@ object Control {
   final val Locks = new ConcurrentHashMap[Class[_], ReentrantLock]();
 }
 
-abstract class Control {
+abstract class Control() {
+
+  final var Context: HttpContext = null;
 
   var Page: Page = null;
   var ID = "";
@@ -73,30 +75,29 @@ abstract class Control {
   }
 
   def CacheFor: Int = 0;
-  def CacheLock:ReentrantLock = 
-  {
-    val c = getClass();
-    val lock = Control.Locks.get(c);
-    if (lock != null)
-      return lock;
-    
-    val newLock = new ReentrantLock(true);
-    val existing = Control.Locks.putIfAbsent(c, newLock);
-    if (existing != null)
-      return existing;
-    else
-      return newLock;
-    
-  }
+  def CacheLock: ReentrantLock =
+    {
+      val c = getClass();
+      val lock = Control.Locks.get(c);
+      if (lock != null)
+        return lock;
+
+      val newLock = new ReentrantLock(true);
+      val existing = Control.Locks.putIfAbsent(c, newLock);
+      if (existing != null)
+        return existing;
+      else
+        return newLock;
+
+    }
 
   var _cache: ControlCache = null;
-  def DetermineCache(locksOwn:ArrayList[ReentrantLock]) {
+  def DetermineCache(locksOwn: ArrayList[ReentrantLock]) {
     if (CacheFor == 0)
       return ;
 
     TryGetCache();
-    if (_cache == null)
-    {
+    if (_cache == null) {
       val lock = CacheLock;
       if (!lock.tryLock(10000, TimeUnit.MILLISECONDS))
         throw new Exception("Gave up waiting for lock");
@@ -110,4 +111,10 @@ abstract class Control {
     if (_cache != null && _cache.Expires.Ticks < DateTime.Now.Ticks)
       _cache = null;
   }
+
+  def InitContext(ctx: HttpContext): Control =
+    {
+      RecurseAll(c => c.Context = ctx);
+      return this;
+    }
 }

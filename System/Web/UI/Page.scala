@@ -6,18 +6,14 @@ import System.EventArgs
 import System.Web.HttpServerUtility
 import System.Web.HttpContext
 
+abstract class Page() extends Control() {
 
-abstract class Page extends Control {
-
-  private val ctx = HttpContext.Current;
-  final val Request = ctx.Request;
-  final val Response = ctx.Response;
+  def Request = Context.Request;
+  def Response = Context.Response;
   final val Server = new HttpServerUtility();
-  
-  
-  def OnError(args:EventArgs)
-  {
-    
+
+  def OnError(args: EventArgs) {
+
   }
-  
+
 }

@@ -87,7 +87,8 @@ namespace CsScala
                 {
                     writer.Write(translate.ExtensionMethod);
                     writer.Write("(");
-                    Core.Write(writer, expression.Expression);
+                    if (!(model.GetSymbolInfo(expression.Expression).Symbol is NamedTypeSymbol))
+                        Core.Write(writer, expression.Expression);
                     writer.Write(")");
                     return;
                 }

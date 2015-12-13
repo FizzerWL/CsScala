@@ -2084,7 +2084,7 @@ namespace Blargh
             }
             catch (Exception ex)
             {
-                Console.WriteLine(""In catch 2"");
+                Console.WriteLine(""In catch 2"" + ex.Message);
             }
             finally
             {
@@ -2122,7 +2122,7 @@ object Utilities
           case ex: System.IO.IOException => 
             System.Console.WriteLine(""In catch 1"");
           case ex: java.lang.Exception =>
-            System.Console.WriteLine(""In catch 2"");
+            System.Console.WriteLine(""In catch 2"" + System.CsScala.NullCheck(System.CsScala.ExceptionMessage(ex)));
         }
         finally
         {
@@ -2309,6 +2309,7 @@ class Foo
         {
             var cs = @"
 using System;
+using System.Linq;
 
 namespace Blargh
 {
@@ -2329,6 +2330,7 @@ namespace Blargh
             var a = DateTime.Now.As<String>();
             object o = 4;
             var b = (byte)(short)o;
+            var c = ((int[])o).Select(z => z); //Seems to be a bug in Roslyn, as it returns ErrorTypeSymbol for the cast expression.  This causes our code to cast to Traversable[Int] instead of Array[Int].  See if this is fixed once we upgrade from the old Roslyn CTP
         }
     }
 }";
@@ -2344,6 +2346,7 @@ object Test
         var a:String = System.DateTime.Now.asInstanceOf[String];
         var o:Any = 4;
         var b:Byte = o.asInstanceOf[Short].toByte;
+        var c:Traversable[Int] = System.Linq.Enumerable.Select((o.asInstanceOf[Traversable[Int]]), (z:Int) => { z; }:Int);
     }
 }";
 
@@ -3244,5 +3247,34 @@ object Utilities
     }
 }");
         }
+
+        [TestMethod]
+        public void GuidEmpty()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+
+namespace Blargh
+{
+    public static class Utilities
+    {
+        public static void Foo()
+        {
+            var g = Guid.Empty;
+        }
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Utilities
+{
+    def Foo()
+    {
+        var g:java.util.UUID = System.CsScala.EmptyGuid();
+    }
+}");
+        }
+        
     }
 }

@@ -26,7 +26,14 @@ class HttpWebRequest(_req: HttpURLConnection) extends WebRequest {
   var CookieContainer: CookieContainer = null;
   val Headers = new WebHeaderCollection(_req);
 
-  def GetResponse(): WebResponse = new HttpWebResponse(_req, CookieContainer, false);
+  def GetResponse(): WebResponse =
+    {
+      try {
+        return new HttpWebResponse(_req, CookieContainer, false);
+      } catch {
+        case ex: ConnectException => throw new WebException(ex.getMessage(), ex);
+      }
+    }
   def GetRequestStream(): Stream =
     {
       _req.setDoOutput(true);
