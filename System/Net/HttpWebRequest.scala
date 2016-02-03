@@ -11,6 +11,8 @@ object HttpWebRequest {
 }
 class HttpWebRequest(_req: HttpURLConnection) extends WebRequest {
 
+  java.lang.System.getProperties().setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+  
   def Method: String = _req.getRequestMethod();
   def Method_=(m: String) = _req.setRequestMethod(m);
 
@@ -22,6 +24,9 @@ class HttpWebRequest(_req: HttpURLConnection) extends WebRequest {
 
   def Timeout: Int = _req.getConnectTimeout();
   def Timeout_=(t: Int) = _req.setConnectTimeout(t);
+
+  def ReadWriteTimeout: Int = _req.getReadTimeout();
+  def ReadWriteTimeout_=(t: Int) = _req.setReadTimeout(t);
 
   var CookieContainer: CookieContainer = null;
   val Headers = new WebHeaderCollection(_req);

@@ -1603,6 +1603,8 @@ namespace Blargh
             var arr = new UnNumbered[] { UnNumbered.One, UnNumbered.Two, UnNumbered.Three };
             var i = (int)f;
             var e = (MostlyNumbered)Enum.Parse(typeof(MostlyNumbered), ""One"");
+            UnNumbered e2;
+            var parseRet = Enum.TryParse(""One"", out e2);
             var s = e.ToString();
             s = e + ""asdf"";
             s = ""asdf"" + e;
@@ -1690,6 +1692,8 @@ object Clazz
         var arr:Array[Int] = Array[Int](Blargh.UnNumbered.One, Blargh.UnNumbered.Two, Blargh.UnNumbered.Three);
         var i:Int = f;
         var e:Int = Blargh.MostlyNumbered.Parse(""One"").asInstanceOf[Int];
+        var e2:CsRef[Int] = new CsRef[Int](0);
+        var parseRet:Boolean = System.CsScala.EnumTryParse(""One"", e2, Blargh.UnNumbered.Parse);
         var s:String = Blargh.MostlyNumbered.ToString(e);
         s = Blargh.MostlyNumbered.ToString(e) + ""asdf"";
         s = ""asdf"" + Blargh.MostlyNumbered.ToString(e);

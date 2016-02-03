@@ -41,7 +41,7 @@ abstract class Control() {
     if (!Visible)
       return ;
 
-    if (CacheFor == 0)
+    if (CacheFor == 0 || (Context != null && Context.Request.QueryString("NoCache") != null))
       Render(writer);
     else {
 

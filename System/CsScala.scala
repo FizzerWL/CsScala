@@ -327,6 +327,21 @@ object CsScala {
 
       return -1;
     }
+  
+  
+  def EnumTryParse(str:String, out:CsRef[Int], fn:String=>Int):Boolean =
+  {
+    try {
+
+      out.Value = fn(str);
+      return true;
+    }
+    catch {
+      case e: MatchError =>
+        return false;
+    }
+  }
+  
 
   @inline def NullCheck(str: String): String = if (str == null) "" else str;
   @inline def NullCheck(i: java.lang.Integer): String = if (i == null) "" else i.toString();

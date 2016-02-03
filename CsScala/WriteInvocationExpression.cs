@@ -36,6 +36,12 @@ namespace CsScala
                     return;
                 }
 
+                if (methodSymbol.Name == "TryParse")
+                {
+                    WriteEnumTryParse(writer, invocationExpression);
+                    return;
+                }
+
                 if (methodSymbol.Name == "GetValues")
                 {
                     WriteEnumGetValues(writer, invocationExpression);
@@ -296,6 +302,28 @@ namespace CsScala
             writer.Write(".Parse(");
             Core.Write(writer, args[1].Expression);
             writer.Write(")");
+        }
+
+        /// <summary>
+        /// calls to Enum.Parse get re-written as calls to CsScala.EnumTryParse, where we pass in our special Parse methods on each enum.  
+        /// </summary>
+        private static void WriteEnumTryParse(ScalaWriter writer, InvocationExpressionSyntax invocationExpression)
+        {
+            var args = invocationExpression.ArgumentList.Arguments;
+
+            if (args.Count != 2)
+                throw new Exception("Expected 2 args to Enum.TryParse.  Other overloads are not supported");
+
+            writer.Write("System.CsScala.EnumTryParse(");
+            Core.Write(writer, args[0].Expression);
+            writer.Write(", ");
+            writer.Write(args[1].Expression.As<IdentifierNameSyntax>().Identifier.ToString());
+            writer.Write(", ");
+
+            var type = Program.GetModel(invocationExpression).GetTypeInfo(args[1].Expression).Type;
+            writer.Write(type.ContainingNamespace.FullNameWithDot());
+            writer.Write(WriteType.TypeName((NamedTypeSymbol)type));
+            writer.Write(".Parse)");
         }
 
         private static void WriteEnumGetValues(ScalaWriter writer, InvocationExpressionSyntax invocationExpression)
