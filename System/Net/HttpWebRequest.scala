@@ -4,6 +4,7 @@ import System.Uri
 import System.IO.Stream
 import java.net._;
 import java.io._;
+import scala.collection.JavaConverters._
 
 object HttpWebRequest {
   def Create(url: String): WebRequest = Create(new Uri(url));
@@ -33,6 +34,19 @@ class HttpWebRequest(_req: HttpURLConnection) extends WebRequest {
 
   def GetResponse(): WebResponse =
     {
+		  if (CookieContainer != null && CookieContainer.Count > 0)
+		  {
+		    val msCookieManager = new java.net.CookieManager();
+		    for(cookie <- CookieContainer._cookies.values().asScala)
+		    {
+		      val c = new java.net.HttpCookie(cookie.Name, cookie.Value);
+		      c.setVersion(0);
+		      msCookieManager.getCookieStore().add(new java.net.URI(cookie.Domain), c);
+		    }
+		      
+		    _req.setRequestProperty("Cookie", msCookieManager.getCookieStore().getCookies().asScala.mkString(";"))
+		  }
+    
       try {
         return new HttpWebResponse(_req, CookieContainer, false);
       } catch {

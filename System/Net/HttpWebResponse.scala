@@ -15,7 +15,9 @@ class HttpWebResponse(_req:HttpURLConnection, cookies:CookieContainer, _isError:
 	
 	if (cookies != null)
 	{
-	  for(cookie <- _req.getHeaderFields().get("Set-Cookie"))
-        cookies.AddRaw(cookie);
+	  val s = _req.getHeaderFields().get("Set-Cookie");
+	  if (s != null)
+		  for(cookie <- s)
+			  cookies.AddRaw(cookie);
 	}
 }
