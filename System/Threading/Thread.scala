@@ -17,6 +17,10 @@ class Thread(_t: java.lang.Thread) {
   def this(fn: Any => Unit) {
     this(new java.lang.Thread(new ThreadRunnable(fn)));
   }
+  
+  def this(fn: () => Unit) {
+    this(new java.lang.Thread(new ThreadRunnable(z => fn())));
+  }
 
   def Name: String = _t.getName();
   def Name_=(v: String) { _t.setName(v); }

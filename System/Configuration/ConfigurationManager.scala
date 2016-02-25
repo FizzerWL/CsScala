@@ -20,9 +20,6 @@ object ConfigurationManager
     val root = doc.getRootElement();
     for (e <- root.getChildren("add"))
       AppSettings.Add(e.getAttributeValue("key"), e.getAttributeValue("value"));
-    
-    
-   
   }
 }
 

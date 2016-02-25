@@ -4,9 +4,9 @@ import org.jdom2._
 import org.jdom2.input._
 import java.io.StringReader
 import System.Xml.XmlNodeType
-import sun.reflect.generics.reflectiveObjects.NotImplementedException
 import org.jdom2.output.XMLOutputter
 import System.Xml.XmlException
+import System.NotImplementedException
 
 object XDocument {
 
@@ -37,26 +37,17 @@ class XDocument(_doc: Document) extends XContainer(null) {
   def this() {
     this(new Document());
   }
-  def this(root:XElement) {
+  def this(root: XElement) {
     this(new Document(root._elem));
   }
 
-  final val Root: XElement = new XElement(_doc.getRootElement());
+  def Root: XElement = new XElement(_doc.getRootElement());
 
   def NodeType: Int = XmlNodeType.Document;
 
-  override def Elements(): Traversable[XElement] =
-    {
-      return Array(Root);
-    }
-  override def Elements(name: String): Traversable[XElement] =
-    {
-      return Array(Element(name));
-    }
-  override def Attributes(): Traversable[XAttribute] =
-    {
-      return Array[XAttribute]();
-    }
+  override def Elements(): Traversable[XElement] = Array(Root);
+  override def Elements(name: String): Traversable[XElement] = Array(Element(name));
+  override def Attributes(): Traversable[XAttribute] = Array[XAttribute]();
   override def Element(name: String): XElement =
     {
       if (Root.Name.LocalName == name)
@@ -64,6 +55,14 @@ class XDocument(_doc: Document) extends XContainer(null) {
       else
         return null;
     }
+
+  override def Add(obj: Any) {
+    if (obj.isInstanceOf[XNode])
+      _doc.addContent(obj.asInstanceOf[XNode]._node);
+    else
+      throw new NotImplementedException("Adding unexpected type");
+
+  }
 
   override def DescendantNodes(): Traversable[XNode] =
     {

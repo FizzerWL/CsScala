@@ -4,7 +4,8 @@ class Type(obj:Class[_])
 {
   final val _obj = obj;
   
-  val Name:String = obj.getName();
+  def Name:String = obj.getSimpleName();
+  def FullName:String = obj.getName();
 
   
   
