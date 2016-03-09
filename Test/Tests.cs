@@ -91,7 +91,7 @@ object Utilities
             myNum = 999;
         }
 
-        System.Console.WriteLine(if (myNum == 999) ""One"" else ""Two"");
+        System.Console.WriteLine((if (myNum == 999) ""One"" else ""Two""));
 
     }
 }");
@@ -1378,6 +1378,7 @@ namespace Blargh
             i = (int)f;
             var z = (i & hex) == 5;
             var x = (int)(i / 3);
+            i += z ? 3 : 2;
         }
     }
 }", @"
@@ -1402,6 +1403,7 @@ object Utilities
         i = f.toInt;
         var z:Boolean = (i & hex) == 5;
         var x:Int = (i / 3);
+        i += (if (z) 3 else 2);
     }
 }");
         }
@@ -1551,7 +1553,7 @@ object Utilities
     {
         var nullableInt:java.lang.Integer = null;
         var d:Float = 3;
-        var cond:java.lang.Float = if ((nullableInt != null)) null else (d);
+        var cond:java.lang.Float = (if ((nullableInt != null)) null else (d));
         System.Console.WriteLine((nullableInt != null));
         var withValue:java.lang.Integer = 8;
         System.Console.WriteLine(withValue.intValue());
