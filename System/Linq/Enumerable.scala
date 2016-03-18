@@ -54,6 +54,10 @@ object Enumerable
   {
     return a.min;
   }
+  def Min(a:Traversable[Double]):Double =
+  {
+    return a.min;
+  }
   def Min(a:Traversable[DateTime]):DateTime =
   {
     return a.minBy(_.Ticks);
