@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -31,12 +33,12 @@ namespace CsScala
 
         public static string TypeName(AnonymousObjectCreationExpressionSyntax expression)
         {
-            return TypeName(Program.GetModel(expression).GetTypeInfo(expression).Type.As<NamedTypeSymbol>());
+            return TypeName(Program.GetModel(expression).GetTypeInfo(expression).Type.As<INamedTypeSymbol>());
         }
 
-        public static string TypeName(NamedTypeSymbol symbol)
+        public static string TypeName(INamedTypeSymbol symbol)
         {
-            var fields = symbol.GetMembers().OfType<PropertySymbol>();
+            var fields = symbol.GetMembers().OfType<IPropertySymbol>();
 
             var typeParams = fields.Where(o => o.Type.TypeKind == TypeKind.TypeParameter);
 
@@ -51,11 +53,11 @@ namespace CsScala
 
         public static void WriteAnonymousType(AnonymousObjectCreationExpressionSyntax syntax)
         {
-            var type = Program.GetModel(syntax).GetTypeInfo(syntax).Type.As<NamedTypeSymbol>();
+            var type = Program.GetModel(syntax).GetTypeInfo(syntax).Type.As<INamedTypeSymbol>();
             var anonName = TypeName(type);
             using (var writer = new ScalaWriter("anonymoustypes", StripGeneric(anonName)))
             {
-                var fields = type.GetMembers().OfType<PropertySymbol>().OrderBy(o => o.Name).ToList();
+                var fields = type.GetMembers().OfType<IPropertySymbol>().OrderBy(o => o.Name).ToList();
 
                 writer.WriteLine("package anonymoustypes;");
                 WriteImports.Go(writer);

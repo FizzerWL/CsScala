@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -23,7 +25,7 @@ namespace CsScala
 
             if (typeInfo.Type != null && typeInfo.ConvertedType != null)
             {
-                if (isConst == false && typeInfo.ConvertedType.SpecialType == Roslyn.Compilers.SpecialType.System_Byte && typeInfo.Type.SpecialType == Roslyn.Compilers.SpecialType.System_Int32)
+                if (isConst == false && typeInfo.ConvertedType.SpecialType == SpecialType.System_Byte && typeInfo.Type.SpecialType == SpecialType.System_Int32)
                     writer.Write(".toByte");
             }
         }

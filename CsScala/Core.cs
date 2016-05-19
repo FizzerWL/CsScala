@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -82,6 +83,8 @@ namespace CsScala
                 WriteIfStatement.Go(writer, node.As<IfStatementSyntax>());
             else if (node is BinaryExpressionSyntax)
                 WriteBinaryExpression.Go(writer, node.As<BinaryExpressionSyntax>());
+            else if (node is AssignmentExpressionSyntax)
+                WriteBinaryExpression.Go(writer, node.As<AssignmentExpressionSyntax>());
             else if (node is ConditionalExpressionSyntax)
                 WriteConditionalExpression.Go(writer, node.As<ConditionalExpressionSyntax>());
             else if (node is BaseExpressionSyntax)

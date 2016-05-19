@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -20,7 +22,7 @@ namespace CsScala
             if (castingFrom == null)
                 castingFrom = model.GetTypeInfo(expression).Type;
 
-            var srcTypeScala = TypeProcessor.ConvertType((TypeSymbol)castingFrom);
+            var srcTypeScala = TypeProcessor.ConvertType((ITypeSymbol)castingFrom);
             var destType = model.GetTypeInfo(expression.Type).Type;
             var destTypeScala = TypeProcessor.TryConvertType(expression.Type);
 

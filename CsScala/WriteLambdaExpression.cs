@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -21,7 +23,7 @@ namespace CsScala
 
         private static void Go(ScalaWriter writer, IEnumerable<ParameterSyntax> parameters, SyntaxNode body, TypeInfo type)
         {
-            var methodSymbol = type.ConvertedType.As<NamedTypeSymbol>().DelegateInvokeMethod.As<MethodSymbol>();
+            var methodSymbol = type.ConvertedType.As<INamedTypeSymbol>().DelegateInvokeMethod.As<IMethodSymbol>();
 
             writer.Write("(");
 

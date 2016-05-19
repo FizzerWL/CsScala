@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala.Translations
 {
@@ -21,7 +23,7 @@ namespace CsScala.Translations
         public bool SkipGenericTypes { get; set; }
         public bool MatchNonGenericTypesOnly { get; set; }
 
-        internal string Replace(Roslyn.Compilers.CSharp.NamedTypeSymbol typeInfo)
+        internal string Replace(INamedTypeSymbol typeInfo)
         {
             if (ReplaceWith.StartsWith("{"))
             {
@@ -40,7 +42,7 @@ namespace CsScala.Translations
         }
 
 
-        public static TypeTranslation Get(string typeStr, NamedTypeSymbol symbolOpt)
+        public static TypeTranslation Get(string typeStr, INamedTypeSymbol symbolOpt)
         {
             var match = TranslationManager.MatchString(typeStr);
 

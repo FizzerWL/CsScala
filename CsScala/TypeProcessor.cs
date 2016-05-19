@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CsScala.Translations;
-using Roslyn.Compilers;
-using Roslyn.Compilers.Common;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -17,7 +17,7 @@ namespace CsScala
         {
             return DefaultValue(TryGetTypeSymbol(type));
         }
-        public static string DefaultValue(TypeSymbol type)
+        public static string DefaultValue(ITypeSymbol type)
         {
             if (type.TypeKind == TypeKind.TypeParameter)
                 return "null.asInstanceOf[" + type.ToString() + "]";
@@ -66,21 +66,23 @@ namespace CsScala
             return TryConvertType(sym);
         }
 
-        private static TypeSymbol TryGetTypeSymbol(SyntaxNode node)
+        private static ITypeSymbol TryGetTypeSymbol(SyntaxNode node)
         {
-
-            var model = Program.GetModel(node).As<ISemanticModel>();
-            var typeInfo = model.GetTypeInfo(node);
-
-            if (typeInfo.ConvertedType is ErrorTypeSymbol)
-                typeInfo = model.GetTypeInfo(node.Parent); //not sure why Roslyn can't find the type of some type nodes, but telling it to use the parent's seems to work
-
-            var t = typeInfo.ConvertedType;
-
-            if (t == null || t is ErrorTypeSymbol)
+            if (node == null)
                 return null;
 
-            return (TypeSymbol)t;
+            var symbol = Program.GetModel(node).GetSymbolInfo(node);
+
+            if (symbol.Symbol is ITypeSymbol)
+                return (ITypeSymbol)symbol.Symbol;
+            else if (symbol.Symbol is ILocalSymbol)
+                return symbol.Symbol.As<ILocalSymbol>().Type;
+            else if (symbol.Symbol is IFieldSymbol)
+                return symbol.Symbol.As<IFieldSymbol>().Type;
+            else if (symbol.Symbol is IParameterSymbol)
+                return symbol.Symbol.As<IParameterSymbol>().Type;
+            else
+                return null;
         }
 
         public static string ConvertTypeWithColon(SyntaxNode node)
@@ -104,7 +106,7 @@ namespace CsScala
             return ret;
         }
 
-        public static string ConvertTypeWithColon(TypeSymbol node)
+        public static string ConvertTypeWithColon(ITypeSymbol node)
         {
             var ret = TryConvertType(node);
 
@@ -114,9 +116,9 @@ namespace CsScala
                 return ":" + ret;
         }
 
-        private static ConcurrentDictionary<TypeSymbol, string> _cachedTypes = new ConcurrentDictionary<TypeSymbol, string>();
+        private static ConcurrentDictionary<ITypeSymbol, string> _cachedTypes = new ConcurrentDictionary<ITypeSymbol, string>();
 
-        public static string ConvertType(TypeSymbol typeSymbol)
+        public static string ConvertType(ITypeSymbol typeSymbol)
         {
             var ret = TryConvertType(typeSymbol);
 
@@ -125,9 +127,9 @@ namespace CsScala
             return ret;
         }
 
-        public static string TryConvertType(TypeSymbol typeInfo)
+        public static string TryConvertType(ITypeSymbol typeInfo)
         {
-            //var specialized = SpecializedType.TryConvertType(typeInfo as NamedTypeSymbol);
+            //var specialized = SpecializedType.TryConvertType(typeInfo as INamedTypeSymbol);
             //if (specialized != null)
             //    return specialized;
 
@@ -141,27 +143,27 @@ namespace CsScala
             return cachedValue;
         }
 
-        private static string ConvertTypeUncached(TypeSymbol typeSymbol)
+        private static string ConvertTypeUncached(ITypeSymbol typeSymbol)
         {
             if (typeSymbol.IsAnonymousType)
-                return WriteAnonymousObjectCreationExpression.TypeName(typeSymbol.As<NamedTypeSymbol>());
+                return WriteAnonymousObjectCreationExpression.TypeName(typeSymbol.As<INamedTypeSymbol>());
 
-            var array = typeSymbol as ArrayTypeSymbol;
+            var array = typeSymbol as IArrayTypeSymbol;
 
             if (array != null)
                 return "Array[" + TryConvertType(array.ElementType) + "]";
 
             var typeInfoStr = typeSymbol.ToString();
 
-            var named = typeSymbol as NamedTypeSymbol;
+            var named = typeSymbol as INamedTypeSymbol;
 
             if (typeSymbol.TypeKind == TypeKind.TypeParameter)
                 return typeSymbol.Name;
 
             if (typeSymbol.TypeKind == TypeKind.Delegate)
             {
-                var dlg = named.DelegateInvokeMethod.As<MethodSymbol>();
-                if (dlg.Parameters.Count == 0)
+                var dlg = named.DelegateInvokeMethod.As<IMethodSymbol>();
+                if (dlg.Parameters.Length == 0)
                     return "() => " + TryConvertType(dlg.ReturnType);
                 else
                     return "(" + string.Join(", ", dlg.Parameters.ToList().Select(o => TryConvertType(o.Type))) + ") => " + TryConvertType(dlg.ReturnType);
@@ -262,7 +264,7 @@ namespace CsScala
 
         }
 
-        public static IEnumerable<TypeSymbol> TypeArguments(NamedTypeSymbol named)
+        public static IEnumerable<ITypeSymbol> TypeArguments(INamedTypeSymbol named)
         {
             if (named.ContainingType != null)
             {
@@ -283,16 +285,16 @@ namespace CsScala
 
 
 
-        public static string GenericTypeName(TypeSymbol typeSymbol)
+        public static string GenericTypeName(ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
                 return null;
 
-            var array = typeSymbol as ArrayTypeSymbol;
+            var array = typeSymbol as IArrayTypeSymbol;
             if (array != null)
                 return GenericTypeName(array.ElementType) + "[]";
 
-            var named = typeSymbol as NamedTypeSymbol;
+            var named = typeSymbol as INamedTypeSymbol;
 
             if (named != null && named.IsGenericType && !named.IsUnboundGenericType)
                 return GenericTypeName(named.ConstructUnboundGenericType());
@@ -308,7 +310,7 @@ namespace CsScala
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool ValueToReference(TypeSymbol typeSymbol)
+        public static bool ValueToReference(ITypeSymbol typeSymbol)
         {
             if (typeSymbol.IsValueType == false)
                 return false;

@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Diagnostics;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala.Translations
 {
     class MethodTranslation
     {
-        public static MethodTranslation Get(MethodSymbol origMethodSymbol)
+        public static MethodTranslation Get(IMethodSymbol origIMethodSymbol)
         {
-            var methodSymbol = origMethodSymbol.OriginalDefinition.As<MethodSymbol>().UnReduce();
+            var methodSymbol = origIMethodSymbol.OriginalDefinition.As<IMethodSymbol>().UnReduce();
 
             var sourceName = methodSymbol.ContainingNamespace.FullNameWithDot() + methodSymbol.ContainingType.Name;
             var arguments = string.Join(" ", methodSymbol.Parameters.ToList().Select(o => o.Type.ToString()));
@@ -20,7 +22,7 @@ namespace CsScala.Translations
             var matches = TranslationManager.Methods.Where(o => o.Match == methodSymbol.Name)
                 .Where(o => o.SourceObject == sourceName || o.SourceObject == null || o.SourceObject == "*")
                 .Where(o => o.ArgumentTypes == null || o.ArgumentTypes == arguments)
-                .Where(o => o.TypeParametersMatch(origMethodSymbol))
+                .Where(o => o.TypeParametersMatch(origIMethodSymbol))
                 .ToList();
 
             if (matches.Count > 1)
@@ -42,7 +44,7 @@ namespace CsScala.Translations
             return matches.SingleOrDefault();
         }
 
-        private bool TypeParametersMatch(MethodSymbol methodSymbol)
+        private bool TypeParametersMatch(IMethodSymbol methodSymbol)
         {
             foreach (var match in this.MatchTypeParameters)
                 if (methodSymbol.TypeArguments[match.TypeParameterIndex].ToString() != match.Match)
@@ -194,7 +196,7 @@ namespace CsScala.Translations
             return true;
         }
 
-        private static TypeSymbol FindIEnumerableType(TypeSymbol type)
+        private static ITypeSymbol FindIEnumerableType(ITypeSymbol type)
         {
             var ret = TryFindIEnumerableType(type);
             if (ret != null)
@@ -203,10 +205,10 @@ namespace CsScala.Translations
                 throw new Exception("No IEnumerable<T> interfaces found for " + type);
         }
 
-        private static TypeSymbol TryFindIEnumerableType(TypeSymbol type)
+        private static ITypeSymbol TryFindIEnumerableType(ITypeSymbol type)
         {
             if (type.Name == "IEnumerable" && type.ContainingNamespace.FullName() == "System.Collections.Generic")
-                return type.As<NamedTypeSymbol>().TypeArguments[0];
+                return type.As<INamedTypeSymbol>().TypeArguments[0];
 
             foreach (var intface in type.Interfaces)
             {

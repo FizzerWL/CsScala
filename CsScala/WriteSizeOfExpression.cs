@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -17,7 +18,7 @@ namespace CsScala
             writer.Write(SizeOf(type.Type).ToString());
         }
 
-        private static int SizeOf(TypeSymbol type)
+        private static int SizeOf(ITypeSymbol type)
         {
             switch (type.SpecialType)
             {

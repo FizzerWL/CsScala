@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsScala.Translations;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -23,9 +25,9 @@ namespace CsScala
             }
         }
 
-        private static ConcurrentDictionary<MethodSymbol, ClassTagInfo> _methods = new ConcurrentDictionary<MethodSymbol, ClassTagInfo>();
+        private static ConcurrentDictionary<IMethodSymbol, ClassTagInfo> _methods = new ConcurrentDictionary<IMethodSymbol, ClassTagInfo>();
 
-        public static void InitMethod(MethodSymbol symbol, MethodDeclarationSyntax syntax)
+        public static void InitMethod(IMethodSymbol symbol, MethodDeclarationSyntax syntax)
         {
             if (syntax.TypeParameterList.Parameters.Count == 0)
                 throw new Exception("ClassTags only is concerned with methods that have type parameters");
@@ -33,12 +35,12 @@ namespace CsScala
             _methods.TryAdd(symbol, new ClassTagInfo(syntax));
         }
 
-        public static bool NeedsClassTag(MethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax, string templateID)
+        public static bool NeedsClassTag(IMethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax, string templateID)
         {
             return GetClassTagHashSet(methodSymbol, methodSyntax).Contains(templateID);
         }
 
-        public static bool NeedsClassTag(NamedTypeSymbol symbol, string templateID)
+        public static bool NeedsClassTag(INamedTypeSymbol symbol, string templateID)
         {
             //For types, unlike methods, this requires that they're specified in Translations.xml. TODO: Determine these programmatically. 
             //var symbol = Program.GetModel(typeSyntax).GetDeclaredSymbol(typeSyntax);
@@ -50,7 +52,7 @@ namespace CsScala
                 return trans.TypesHashSet.Contains(templateID);
         }
 
-        private static HashSet<string> GetClassTagHashSet(MethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
+        private static HashSet<string> GetClassTagHashSet(IMethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
         {
             var info = _methods[methodSymbol];
             if (info.NeedsClassTagOpt != null)
@@ -59,18 +61,18 @@ namespace CsScala
             return info.NeedsClassTagOpt = GetClassTagHashSetUncached(methodSymbol, methodSyntax);
         }
 
-        private static HashSet<string> GetClassTagHashSetUncached(MethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
+        private static HashSet<string> GetClassTagHashSetUncached(IMethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
         {
             var model = Program.GetModel(methodSyntax);
             var ret = new HashSet<string>();
 
             foreach (var invoke in methodSyntax.DescendantNodes().OfType<InvocationExpressionSyntax>())
             {
-                var invokeMethod = model.GetSymbolInfo(invoke).Symbol.As<MethodSymbol>();
+                var invokeMethod = model.GetSymbolInfo(invoke).Symbol.As<IMethodSymbol>();
 
-                if (invokeMethod.TypeParameters.Count == 0)
+                if (invokeMethod.TypeParameters.Length == 0)
                     continue;
-                var origInvoke = invokeMethod.OriginalDefinition.As<MethodSymbol>();
+                var origInvoke = invokeMethod.OriginalDefinition.As<IMethodSymbol>();
 
                 HashSet<string> invokeTags;
 
@@ -94,7 +96,7 @@ namespace CsScala
 
             foreach (var objCreation in methodSyntax.DescendantNodes().OfType<ObjectCreationExpressionSyntax>())
             {
-                var ctor = model.GetSymbolInfo(objCreation).Symbol.As<MethodSymbol>();
+                var ctor = model.GetSymbolInfo(objCreation).Symbol.As<IMethodSymbol>();
                 //if (objCreation.ToString() == "new List<C>()")
                 //    Debugger.Break();
 
@@ -120,7 +122,7 @@ namespace CsScala
             return ret;
         }
 
-        private static HashSet<string> TryGetBCLClassTags(MethodSymbol method)
+        private static HashSet<string> TryGetBCLClassTags(IMethodSymbol method)
         {
             var methodStr = TypeProcessor.GenericTypeName(method.ContainingType) + "." + method.Name;
 

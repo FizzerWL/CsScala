@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -114,7 +116,7 @@ namespace CsScala
             }
         }
 
-        private static bool ShouldUseOverrideKeyword(MethodDeclarationSyntax method, MethodSymbol symbol)
+        private static bool ShouldUseOverrideKeyword(MethodDeclarationSyntax method, IMethodSymbol symbol)
         {
             if (method.Modifiers.Any(SyntaxKind.StaticKeyword))
                 return false;
@@ -127,7 +129,7 @@ namespace CsScala
             return method.Modifiers.Any(SyntaxKind.OverrideKeyword);
         }
 
-        public static string TypeParameter(TypeParameterSyntax prm, MethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
+        public static string TypeParameter(TypeParameterSyntax prm, IMethodSymbol methodSymbol, MethodDeclarationSyntax methodSyntax)
         {
             var identifier = Utility.TypeConstraints(prm, methodSyntax.ConstraintClauses);
 

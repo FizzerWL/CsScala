@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Roslyn.Compilers;
 
 namespace CsScala
 {
@@ -48,14 +49,14 @@ namespace CsScala
             throw new Exception("Need handler for member of type " + member.GetType().Name);
         }
 
-        public static string FullName(this NamespaceSymbol ns)
+        public static string FullName(this INamespaceSymbol ns)
         {
             if (ns.IsGlobalNamespace)
                 return "CsRoot";
             else
                 return ns.ToString();
         }
-        public static string FullNameWithDot(this NamespaceSymbol ns)
+        public static string FullNameWithDot(this INamespaceSymbol ns)
         {
             if (ns.IsGlobalNamespace)
                 return "CsRoot.";
@@ -127,7 +128,7 @@ namespace CsScala
             return s.Substring(0, i);
         }
 
-        public static MethodSymbol UnReduce(this MethodSymbol methodSymbol)
+        public static IMethodSymbol UnReduce(this IMethodSymbol methodSymbol)
         {
             while (methodSymbol.ReducedFrom != null)
                 methodSymbol = methodSymbol.ReducedFrom;
@@ -262,7 +263,7 @@ namespace CsScala
                 return " <% " + TypeProcessor.ConvertType(constraint.As<TypeConstraintSyntax>().Type);
             else if (constraint is ClassOrStructConstraintSyntax)
             {
-                if (constraint.As<ClassOrStructConstraintSyntax>().ClassOrStructKeyword.Kind == SyntaxKind.ClassKeyword)
+                if (constraint.As<ClassOrStructConstraintSyntax>().ClassOrStructKeyword.Kind() == SyntaxKind.ClassKeyword)
                     return " >: Null";
                 else
                     throw new Exception("struct type constraint not supported " + Utility.Descriptor(constraint));
@@ -279,7 +280,7 @@ namespace CsScala
                 return member.Expression.ToString();
         }
 
-        public static bool IsNumeric(TypeSymbol typeSymbol)
+        public static bool IsNumeric(ITypeSymbol typeSymbol)
         {
             switch (typeSymbol.SpecialType)
             {
@@ -297,7 +298,7 @@ namespace CsScala
             }
         }
 
-        public static bool IsGenericType(this NamedTypeSymbol symbolOpt)
+        public static bool IsGenericType(this INamedTypeSymbol symbolOpt)
         {
             return symbolOpt != null && symbolOpt.IsGenericType && TypeProcessor.TypeArguments(symbolOpt).Any();
         }

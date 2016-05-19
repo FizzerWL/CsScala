@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -16,7 +18,7 @@ namespace CsScala
 
             var types = Program.GetModel(foreachStatement).GetTypeInfo(foreachStatement.Expression);
             var typeStr = TypeProcessor.GenericTypeName(types.Type);
-            if (types.Type is ArrayTypeSymbol)
+            if (types.Type is IArrayTypeSymbol)
             {
                 //It's faster to "while" through arrays than "for" through them
                 writer.WriteOpenBrace();

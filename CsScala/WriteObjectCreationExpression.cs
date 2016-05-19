@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsScala.Translations;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -18,12 +20,12 @@ namespace CsScala
             if (expression.Initializer != null)
                 throw new Exception("Object initializers are not supported " + Utility.Descriptor(expression));
 
-            if (type.SpecialType == Roslyn.Compilers.SpecialType.System_Object)
+            if (type.SpecialType == SpecialType.System_Object)
             {
                 //new object() results in the CsObject type being made.  This is only really useful for locking
                 writer.Write("new CsObject()");
             }
-            else if (type.OriginalDefinition is NamedTypeSymbol && type.OriginalDefinition.As<NamedTypeSymbol>().SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
+            else if (type.OriginalDefinition is INamedTypeSymbol && type.OriginalDefinition.As<INamedTypeSymbol>().SpecialType == SpecialType.System_Nullable_T)
             {
                 //new'ing up a Nullable<T> has special sematics in C#.  If we're calling this with no parameters, just use null. Otherwise just use the parameter.
                 if (expression.ArgumentList.Arguments.Count == 0)
@@ -33,7 +35,7 @@ namespace CsScala
             }
             else
             {
-                var methodSymbol = model.GetSymbolInfo(expression).Symbol.As<MethodSymbol>();
+                var methodSymbol = model.GetSymbolInfo(expression).Symbol.As<IMethodSymbol>();
 
                 var translateOpt = MethodTranslation.Get(methodSymbol);
 

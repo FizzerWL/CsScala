@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.Common;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -25,7 +26,7 @@ namespace CsScala
                     .Select(o => o.Syntax.BaseList)
                     .Where(o => o != null)
                     .SelectMany(o => o.Types)
-                    .Select(o => (TypeSymbol)Program.GetModel(o).GetTypeInfo(o).ConvertedType)
+                    .Select(o => Program.GetModel(o).GetTypeInfo(o.Type).ConvertedType)
                     .Distinct()
                     .ToList();
 
@@ -72,7 +73,7 @@ namespace CsScala
 
                     if (staticMembers)
                         writer.Write("object ");
-                    else if (first.Syntax.Kind == SyntaxKind.InterfaceDeclaration)
+                    else if (first.Syntax.Kind() == SyntaxKind.InterfaceDeclaration)
                         writer.Write("trait ");
                     else
                     {
@@ -190,20 +191,20 @@ namespace CsScala
             if (fields.Count == 0)
                 return fields;
 
-            var dependencies = fields.ToDictionary(o => Program.GetModel(o).GetDeclaredSymbol(o.Declaration.Variables.First()).As<FieldSymbol>(), o => new { Syntax = o, Dependicies = new List<FieldSymbol>() });
+            var dependencies = fields.ToDictionary(o => Program.GetModel(o).GetDeclaredSymbol(o.Declaration.Variables.First()).As<IFieldSymbol>(), o => new { Syntax = o, Dependicies = new List<IFieldSymbol>() });
 
             
 
             foreach(var dep in dependencies)
             {
 
-                foreach (var fieldDepend in dep.Value.Syntax.DescendantNodes().OfType<ExpressionSyntax>().Select(o => Program.GetModel(o).GetSymbolInfo(o).Symbol).OfType<FieldSymbol>())
+                foreach (var fieldDepend in dep.Value.Syntax.DescendantNodes().OfType<ExpressionSyntax>().Select(o => Program.GetModel(o).GetSymbolInfo(o).Symbol).OfType<IFieldSymbol>())
                     if (dependencies.ContainsKey(fieldDepend))
                         dep.Value.Dependicies.Add(fieldDepend);
             }
 
             var ret = new List<FieldDeclarationSyntax>();
-            var symbolsAdded = new HashSet<FieldSymbol>();
+            var symbolsAdded = new HashSet<IFieldSymbol>();
 
             while (dependencies.Count > 0)
                 foreach(var dep in dependencies.ToList())
@@ -244,7 +245,7 @@ namespace CsScala
 
 
 
-        public static string TypeName(NamedTypeSymbol type)
+        public static string TypeName(INamedTypeSymbol type)
         {
             var sb = new StringBuilder(type.Name);
 

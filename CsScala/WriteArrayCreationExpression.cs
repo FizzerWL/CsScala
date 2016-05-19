@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -15,10 +17,10 @@ namespace CsScala
 
             //var t = Program.GetModel(array).GetTypeInfo(array).Type;
 
-            //if (t is ArrayTypeSymbol)
+            //if (t is IArrayTypeSymbol)
             //{
             //    writer.Write("[");
-            //    writer.Write(TypeProcessor.ConvertType(t.As<ArrayTypeSymbol>().ElementType));
+            //    writer.Write(TypeProcessor.ConvertType(t.As<IArrayTypeSymbol>().ElementType));
             //    writer.Write("]");
             //}
 

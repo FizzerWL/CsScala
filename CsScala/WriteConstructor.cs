@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -110,7 +112,7 @@ namespace CsScala
         static HashSet<string> AllTypes = new HashSet<string>();
 
 
-        public static void WriteConstructorsHelper(IEnumerable<NamedTypeSymbol> allTypes)
+        public static void WriteConstructorsHelper(IEnumerable<INamedTypeSymbol> allTypes)
         {
             foreach (var t in allTypes.Select(o => o.ContainingNamespace.FullNameWithDot() + WriteType.TypeName(o)))
                 AllTypes.Add(t);

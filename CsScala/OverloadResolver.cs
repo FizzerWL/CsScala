@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -12,12 +14,12 @@ namespace CsScala
     /// </summary>
     public static class OverloadResolver
     {
-        public static string MethodName(MethodSymbol method)
+        public static string MethodName(IMethodSymbol method)
         {
             if (!method.Parameters.Any(o => IsAmbiguousType(o.Type)))
                 return method.Name;
 
-            var overloadedGroup = method.ContainingType.GetMembers(method.Name).OfType<MethodSymbol>().ToList();
+            var overloadedGroup = method.ContainingType.GetMembers(method.Name).OfType<IMethodSymbol>().ToList();
 
             if (overloadedGroup.Count == 0)
                 throw new Exception("Symbols not found");
@@ -28,7 +30,7 @@ namespace CsScala
             return ExpandedMethodName(method);
         }
 
-        private static bool IsAmbiguousType(TypeSymbol type)
+        private static bool IsAmbiguousType(ITypeSymbol type)
         {
             switch (TypeProcessor.GenericTypeName(type))
             {
@@ -41,7 +43,7 @@ namespace CsScala
             }
         }
 
-        private static string ExpandedMethodName(MethodSymbol method)
+        private static string ExpandedMethodName(IMethodSymbol method)
         {
 
             var ret = new StringBuilder(20);
@@ -53,7 +55,7 @@ namespace CsScala
             {
                 ret.Append(param.Type.Name);
 
-                var named = param.Type as NamedTypeSymbol;
+                var named = param.Type as INamedTypeSymbol;
                 if (named != null)
                     foreach (var typeArg in named.TypeArguments)
                         if (typeArg.TypeKind != TypeKind.TypeParameter)

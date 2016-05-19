@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsScala.Translations;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -52,7 +54,7 @@ namespace CsScala
                         writer.Write(val.ToString());
                 }
             }
-            else if (type.OriginalDefinition is NamedTypeSymbol && type.OriginalDefinition.As<NamedTypeSymbol>().SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
+            else if (type.OriginalDefinition is INamedTypeSymbol && type.OriginalDefinition.As<INamedTypeSymbol>().SpecialType == SpecialType.System_Nullable_T)
             {
 
                 switch (memberName)
@@ -63,7 +65,7 @@ namespace CsScala
                         writer.Write(" != null)");
                         break;
                     case "Value":
-                        var nullableType = TypeProcessor.ConvertType(type.As<NamedTypeSymbol>().TypeArguments.Single());
+                        var nullableType = TypeProcessor.ConvertType(type.As<INamedTypeSymbol>().TypeArguments.Single());
                         WriteMember(writer, expression.Expression);
 
                         if (TypeProcessor.IsPrimitiveType(nullableType))
@@ -87,7 +89,7 @@ namespace CsScala
                 {
                     writer.Write(translate.ExtensionMethod);
                     writer.Write("(");
-                    if (!(model.GetSymbolInfo(expression.Expression).Symbol is NamedTypeSymbol))
+                    if (!(model.GetSymbolInfo(expression.Expression).Symbol is INamedTypeSymbol))
                         Core.Write(writer, expression.Expression);
                     writer.Write(")");
                     return;
@@ -131,14 +133,14 @@ namespace CsScala
         public static void WriteMember(ScalaWriter writer, ExpressionSyntax expression)
         {
             var symbol = Program.GetModel(expression).GetSymbolInfo(expression).Symbol;
-            if (symbol is NamedTypeSymbol)
+            if (symbol is INamedTypeSymbol)
             {
-                var translateOpt = TypeTranslation.Get(symbol.ContainingNamespace.FullNameWithDot() + symbol.Name, symbol.As<NamedTypeSymbol>());
+                var translateOpt = TypeTranslation.Get(symbol.ContainingNamespace.FullNameWithDot() + symbol.Name, symbol.As<INamedTypeSymbol>());
 
                 if (translateOpt != null)
                     writer.Write(translateOpt.ReplaceWith);
                 else
-                    writer.Write(symbol.ContainingNamespace.FullNameWithDot() + WriteType.TypeName(symbol.As<NamedTypeSymbol>()));
+                    writer.Write(symbol.ContainingNamespace.FullNameWithDot() + WriteType.TypeName(symbol.As<INamedTypeSymbol>()));
             }
             else
                 Core.Write(writer, expression);

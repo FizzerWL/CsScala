@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CsScala.Translations;
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -17,9 +18,9 @@ namespace CsScala
 
             var symbolInfo = model.GetSymbolInfo(invocationExpression);
             var expressionSymbol = model.GetSymbolInfo(invocationExpression.Expression);
-            var methodSymbol = symbolInfo.Symbol.OriginalDefinition.As<MethodSymbol>().UnReduce();
+            var methodSymbol = symbolInfo.Symbol.OriginalDefinition.As<IMethodSymbol>().UnReduce();
 
-            var translateOpt = MethodTranslation.Get(symbolInfo.Symbol.As<MethodSymbol>());
+            var translateOpt = MethodTranslation.Get(symbolInfo.Symbol.As<IMethodSymbol>());
             var memberReferenceExpressionOpt = invocationExpression.Expression as MemberAccessExpressionSyntax;
             var firstParameter = true;
 
@@ -49,7 +50,7 @@ namespace CsScala
                 }
             }
 
-            if (expressionSymbol.Symbol is EventSymbol)
+            if (expressionSymbol.Symbol is IEventSymbol)
             {
                 methodName = "Invoke"; //Would need to append the number of arguments to this to support events.  However, events are not currently supported
             }
@@ -122,7 +123,7 @@ namespace CsScala
                 extensionNamespace = null;
 
             var memberType = memberReferenceExpressionOpt == null ? null : model.GetTypeInfo(memberReferenceExpressionOpt.Expression).Type;
-            var isNullableEnum = memberType != null && (memberType.Name == "Nullable" && memberType.ContainingNamespace.FullName() == "System") && memberType.As<NamedTypeSymbol>().TypeArguments.Single().TypeKind == TypeKind.Enum;
+            var isNullableEnum = memberType != null && (memberType.Name == "Nullable" && memberType.ContainingNamespace.FullName() == "System") && memberType.As<INamedTypeSymbol>().TypeArguments.Single().TypeKind == TypeKind.Enum;
             if (isNullableEnum && methodSymbol.Name == "ToString")
             {
                 extensionNamespace = null; //override Translations.xml for nullable enums. We want them to convert to the enum's ToString method
@@ -160,11 +161,11 @@ namespace CsScala
                     {
                         if (memberType.TypeKind == TypeKind.Enum || isNullableEnum)
                         {
-                            var enumType = memberType.TypeKind == TypeKind.Enum ? memberType : memberType.As<NamedTypeSymbol>().TypeArguments.Single();
+                            var enumType = memberType.TypeKind == TypeKind.Enum ? memberType : memberType.As<INamedTypeSymbol>().TypeArguments.Single();
 
                             //calling ToString() on an enum forwards to our enum's special ToString method
                             writer.Write(enumType.ContainingNamespace.FullNameWithDot());
-                            writer.Write(WriteType.TypeName((NamedTypeSymbol)enumType));
+                            writer.Write(WriteType.TypeName((INamedTypeSymbol)enumType));
                             writer.Write(".ToString(");
                             Core.Write(writer, memberReferenceExpressionOpt.Expression);
                             writer.Write(")");
@@ -234,13 +235,13 @@ namespace CsScala
 
 
                 if (arg.ArgumentOpt != null
-                    && arg.ArgumentOpt.RefOrOutKeyword.Kind != SyntaxKind.None
-                    && model.GetSymbolInfo(arg.ArgumentOpt.Expression).Symbol is FieldSymbol)
+                    && arg.ArgumentOpt.RefOrOutKeyword.Kind() != SyntaxKind.None
+                    && model.GetSymbolInfo(arg.ArgumentOpt.Expression).Symbol is IFieldSymbol)
                     throw new Exception("ref/out cannot reference fields, only local variables.  Consider using ref/out on a local variable and then assigning it into the field. " + Utility.Descriptor(invocationExpression));
 
 
                 //When passing an argument by ref or out, leave off the .Value suffix
-                if (arg.ArgumentOpt != null && arg.ArgumentOpt.RefOrOutKeyword.Kind != SyntaxKind.None)
+                if (arg.ArgumentOpt != null && arg.ArgumentOpt.RefOrOutKeyword.Kind() != SyntaxKind.None)
                     WriteIdentifierName.Go(writer, arg.ArgumentOpt.Expression.As<IdentifierNameSyntax>(), true);
                 else
                     arg.Write(writer);
@@ -268,7 +269,7 @@ namespace CsScala
                 writer.Write(typeParameters);
         }
 
-        private static bool IsParamsArgument(InvocationExpressionSyntax invocationExpression, ArgumentSyntax argumentOpt, MethodSymbol methodSymbol)
+        private static bool IsParamsArgument(InvocationExpressionSyntax invocationExpression, ArgumentSyntax argumentOpt, IMethodSymbol methodSymbol)
         {
             if (argumentOpt == null)
                 return false;
@@ -298,7 +299,7 @@ namespace CsScala
 
             var type = Program.GetModel(invocationExpression).GetTypeInfo(args[0].Expression.As<TypeOfExpressionSyntax>().Type).Type;
             writer.Write(type.ContainingNamespace.FullNameWithDot());
-            writer.Write(WriteType.TypeName((NamedTypeSymbol)type));
+            writer.Write(WriteType.TypeName((INamedTypeSymbol)type));
             writer.Write(".Parse(");
             Core.Write(writer, args[1].Expression);
             writer.Write(")");
@@ -322,7 +323,7 @@ namespace CsScala
 
             var type = Program.GetModel(invocationExpression).GetTypeInfo(args[1].Expression).Type;
             writer.Write(type.ContainingNamespace.FullNameWithDot());
-            writer.Write(WriteType.TypeName((NamedTypeSymbol)type));
+            writer.Write(WriteType.TypeName((INamedTypeSymbol)type));
             writer.Write(".Parse)");
         }
 
@@ -334,7 +335,7 @@ namespace CsScala
             var type = Program.GetModel(invocationExpression).GetTypeInfo(invocationExpression.ArgumentList.Arguments[0].Expression.As<TypeOfExpressionSyntax>().Type).Type;
 
             writer.Write(type.ContainingNamespace.FullNameWithDot());
-            writer.Write(WriteType.TypeName((NamedTypeSymbol)type));
+            writer.Write(WriteType.TypeName((INamedTypeSymbol)type));
             writer.Write(".Values");
         }
 

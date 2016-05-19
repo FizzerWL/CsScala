@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -11,12 +13,12 @@ namespace CsScala
     {
         public static void WritePrefix(ScalaWriter writer, PrefixUnaryExpressionSyntax expression)
         {
-            if (expression.OperatorToken.Kind == SyntaxKind.MinusMinusToken)
+            if (expression.OperatorToken.Kind() == SyntaxKind.MinusMinusToken)
             {
                 Core.Write(writer, expression.Operand);
                 writer.Write(" -= 1");
             }
-            else if (expression.OperatorToken.Kind == SyntaxKind.PlusPlusToken)
+            else if (expression.OperatorToken.Kind() == SyntaxKind.PlusPlusToken)
             {
                 Core.Write(writer, expression.Operand);
                 writer.Write(" += 1");
@@ -30,18 +32,18 @@ namespace CsScala
 
         public static void WritePostfix(ScalaWriter writer, PostfixUnaryExpressionSyntax expression)
         {
-            if (expression.OperatorToken.Kind == SyntaxKind.MinusMinusToken)
+            if (expression.OperatorToken.Kind() == SyntaxKind.MinusMinusToken)
             {
                 Core.Write(writer, expression.Operand);
                 writer.Write(" -= 1");
             }
-            else if (expression.OperatorToken.Kind == SyntaxKind.PlusPlusToken)
+            else if (expression.OperatorToken.Kind() == SyntaxKind.PlusPlusToken)
             {
                 Core.Write(writer, expression.Operand);
                 writer.Write(" += 1");
             }
             else
-                throw new Exception("No support for " + expression.OperatorToken.Kind + " at " + Utility.Descriptor(expression));
+                throw new Exception("No support for " + expression.OperatorToken.Kind() + " at " + Utility.Descriptor(expression));
         }
     }
 }

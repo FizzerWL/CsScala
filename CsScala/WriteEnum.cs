@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsScala
 {
@@ -85,17 +87,17 @@ namespace CsScala
 
             if (typeInfo.Type == null || typeInfo.ConvertedType == null || typeInfo.Type == typeInfo.ConvertedType || typeInfo.Type.BaseType == null)
                 return;
-            if (typeInfo.ConvertedType.SpecialType != Roslyn.Compilers.SpecialType.System_Object)
+            if (typeInfo.ConvertedType.SpecialType != SpecialType.System_Object)
                 return;
 
-            if (typeInfo.Type.BaseType.SpecialType != Roslyn.Compilers.SpecialType.System_Enum)
+            if (typeInfo.Type.BaseType.SpecialType != SpecialType.System_Enum)
             {
                 if (typeInfo.Type.Name != "Nullable" || typeInfo.Type.ContainingNamespace.FullName() != "System")
                     return;
 
-                var nullableType = typeInfo.Type.As<NamedTypeSymbol>().TypeArguments.Single();
+                var nullableType = typeInfo.Type.As<INamedTypeSymbol>().TypeArguments.Single();
 
-                if (nullableType.BaseType.SpecialType != Roslyn.Compilers.SpecialType.System_Enum)
+                if (nullableType.BaseType.SpecialType != SpecialType.System_Enum)
                     return;
 
             }

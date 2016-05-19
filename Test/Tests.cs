@@ -2336,7 +2336,7 @@ namespace Blargh
             var a = DateTime.Now.As<String>();
             object o = 4;
             var b = (byte)(short)o;
-            var c = ((int[])o).Select(z => z); //Seems to be a bug in Roslyn, as it returns ErrorTypeSymbol for the cast expression.  This causes our code to cast to Traversable[Int] instead of Array[Int].  See if this is fixed once we upgrade from the old Roslyn CTP
+            var c = ((int[])o).Select(z => z);
         }
     }
 }";
@@ -2352,7 +2352,7 @@ object Test
         var a:String = System.DateTime.Now.asInstanceOf[String];
         var o:Any = 4;
         var b:Byte = o.asInstanceOf[Short].toByte;
-        var c:Traversable[Int] = System.Linq.Enumerable.Select((o.asInstanceOf[Traversable[Int]]), (z:Int) => { z; }:Int);
+        var c:Traversable[Int] = System.Linq.Enumerable.Select((o.asInstanceOf[Array[Int]]), (z:Int) => { z; }:Int);
     }
 }";
 
