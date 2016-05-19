@@ -115,7 +115,7 @@ namespace CsScala
                             Core.Write(writer, e);
                             writer.Write(")");
                         }
-                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && !(e is BinaryExpressionSyntax) && type.Type.As<NamedTypeSymbol>().ConstructedFrom.SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
+                        else if (expression.OperatorToken.Kind == SyntaxKind.PlusToken && !(e is BinaryExpressionSyntax) && type.Type is NamedTypeSymbol && type.Type.As<NamedTypeSymbol>().ConstructedFrom.SpecialType == Roslyn.Compilers.SpecialType.System_Nullable_T)
                         {
                             //Concatening a nullable type in .net just produces an empty string if it's null.  In scala it produces "null" or a null reference exception -- we want neither.
                             writer.Write("System.CsScala.NullCheck(");

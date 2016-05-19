@@ -114,6 +114,21 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
     }
   }
 
+  def RemoveAll(pred: T => Boolean): Int = {
+    var removed = 0;
+    var i = _list.size() - 1;
+    while (i >= 0) {
+      val e = _list.get(i);
+      if (pred(e)) {
+        _list.remove(i);
+        removed += 1;
+      } else
+        i -= 1;
+    }
+
+    return removed;
+  }
+
   def AddRange(i: Traversable[T]) {
     for (e <- i)
       _list.add(e);

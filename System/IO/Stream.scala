@@ -1,6 +1,5 @@
 package System.IO
 
-import System.NotImplementedException
 import java.io._;
 
 class Stream(input:InputStream, output:OutputStream, textinput:Reader, textoutput:Writer)

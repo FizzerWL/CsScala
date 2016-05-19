@@ -117,6 +117,7 @@
   <Method SourceObject="System.Math" Match="Ceiling" ReplaceWith="ceil" />
   <Method SourceObject="System.Math" Match="Floor" ReplaceWith="floor" />
   <Method SourceObject="System.Math" Match="Pow" ReplaceWith="pow" />
+  <Method SourceObject="System.Math" Match="Round" ReplaceWith="round" />
 
   <Type Match="System.Exception" ReplaceWith="java.lang.Exception" />
   <Property SourceObject="System.Exception" Match="StackTrace" ReplaceWith="getStackTraceString" />

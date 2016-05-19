@@ -1,6 +1,5 @@
 package System.Text
 
-import System.NotImplementedException
 import java.nio.charset.Charset
 
 object UTF8Encoding
