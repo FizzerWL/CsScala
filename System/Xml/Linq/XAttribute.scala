@@ -2,7 +2,6 @@ package System.Xml.Linq
 
 
 import org.jdom2._
-import sun.org.mozilla.javascript.internal.xmlimpl.XmlNode
 import System.Xml.XmlNodeType
 
 class XAttribute(_attr:Attribute) extends XObject

@@ -8,6 +8,7 @@ import java.util.ArrayList
 import scala.collection.JavaConverters._
 import org.apache.http.util.ExceptionUtils
 import java.nio.ByteOrder
+import java.math.BigInteger
 
 object CsScala {
   val cscontinue = new Breaks;
@@ -354,5 +355,13 @@ object CsScala {
   def SwapEndian(i: Int): Int = java.lang.Integer.reverseBytes(i);
   def SwapEndian(i: Long): Long = java.lang.Long.reverseBytes(i);
   
-  def EmptyGuid():UUID = new UUID(0,0); 
+  def EmptyGuid():UUID = new UUID(0,0);
+  
+  
+  def Parse(s: String): UUID = {
+    val s2 = s.replace("-", "");
+    return new UUID(
+      new BigInteger(s2.substring(0, 16), 16).longValue(),
+      new BigInteger(s2.substring(16), 16).longValue());
+  }
 }
