@@ -27,6 +27,7 @@
   <Method SourceObject="System.String" Match="Trim" ArgumentTypes="char[]" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="TrimEnd" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="TrimStart" ExtensionNamespace="System.CsScala" />
+  <Method SourceObject="System.String" Match="PadLeft" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="Remove" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.String" Match="ToCharArray" ReplaceWith="toCharArray" />
   <Method SourceObject="System.String" Match="Split" ReplaceWith="split" />

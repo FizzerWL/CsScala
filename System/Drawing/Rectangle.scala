@@ -16,4 +16,5 @@ class Rectangle(x:Int, y:Int, w:Int, h:Int)
 	    return o.X == X && o.Y == Y && o.Width == Width && o.Height == Height;
 	  }
 	override def hashCode():Int = X + Y + Width + Height;
+	override def toString():String = X + "/" + Y + " " + Width + "/" + Height;
 }

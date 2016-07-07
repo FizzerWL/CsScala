@@ -7,9 +7,9 @@ import java.util.ArrayList
 //Unfortunately, Matcher does not provide a way to get the group names. The only way to know what the group names are is guess and check if it throws, so this algorithm is a bit inefficient.  It could be made simpler by using reflection to read the group names.
 class GroupCollection(matcher: Matcher, findNext:Boolean) {
 
-  var _currIndex = 0;
+  private final var _currIndex = 0;
 
-  val _isEmpty = if (findNext) !matcher.find() else false;
+  final val _isEmpty = if (findNext) !matcher.find() else false;
 
   private def tryGetGroupName(name: String): String =
     {

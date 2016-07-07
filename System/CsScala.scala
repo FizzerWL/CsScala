@@ -9,6 +9,7 @@ import scala.collection.JavaConverters._
 import org.apache.http.util.ExceptionUtils
 import java.nio.ByteOrder
 import java.math.BigInteger
+import org.apache.commons.lang3.StringUtils
 
 object CsScala {
   val cscontinue = new Breaks;
@@ -363,5 +364,9 @@ object CsScala {
     return new UUID(
       new BigInteger(s2.substring(0, 16), 16).longValue(),
       new BigInteger(s2.substring(16), 16).longValue());
+  }
+  
+  def PadLeft(s:String, totalWidth:Int, paddingChar:Char):String = {
+    return StringUtils.leftPad(s, totalWidth, paddingChar);
   }
 }
