@@ -6,7 +6,7 @@ import System.EventArgs
 import System.Web.HttpServerUtility
 import System.Web.HttpContext
 
-abstract class Page() extends Control() {
+abstract class Page extends Control {
 
   def Request = Context.Request;
   def Response = Context.Response;

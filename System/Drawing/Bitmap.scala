@@ -13,6 +13,6 @@ class Bitmap(img:BufferedImage) extends Image(img) {
   
   def this(w: Int, h: Int, format: Int = 0)
   {
-    this(new BufferedImage(w, h, if (format == PixelFormat.Format24bppRgb) BufferedImage.TYPE_3BYTE_BGR else BufferedImage.TYPE_4BYTE_ABGR));
+    this(new BufferedImage(w, h, if (format == PixelFormat.Format24bppRgb) BufferedImage.TYPE_3BYTE_BGR else BufferedImage.TYPE_INT_ARGB));
   }
 }

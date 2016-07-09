@@ -20,7 +20,7 @@ object Control {
   final val Locks = new ConcurrentHashMap[Class[_], ReentrantLock]();
 }
 
-abstract class Control() {
+abstract class Control {
 
   final var Context: HttpContext = null;
 

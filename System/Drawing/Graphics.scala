@@ -12,6 +12,7 @@ class Graphics(bmp: Bitmap) {
   final var InterpolationMode = 0;
   final var SmoothingMode = 0;
   final var PixelOffsetMode = 0;
+  final var CompositingQuality = 0;
 
   final val _graphics = bmp._img.createGraphics();
 
