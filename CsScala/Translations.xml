@@ -86,6 +86,7 @@
 
   <Type Match="System.Guid" ReplaceWith="java.util.UUID" />
   <Method SourceObject="System.Guid" Match="NewGuid" ReplaceWith="randomUUID" />
+  <Method SourceObject="System.Guid" Match=".ctor" ExtensionNamespace="System.CsScala" ReplaceWith="Parse" />
   <Method SourceObject="System.Guid" Match="ToByteArray" ExtensionNamespace="System.CsScala" />
   <Method SourceObject="System.Guid" Match="Parse" ExtensionNamespace="System.CsScala" SkipExtensionParameter="true" />
   <Property SourceObject="System.Guid" Match="Empty" ExtensionMethod="System.CsScala.EmptyGuid" />

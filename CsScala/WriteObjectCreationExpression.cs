@@ -39,9 +39,18 @@ namespace CsScala
 
                 var translateOpt = MethodTranslation.Get(methodSymbol);
 
+                if (translateOpt != null && translateOpt.ExtensionNamespace != null)
+                {
+                    writer.Write(translateOpt.ExtensionNamespace);
+                    writer.Write(".");
+                    writer.Write(translateOpt.ReplaceWith);
+                }
+                else
+                {
+                    writer.Write("new ");
+                    writer.Write(TypeProcessor.ConvertType(expression.Type));
+                }
 
-                writer.Write("new ");
-                writer.Write(TypeProcessor.ConvertType(expression.Type));
                 writer.Write("(");
 
                 if (expression.ArgumentList != null)

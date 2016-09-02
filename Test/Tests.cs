@@ -3255,7 +3255,7 @@ object Utilities
         }
 
         [TestMethod]
-        public void GuidEmpty()
+        public void Guids()
         {
             TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
 using System;
@@ -3266,7 +3266,9 @@ namespace Blargh
     {
         public static void Foo()
         {
-            var g = Guid.Empty;
+            var g1 = Guid.Empty;
+            var g2 = Guid.Parse(""g2"");
+            var g3 = new Guid(""g3"");
         }
     }
 }", @"
@@ -3277,7 +3279,9 @@ object Utilities
 {
     def Foo()
     {
-        var g:java.util.UUID = System.CsScala.EmptyGuid();
+        var g1:java.util.UUID = System.CsScala.EmptyGuid();
+        var g2:java.util.UUID = System.CsScala.Parse(""g2"");
+        var g3:java.util.UUID = System.CsScala.Parse(""g3"");
     }
 }");
         }

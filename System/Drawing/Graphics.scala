@@ -2,6 +2,7 @@ package System.Drawing;
 import System.Drawing.Drawing2D.GraphicsPath;
 import java.awt.BasicStroke
 import System.NotImplementedException
+import System.Drawing.Drawing2D.Matrix
 
 object Graphics {
   def FromImage(bmp: Bitmap): Graphics = new Graphics(bmp);
@@ -13,6 +14,10 @@ class Graphics(bmp: Bitmap) {
   final var SmoothingMode = 0;
   final var PixelOffsetMode = 0;
   final var CompositingQuality = 0;
+  
+  def ScaleTransform(x:Float, y:Float) {
+    throw new NotImplementedException();
+  }
 
   final val _graphics = bmp._img.createGraphics();
 

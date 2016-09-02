@@ -101,9 +101,25 @@ namespace CsScala.Translations
                                     Core.Write(writer, expression.Expression);
                                     break;
                                 case "TypeParameter":
-                                    var type = expression.Name.As<GenericNameSyntax>().TypeArgumentList.Arguments[int.Parse(element.Attribute("Index").Value)];
+                                    var typePrmIndex = int.Parse(element.Attribute("Index").Value);
+                                    var convert = element.Attribute("Convert") == null ? true : bool.Parse(element.Attribute("Convert").Value);
 
-                                    writer.Write(TypeProcessor.ConvertType(type));
+                                    var type = expression.Name.As<GenericNameSyntax>().TypeArgumentList.Arguments[typePrmIndex];
+
+                                    if (convert)
+                                        writer.Write(TypeProcessor.ConvertType(type));
+                                    else
+                                    {
+                                        var typeSymbol = TypeProcessor.GetTypeSymbol(type);
+                                        writer.Write(typeSymbol.ContainingNamespace.ToString());
+                                        writer.Write(".");
+                                        writer.Write(typeSymbol.Name);
+                                    }
+                                    break;
+                                case "Argument":
+                                    int argIndex = int.Parse(element.Attribute("Index").Value);
+                                    var invoke = expression.Parent.As<InvocationExpressionSyntax>();
+                                    Core.Write(writer, invoke.ArgumentList.Arguments.ElementAt(argIndex).Expression);
                                     break;
                                 default:
                                     throw new Exception("Unexpected element name " + element.Name);

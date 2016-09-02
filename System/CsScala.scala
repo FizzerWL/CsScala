@@ -334,7 +334,6 @@ object CsScala {
   def EnumTryParse(str:String, out:CsRef[Int], fn:String=>Int):Boolean =
   {
     try {
-
       out.Value = fn(str);
       return true;
     }
@@ -351,6 +350,7 @@ object CsScala {
   @inline def NullCheck(d: DateTime): String = if (d == null) "" else d.toString();
   @inline def NullCheck(b: java.lang.Boolean): String = if (b == null) "" else b.toString();
   @inline def ByteToInt(b: Byte): Int = b & 0xFF;
+  @inline def ByteToFloat(b: Byte): Float = (b & 0xFF).toFloat;
   @inline def ByteToString(b: Byte): String = (b & 0xFF).toString();
 
   def SwapEndian(i: Int): Int = java.lang.Integer.reverseBytes(i);

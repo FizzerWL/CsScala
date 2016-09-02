@@ -66,6 +66,14 @@ namespace CsScala
             return TryConvertType(sym);
         }
 
+        public static ITypeSymbol GetTypeSymbol(SyntaxNode node)
+        {
+            var r = TryGetTypeSymbol(node);
+            if (r == null)
+                throw new Exception("Could not get type symbol for " + Utility.Descriptor(node));
+            return r;
+        }
+
         private static ITypeSymbol TryGetTypeSymbol(SyntaxNode node)
         {
             if (node == null)
