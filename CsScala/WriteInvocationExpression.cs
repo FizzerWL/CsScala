@@ -61,7 +61,7 @@ namespace CsScala
                     case "Parse":
                         Core.Write(writer, invocationExpression.ArgumentList.Arguments.Single().Expression);
 
-                        writer.Write(".to");
+                        writer.Write(".trim().to"); //we must trim strings before parsing them.  In C#, a string like "4 " parses just fine, but if we don't trim this same string would false to parse in java
                         writer.Write(TypeProcessor.ConvertType(methodSymbol.ReturnType));
 
                         return;

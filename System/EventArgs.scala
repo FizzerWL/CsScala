@@ -1,5 +1,0 @@
-package System
-
-class EventArgs {
-
-}

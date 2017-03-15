@@ -1501,9 +1501,9 @@ object Utilities
         System.Console.WriteLine_UInt32(System.CsScala.uintMaxValue);
         System.Console.WriteLine_UInt32(System.CsScala.uintMinValue);
         var s:String = ""123"";
-        System.Console.WriteLine(s.toInt + 1);
-        s.toFloat;
-        s.toDouble;
+        System.Console.WriteLine(s.trim().toInt + 1);
+        s.trim().toFloat;
+        s.trim().toDouble;
     }
 }");
         }

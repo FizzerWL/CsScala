@@ -1,6 +1,0 @@
-package System
-
-class CsObject 
-{
-
-}
