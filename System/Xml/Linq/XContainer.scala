@@ -8,7 +8,14 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
 
   def Add(obj: Any) {
     if (obj.isInstanceOf[XNode])
-      _elem.addContent(obj.asInstanceOf[XNode]._node);
+    {
+      val toAdd = obj.asInstanceOf[XNode]._node;
+      
+      if (toAdd.getParent() == null)
+        _elem.addContent(toAdd);
+      else
+        _elem.addContent(toAdd.clone()); //if it has a parent already, we must clone since jdom2 won't let us add the same element to two parents, but .net does.
+    }
     else if (obj.isInstanceOf[XAttribute])
       _elem.setAttribute(obj.asInstanceOf[XAttribute]._attr)
     else

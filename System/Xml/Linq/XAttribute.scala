@@ -7,8 +7,8 @@ class XAttribute(attr: Attribute) extends XObject {
 
   val _attr = attr;
   
-  def this(name:String, value:String) {
-    this(new Attribute(name, value));
+  def this(name:String, value:Any) {
+    this(new Attribute(name, value.toString()));
   }
   
   def Value: String = _attr.getValue();
