@@ -28,6 +28,8 @@ class WebResponse(_req:HttpURLConnection, _isError:Boolean)
 	  }
 	}
 	
+	def Headers(name:String):String = _req.getHeaderField(name);
+	  
 	def Dispose()
 	{
 		

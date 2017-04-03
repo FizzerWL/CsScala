@@ -35,6 +35,12 @@ class WebRequest(_req: HttpURLConnection) {
   def ReadWriteTimeout: Int = _req.getReadTimeout();
   def ReadWriteTimeout_=(t: Int) = _req.setReadTimeout(t);
 
+  def Accept: String = _req.getRequestProperty("Accept");
+  def Accept_=(t: String) = _req.setRequestProperty("Accept", t);
+
+  def UserAgent: String = _req.getRequestProperty("User-Agent");
+  def UserAgent_=(t: String) = _req.setRequestProperty("User-Agent", t);
+
   var CookieContainer: CookieContainer = null;
   val Headers = new WebHeaderCollection(_req);
 

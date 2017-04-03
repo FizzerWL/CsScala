@@ -50,7 +50,7 @@ class GroupCollection(matcher: Matcher, findNext:Boolean) {
         Advance();
 
         if (_currIndex == startIndex)
-          throw new Exception("Group name " + name + " not found");
+          return new Group(null);
 
       }
       throw new Exception("never");

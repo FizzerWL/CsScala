@@ -81,7 +81,7 @@ object CsScala {
       return s == null || s.isEmpty();
     }
 
-  def GetType(obj: AnyRef): Type =
+  def GetType(obj: Any): Type =
     {
       return new Type(obj.getClass());
     }

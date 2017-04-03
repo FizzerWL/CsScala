@@ -1,6 +1,6 @@
 package System.Collections.Generic
 
-class KeyNotFoundException extends java.lang.Exception 
+class KeyNotFoundException(msg:String = null) extends java.lang.Exception(msg) 
 {
 
 }
