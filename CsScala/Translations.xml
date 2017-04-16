@@ -122,7 +122,7 @@
   <Method SourceObject="System.Math" Match="Round" ReplaceWith="round" />
 
   <Type Match="System.Exception" ReplaceWith="java.lang.Exception" />
-  <Property SourceObject="System.Exception" Match="StackTrace" ReplaceWith="getStackTraceString" />
+  <Property SourceObject="System.Exception" Match="StackTrace" ExtensionMethod="System.CsScala.ExceptionStackTrace" />
   <Property SourceObject="System.Exception" Match="Message" ExtensionMethod="System.CsScala.ExceptionMessage" />
   <Property SourceObject="System.Exception" Match="InnerException" ReplaceWith="getCause().asInstanceOf[java.lang.Exception]" />
 

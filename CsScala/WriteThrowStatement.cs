@@ -75,5 +75,11 @@ namespace CsScala
 
             throw new Exception("Node not in a body");
         }
+        
+        public static void WriteThrowExpression(ScalaWriter writer, ThrowExpressionSyntax syntax)
+        {
+            writer.Write("throw ");
+            Core.Write(writer, syntax.Expression);
+        }
     }
 }

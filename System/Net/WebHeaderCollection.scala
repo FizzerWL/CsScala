@@ -5,5 +5,8 @@ import java.io._;
 
 class WebHeaderCollection(_req: HttpURLConnection) {
 
-  def Add(name: String, value: String) = _req.setRequestProperty(name, value);
+  def Add(name: String, value: String) = {
+    if (value != null)
+      _req.setRequestProperty(name, value);
+  }
 }

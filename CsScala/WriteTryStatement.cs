@@ -28,6 +28,8 @@ namespace CsScala
                 {
                     writer.WriteIndent();
 
+                    //In C#, the base exception type is Exception, but on the JVM it is Throwable.  Normally, JVM programs should not catch throwable, so we map the C# Exception type to the JVM Exception type by default.  We attempted to change Exception to map to Throwable but ran into issues with things getting caught that shouldn't, such as Scala's "BreakControl" that's used on break statements.
+                    //if C# code really wants to catch all throwables, catch Exception and name the variable "allThrowables".  This is a signal to CSScala that all throwables should be caught.  However, use it with care, as it can cause complications.
                     if (catchClause.Declaration == null)
                     {
                         writer.Write("case __ex: java.lang.Exception => ");
@@ -38,7 +40,13 @@ namespace CsScala
                         writer.Write("case ");
                         writer.Write(string.IsNullOrWhiteSpace(catchClause.Declaration.Identifier.ValueText) ? "__ex" : WriteIdentifierName.TransformIdentifier(catchClause.Declaration.Identifier.ValueText));
                         writer.Write(": ");
-                        writer.Write(TypeProcessor.ConvertType(catchClause.Declaration.Type));
+
+
+                        if (catchClause.Declaration.Identifier.ValueText == "allThrowables")
+                            writer.Write("java.lang.Throwable");
+                        else
+                            writer.Write(TypeProcessor.ConvertType(catchClause.Declaration.Type));
+
                         writer.Write(" =>\r\n");
                     }
 

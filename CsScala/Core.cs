@@ -95,6 +95,8 @@ namespace CsScala
                 WriteCastExpression.Go(writer, node.As<CastExpressionSyntax>());
             else if (node is ThrowStatementSyntax)
                 WriteThrowStatement.Go(writer, node.As<ThrowStatementSyntax>());
+            else if (node is ThrowExpressionSyntax)
+                WriteThrowStatement.WriteThrowExpression(writer, node.As<ThrowExpressionSyntax>());
             else if (node is EqualsValueClauseSyntax)
                 WriteEqualsValueClause.Go(writer, node.As<EqualsValueClauseSyntax>());
             else if (node is ForStatementSyntax)

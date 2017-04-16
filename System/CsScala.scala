@@ -255,7 +255,7 @@ object CsScala {
   def IsDigit(c: Char): Boolean = c.isDigit;
   def IsLetter(c: Char):Boolean = c.isLetter;
 
-  def ExceptionMessage(e: Exception): String =
+  def ExceptionMessage(e: Throwable): String =
     {
       val msg = e.getMessage();
       if (msg == null)
@@ -263,6 +263,7 @@ object CsScala {
       else
         return msg;
     }
+  def ExceptionStackTrace(e: Throwable): String = e.getStackTrace().mkString("\n");
 
   def Substring(s: String, startIndex: Int, len: Int): String =
     {
