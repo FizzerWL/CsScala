@@ -1,5 +1,5 @@
 package System.Net;
-import System.NotImplementedException;
+
 import java.net.InetAddress
 
 object Dns

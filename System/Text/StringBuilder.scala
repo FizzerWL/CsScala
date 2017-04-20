@@ -1,6 +1,5 @@
 package System.Text
 
-import System.NotImplementedException
 import java.io.StringWriter
 
 class StringBuilder(sb: java.lang.StringBuilder) {

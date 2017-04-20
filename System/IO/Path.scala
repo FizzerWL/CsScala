@@ -1,6 +1,5 @@
 package System.IO;
 
-import System.NotImplementedException;
 
 object Path
 {

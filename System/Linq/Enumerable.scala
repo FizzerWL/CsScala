@@ -5,7 +5,6 @@ import System.Collections.Generic.List
 import System.DateTime
 import scala.reflect._
 import scala.collection.JavaConverters._
-import System.NotImplementedException
 
 object Enumerable 
 {

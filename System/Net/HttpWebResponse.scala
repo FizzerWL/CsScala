@@ -1,7 +1,6 @@
 package System.Net;
 
 import System.IO.Stream;
-import System.NotImplementedException;
 import java.net._;
 import java.io._;
 import scala.collection.JavaConversions._;

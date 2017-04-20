@@ -1,7 +1,6 @@
 package System.Drawing.Drawing2D;
 import System.Drawing.PointF
 import org.lwjgl.util.vector._
-import System.NotImplementedException
 import java.awt.geom.AffineTransform
 import java.awt.geom.Point2D
 

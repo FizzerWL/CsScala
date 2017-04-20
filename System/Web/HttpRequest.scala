@@ -1,6 +1,5 @@
 package System.Web;
 import System.Collections.Specialized.NameValueCollection
-import System.NotImplementedException
 import System.Uri
 import System.CsScala
 import System.IO.Stream

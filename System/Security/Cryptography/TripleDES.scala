@@ -1,7 +1,5 @@
 package System.Security.Cryptography;
 
-import System.NotImplementedException;
-
 object TripleDES {
   def Create(): TripleDES = new TripleDES();
 }

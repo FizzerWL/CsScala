@@ -1,7 +1,6 @@
 package System.Xml;
 
 import System.Text.StringBuilder
-import System.NotImplementedException
 import javax.xml.stream.XMLOutputFactory
 import java.io.StringWriter
 import org.jdom2.Document

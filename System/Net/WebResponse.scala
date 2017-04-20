@@ -1,6 +1,5 @@
 package System.Net;
 import System.IO.Stream
-import System.NotImplementedException
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.HttpURLConnection

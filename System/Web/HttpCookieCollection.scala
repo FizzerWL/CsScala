@@ -1,5 +1,4 @@
 package System.Web;
-import System.NotImplementedException;
 import java.util.HashMap
 
 class HttpCookieCollection extends Traversable[String]

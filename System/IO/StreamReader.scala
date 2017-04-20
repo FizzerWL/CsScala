@@ -1,5 +1,5 @@
 package System.IO;
-import System.NotImplementedException;
+
 import java.io.InputStreamReader
 
 class StreamReader(s: Stream) {

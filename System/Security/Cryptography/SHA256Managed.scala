@@ -1,6 +1,5 @@
 package System.Security.Cryptography;
 
-import System.NotImplementedException;
 import java.security.MessageDigest
 
 class SHA256Managed {

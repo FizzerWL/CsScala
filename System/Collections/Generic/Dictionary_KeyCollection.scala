@@ -1,6 +1,5 @@
 package System.Collections.Generic
 
-import System.NotImplementedException
 
 class Dictionary_KeyCollection[T](i:java.util.Set[T]) extends Traversable[T] 
 {

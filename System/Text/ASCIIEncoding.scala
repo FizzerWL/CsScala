@@ -1,5 +1,5 @@
 package System.Text;
-import System.NotImplementedException;
+
 import java.nio.charset.Charset
 
 class ASCIIEncoding extends Encoding

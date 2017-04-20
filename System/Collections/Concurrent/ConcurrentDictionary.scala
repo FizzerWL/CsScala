@@ -1,7 +1,6 @@
 package System.Collections.Concurrent
 
 import System.CsRef
-import System.NotImplementedException
 import java.util.concurrent.ConcurrentHashMap
 import scala.collection.JavaConverters._
 import System.Collections.Generic.KeyValuePair

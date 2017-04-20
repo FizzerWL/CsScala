@@ -1,6 +1,5 @@
 package System.Web.UI
 
-import System.NotImplementedException
 import System.EventArgs
 import System.Web.HttpContext
 import com.google.common.cache.CacheBuilder

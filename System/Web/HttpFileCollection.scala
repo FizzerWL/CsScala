@@ -1,6 +1,5 @@
 package System.Web
 
-import System.NotImplementedException
 import java.util.ArrayList
 
 class HttpFileCollection extends Traversable[HttpPostedFile] 

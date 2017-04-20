@@ -4,7 +4,6 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
 import scala.reflect.ClassTag
-import System.NotImplementedException
 
 class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
   final val _list = initialList;
@@ -176,6 +175,19 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
       {
         a.asInstanceOf[Comparable[T]].compareTo(b);
       }));
+  }
+
+  def FindIndex(fn: T => Boolean): Int = {
+    val it = _list.iterator();
+    var i: Int = 0;
+    while (it.hasNext()) {
+      if (fn(it.next()))
+        return i;
+      i += 1;
+    }
+
+    return -1;
+
   }
 
 }

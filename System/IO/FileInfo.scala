@@ -1,5 +1,5 @@
 package System.IO;
-import System.NotImplementedException;
+
 
 class FileInfo(path:String)
 {

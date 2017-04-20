@@ -1,5 +1,5 @@
 package System.Net.Mail;
-import System.NotImplementedException;
+
 import java.util.ArrayList
 
 class MailAddressCollection {

@@ -1,6 +1,5 @@
 package System.Security.Cryptography;
 import System.IO.Stream
-import System.NotImplementedException
 import System.IO.MemoryStream
 import javax.crypto._
 import javax.crypto.spec.DESedeKeySpec

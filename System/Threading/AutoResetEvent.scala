@@ -1,5 +1,4 @@
 package System.Threading;
-import System.NotImplementedException;
 
 class AutoResetEvent(b:Boolean)
 {

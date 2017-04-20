@@ -1,5 +1,4 @@
 package System.IO;
-import System.NotImplementedException;
 
 class StringReader(str: String) {
 

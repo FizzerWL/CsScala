@@ -1,5 +1,4 @@
 package System.Drawing;
-import System.NotImplementedException;
 
 class Rectangle(x:Int, y:Int, w:Int, h:Int)
 {
