@@ -20,6 +20,6 @@ class HttpWebResponse(_req:HttpURLConnection, cookies:CookieContainer, _isError:
 			  cookies.AddRaw(cookie);
 	}
 	
-	if (StatusCode != 200)
-	  throw new WebException("The remote server returned an error: " + StatusCode, null, this);
+	if (StatusCode != 200 && !_isError)
+	  throw new WebException("The remote server returned an error: " + StatusCode, null, new HttpWebResponse(_req, cookies, true));
 }

@@ -7,6 +7,9 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
   val _elem = elem; //null if we're an XDocument, which overrides our methods so these should never be called.
 
   def Add(obj: Any) {
+    if (obj == null)
+      return;
+    
     if (obj.isInstanceOf[XNode])
     {
       val toAdd = obj.asInstanceOf[XNode]._node;
@@ -17,9 +20,16 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
         _elem.addContent(toAdd.clone()); //if it has a parent already, we must clone since jdom2 won't let us add the same element to two parents, but .net does.
     }
     else if (obj.isInstanceOf[XAttribute])
-      _elem.setAttribute(obj.asInstanceOf[XAttribute]._attr)
+      _elem.setAttribute(obj.asInstanceOf[XAttribute]._attr);
+    else if (obj.isInstanceOf[Traversable[Any]])
+    {
+      for(c <- obj.asInstanceOf[Traversable[Any]])
+        Add(c);
+    }
+    else if (obj.isInstanceOf[String])
+      _elem.setText(obj.asInstanceOf[String]);
     else
-      throw new NotImplementedException("Adding unexpected type");
+      throw new NotImplementedException("Adding unexpected type " + obj.getClass().getName());
   }
 
   def Elements(): Traversable[XElement] = _elem.getChildren().asScala.map(new XElement(_));

@@ -65,7 +65,10 @@ class XDocument(_doc: Document) extends XContainer(null) {
   }
 
   override def DescendantNodes(): Traversable[XNode] = Array[XNode](Root) ++ Root.DescendantNodes();
+  
   override def toString(): String = XDocument.Outputter.outputString(_doc);
+  def toString(opts:Int): String = toString(); //TODO: Support formatting option
+  
   def Save(path: String) {
     System.IO.File.WriteAllText(path, toString());
   }

@@ -102,7 +102,7 @@ Options available:
                 {
                     Console.WriteLine("Converting project " + project.Name + "...");
                     var sw = Stopwatch.StartNew();
-                    Program.Go((Compilation)project.GetCompilationAsync().Result, outDir, extraTranslations);
+                    Program.Go(project.GetCompilationAsync().Result, outDir, extraTranslations);
                     Console.WriteLine("Finished project " + project.Name + " in " + sw.Elapsed);
                 }
 
