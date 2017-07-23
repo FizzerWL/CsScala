@@ -13,8 +13,7 @@ object File {
       return f.exists() && !f.isDirectory();
     }
   def Delete(path: String) {
-    if (!new java.io.File(path).delete())
-      throw new IOException("File could not be deleted");
+    Files.deleteIfExists(new java.io.File(path).toPath());
   }
 
   def AppendAllText(path: String, text: String) {

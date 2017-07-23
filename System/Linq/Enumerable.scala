@@ -371,6 +371,10 @@ object Enumerable
   {
     return a.take(numtoTake);
   }
+  def TakeWhile[T](a:Traversable[T], fn:T=>Boolean):Traversable[T] =
+  {
+    return a.takeWhile(fn);
+  }
   def All[T](a:Traversable[T], fn:T=>Boolean):Boolean =
   {
     return a.forall(fn);
