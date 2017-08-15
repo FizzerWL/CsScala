@@ -1,6 +1,7 @@
 package System.Text
 
 import java.io.StringWriter
+import System.CsScala
 
 class StringBuilder(sb: java.lang.StringBuilder) {
 
@@ -19,50 +20,67 @@ class StringBuilder(sb: java.lang.StringBuilder) {
     _writer = writer;
   }
 
-  def Append(c: Char) {
+  def Append(c: Char):StringBuilder = {
     sb.append(c);
+    return this;
   }
-  def Append(s: String) {
+  def Append(s: String):StringBuilder =  {
     if (s != null)
       sb.append(s);
+    
+    return this;
   }
-  def AppendLine(s: String = null) {
+  def AppendLine(s: String = null):StringBuilder =  {
     if (s != null)
       sb.append(s);
 
     sb.append('\n');
+    return this;
   }
-  def Append(i: Int) {
+  def Append(i: Int):StringBuilder =  {
     sb.append(i);
+    return this;
   }
-  def Append(i: Double) {
+  def Append(i: Double):StringBuilder =  {
     sb.append(i);
+    return this;
   }
-  def Append(s: String, offset: Int, len: Int) {
+  def Append(s: String, offset: Int, len: Int):StringBuilder =  {
     if (s != null)
       sb.append(s, offset, offset + len);
+    
+    return this;
+  }
+  
+  def Append(c:Char, repeatCount:Int):StringBuilder = {
+    for (i <- 1 to repeatCount)
+      sb.append(c);
+    
+    return this;
   }
 
-  def Insert(index: Int, c: Char) {
+  def Insert(index: Int, c: Char):StringBuilder =  {
     sb.insert(index, c);
+    return this;
   }
-  def Insert(index: Int, s: String) {
+  def Insert(index: Int, s: String):StringBuilder =  {
     if (s != null)
       sb.insert(index, s);
+    
+    return this;
   }
-  def Insert(index: Int, value: String, count:Int) {
+  def Insert(index: Int, value: String, count:Int):StringBuilder =  {
     var remain = count;
     while (remain > 0)
     {
       sb.insert(index, value);
       remain -= 1;
     }
+    return this;
   }
 
-  def Length: Int = {
-    return sb.length();
-  }
-
+  def Length: Int = sb.length();
+   
   override def toString(): String =
     {
       if (_writer == null)
@@ -93,4 +111,7 @@ class StringBuilder(sb: java.lang.StringBuilder) {
   def update(i: Int, ch: Char) {
     sb.setCharAt(i, ch);
   }
+  
+  def Capacity:Int = 0;
+  def Capacity_=(value:Int) = { }
 }

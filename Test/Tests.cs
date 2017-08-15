@@ -6,6 +6,7 @@ using CsScala;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace UnitTestProject1
 {
@@ -3285,6 +3286,44 @@ object Utilities
     }
 }");
         }
-        
+
+        [TestMethod]
+        public void GetEnumeratorMethods()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Blargh
+{
+    public class SomeCollection : IEnumerable<string>
+    {
+        private List<string> coll = new List<string>();
+            
+        public IEnumerator<string> GetEnumerator()
+        {
+            return coll.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return coll.GetEnumerator();
+        }
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+class SomeCollection extends Traversable[String]
+{
+    private var coll:System.Collections.Generic.List[String] = new System.Collections.Generic.List[String]();
+
+    def foreach[U](fn: String => U)
+    {
+        coll.foreach(fn);
+    }
+}");
+        }
     }
 }

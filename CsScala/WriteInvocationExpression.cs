@@ -59,6 +59,8 @@ namespace CsScala
                 switch (methodSymbol.Name)
                 {
                     case "Parse":
+                        if (invocationExpression.ArgumentList.Arguments.Count > 1)
+                            throw new Exception("Multiple arguments to .Parse methods are not supported: " + Utility.Descriptor(invocationExpression));
                         Core.Write(writer, invocationExpression.ArgumentList.Arguments.Single().Expression);
 
                         writer.Write(".trim().to"); //we must trim strings before parsing them.  In C#, a string like "4 " parses just fine, but if we don't trim this same string would false to parse in java

@@ -26,7 +26,7 @@ namespace CsScala
 
         public static SyntaxTokenList GetModifiers(this MemberDeclarationSyntax member)
         {
-            var field = member as FieldDeclarationSyntax;
+            var field = member as BaseFieldDeclarationSyntax;
             if (field != null)
                 return field.Modifiers;
 
@@ -34,7 +34,7 @@ namespace CsScala
             if (method != null)
                 return method.Modifiers;
 
-            var property = member as PropertyDeclarationSyntax;
+            var property = member as BasePropertyDeclarationSyntax;
             if (property != null)
                 return property.Modifiers;
 
@@ -45,6 +45,10 @@ namespace CsScala
             var type = member as BaseTypeDeclarationSyntax;
             if (type != null)
                 return type.Modifiers;
+
+            var indx = member as BasePropertyDeclarationSyntax;
+            if (indx != null)
+                return indx.Modifiers;
 
             throw new Exception("Need handler for member of type " + member.GetType().Name);
         }

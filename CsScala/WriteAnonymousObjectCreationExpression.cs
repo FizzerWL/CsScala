@@ -45,11 +45,13 @@ namespace CsScala
 
             var genericSuffix = typeParams.None() ? "" : ("[" + string.Join(", ", typeParams.Select(o => o.Type.Name).Distinct()) + "]");
 
-            return "Anon_" + string.Join("__",
+            var ret = "Anon_" + string.Join("__",
                 fields
                 .OrderBy(o => o.Name)
-                .Select(o => o.Name + "_" + TypeProcessor.ConvertType(o.Type).Replace('.', '_')))
+                .Select(o => o.Name + "_" + TypeProcessor.ConvertType(o.Type).Replace('.', '_').Replace("[", "_").Replace("]", "_")))
                 + genericSuffix;
+
+            return ret;
         }
 
         public static void WriteAnonymousType(AnonymousObjectCreationExpressionSyntax syntax)

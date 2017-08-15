@@ -24,10 +24,15 @@ namespace CsScala
                     return;
             }
 
-            if (method.Identifier.ValueText == "GetEnumerator")
-                return; //TODO: Support enumerator methods
-
             var methodSymbol = Program.GetModel(method).GetDeclaredSymbol(method);
+
+
+            if (method.Identifier.ValueText == "GetEnumerator")
+            {
+                WriteGetEnumeratorFunction(writer, method, methodSymbol);
+                return;
+            }
+
 
             writer.WriteIndent();
 
@@ -138,5 +143,43 @@ namespace CsScala
 
             return identifier;
         }
+
+
+        private static void WriteGetEnumeratorFunction(ScalaWriter writer, MethodDeclarationSyntax method, IMethodSymbol methodSymbol)
+        {
+            var returnType = TypeProcessor.ConvertType(methodSymbol.ReturnType);
+
+            if (!returnType.StartsWith("System.Collections.Generic.IEnumerator["))
+                return; //we only support the generic IEnumerator form of GetEnumerator.  Anything else, just don't write out the method.
+
+            var enumerableType = returnType.RemoveFromStartOfString("System.Collections.Generic.IEnumerator[").RemoveFromEndOfString("]");
+
+            //We only support very simple GetEnumerator functions that pass on their call to some other collection.  The body should be like "return <expr>.GetEnumerator();", otherwise don't write out the function at all.
+            if (method.Body == null)
+                return;
+            if (method.Body.Statements.Count > 1)
+                return;
+            var returnStatement = method.Body.Statements.Single() as ReturnStatementSyntax;
+            if (returnStatement == null)
+                return;
+            var invocation = returnStatement.Expression as InvocationExpressionSyntax;
+            if (invocation == null)
+                return;
+            var member = invocation.Expression as MemberAccessExpressionSyntax;
+            if (member == null)
+                return;
+
+            writer.WriteIndent();
+            writer.Write("def foreach[U](fn: ");
+            writer.Write(enumerableType);
+            writer.Write(" => U)\r\n");
+            writer.WriteOpenBrace();
+
+            writer.WriteIndent();
+            Core.Write(writer, member.Expression);
+            writer.Write(".foreach(fn);\r\n");
+            writer.WriteCloseBrace();
+        }
+
     }
 } 
