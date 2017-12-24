@@ -28,6 +28,7 @@ class Regex(pattern: String, options: Int = 0) {
   def Match(input: String): Match = new Match(_pattern.matcher(input));
   def Matches(input: String): MatchCollection = new MatchCollection(_pattern.matcher(input));
 
+  def Replace(input: String, replace: String): String = Replace(input, m => replace);
   def Replace(input: String, eval: Match => String): String = {
 
     val m = _pattern.matcher(input);

@@ -20,6 +20,7 @@ object Image {
       return new Image(img);
     } catch {
       case ex: java.awt.color.CMMException => throw new ArgumentException("Image failed to parse (CMMException)", ex);
+      case ex: javax.imageio.IIOException => throw new ArgumentException("Image failed to parse (IIOException)", ex);
     }
   }
 

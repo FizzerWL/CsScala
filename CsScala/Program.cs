@@ -40,10 +40,13 @@ namespace CsScala
 
         public static void Go(Compilation compilation, string outDir, IEnumerable<string> extraTranslation)
         {
+            TranslationManager.Init(extraTranslation);
+
             Compilation = compilation;
+
             OutDir = outDir;
 
-            Task.WaitAll(Task.Run(() => Build()), Task.Run(() => Generate(extraTranslation)));
+            Utility.Parallel(new Action[] { Build, Generate }, a => a());
         }
 
         private static void Build()
@@ -58,13 +61,10 @@ namespace CsScala
             Console.WriteLine("Built in " + sw.Elapsed);
         }
 
-        private static void Generate(IEnumerable<string> extraTranslation)
+        private static void Generate()
         {
             Console.WriteLine("Parsing...");
             var sw = Stopwatch.StartNew();
-
-
-            TranslationManager.Init(extraTranslation);
 
             if (!Directory.Exists(OutDir))
                 Directory.CreateDirectory(OutDir);

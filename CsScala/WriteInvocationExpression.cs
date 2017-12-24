@@ -18,6 +18,10 @@ namespace CsScala
 
             var symbolInfo = model.GetSymbolInfo(invocationExpression);
             var expressionSymbol = model.GetSymbolInfo(invocationExpression.Expression);
+            if (symbolInfo.Symbol == null)
+                throw new Exception("symbolInfo.Symbol null at " + Utility.Descriptor(invocationExpression));
+            if (symbolInfo.Symbol.OriginalDefinition == null)
+                throw new Exception("symbolInfo.Symbol.OriginalDefinition null at " + Utility.Descriptor(invocationExpression));
             var methodSymbol = symbolInfo.Symbol.OriginalDefinition.As<IMethodSymbol>().UnReduce();
 
             var translateOpt = MethodTranslation.Get(symbolInfo.Symbol.As<IMethodSymbol>());
