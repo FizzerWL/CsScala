@@ -25,6 +25,23 @@ namespace CsScala
                 //new object() results in the CsObject type being made.  This is only really useful for locking
                 writer.Write("new CsObject()");
             }
+
+            else if (type.SpecialType == SpecialType.System_String)
+            {
+                //new String()
+                writer.Write("System.CsScala.NewString(");
+                bool first = true;
+                foreach (var param in expression.ArgumentList.Arguments)
+                {
+                    if (first)
+                        first = false;
+                    else
+                        writer.Write(", ");
+
+                    Core.Write(writer, param.Expression);
+                }
+                writer.Write(")");
+            }
             else if (type.OriginalDefinition is INamedTypeSymbol && type.OriginalDefinition.As<INamedTypeSymbol>().SpecialType == SpecialType.System_Nullable_T)
             {
                 //new'ing up a Nullable<T> has special sematics in C#.  If we're calling this with no parameters, just use null. Otherwise just use the parameter.

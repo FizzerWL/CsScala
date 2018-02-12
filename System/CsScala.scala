@@ -373,4 +373,6 @@ object CsScala {
   def PadLeft(s:String, totalWidth:Int, paddingChar:Char):String = {
     return StringUtils.leftPad(s, totalWidth, paddingChar);
   }
+  
+  def NewString(ch:Char, repeatCount:Int):String = StringUtils.repeat(ch, repeatCount);
 }
