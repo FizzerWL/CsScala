@@ -18,4 +18,9 @@ abstract class XNode(node: Content) extends XObject {
     else
       return _node;
   }
+  
+  
+  def Remove() {
+    node.detach();
+  }
 }
