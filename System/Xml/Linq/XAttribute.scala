@@ -10,6 +10,9 @@ class XAttribute(attr: Attribute) extends XObject {
   def this(name:String, value:Any) {
     this(new Attribute(name, value.toString()));
   }
+  def this(name:XName, value:Any) {
+    this(new Attribute(name.LocalName, value.toString(), Namespace.getNamespace("p", name.NamespaceName))); //TODO: Instead of always using the same prefix "p", find a way to come up with a unique prefix.
+  }
   
   def Value: String = _attr.getValue();
   def Value_=(value: String) = _attr.setValue(value);

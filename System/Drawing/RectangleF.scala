@@ -18,6 +18,8 @@ class RectangleF(x:Float = 0, y:Float = 0, w:Float = 0, h:Float = 0)
 	override def hashCode():Int = (X + Y + Width + Height).toInt;
 	
 	def ToRectangle():Rectangle = new Rectangle(x.toInt, y.toInt, w.toInt, h.toInt);
+	def Left = X;
+	def Top = Y;
 	
 	override def toString():String = X + "/" + Y + " " + Width + "/" + Height;
 }

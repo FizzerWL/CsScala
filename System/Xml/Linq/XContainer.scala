@@ -29,16 +29,26 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
     else
       throw new NotImplementedException("Adding unexpected type " + obj.getClass().getName());
   }
+  def AddFirst(obj: Any) {
+    if (obj.isInstanceOf[XNode]) {
+      val toAdd = obj.asInstanceOf[XNode]._node;
 
+      if (toAdd.getParent() == null)
+        _elem.addContent(0, toAdd);
+      else
+        _elem.addContent(0, toAdd.clone()); //if it has a parent already, we must clone since jdom2 won't let us add the same element to two parents, but .net does.
+    }
+    else
+      Add(obj);
+  }
   def Elements(): Traversable[XElement] = _elem.getChildren().asScala.map(new XElement(_));
   def Elements(name: String): Traversable[XElement] = _elem.getChildren(name).asScala.map(new XElement(_));
 
   def Descendants(): Traversable[XElement] = {
     val ret = new ArrayBuffer[XElement]();
-    for(e <- Elements())
-    {
+    for (e <- Elements()) {
       ret += e;
-      for(e2 <- e.Descendants())
+      for (e2 <- e.Descendants())
         ret += e2;
     }
     return ret;
@@ -55,7 +65,7 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
   }
 
   def Nodes(): Traversable[XNode] = _elem.getContent().asScala.map(XDocument.Factory(_));
-  
+
   def DescendantNodes(): Traversable[XNode] = {
     val ret = new ArrayBuffer[XNode]();
     val it = _elem.getDescendants();
