@@ -85,6 +85,9 @@ Options available:
                 var workspace = MSBuildWorkspace.Create();
                 var solution = workspace.OpenSolutionAsync(pathToSolution).Result;
 
+                foreach (var diag in workspace.Diagnostics)
+                    Console.WriteLine("Diagnostic: " + diag);
+
                 var projectsList = solution.Projects.ToList();
 
                 if (projects != null)

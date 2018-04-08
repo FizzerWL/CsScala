@@ -46,8 +46,8 @@ namespace CsScala
 
             OutDir = outDir;
 
-            Utility.Parallel(new Action[] { Build, Generate }, a => a());
-            //Build(); Generate();
+            //Utility.Parallel(new Action[] { Build, Generate }, a => a());
+            Build(); Generate();
         }
 
         private static void Build()
