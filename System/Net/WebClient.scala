@@ -3,34 +3,36 @@ package System.Net;
 import java.net._;
 import java.io._;
 
-class WebClient
-{
+class WebClient {
 
-	def DownloadData(url:String):Array[Byte] =
-	{
-      //Create connection
-      val connection = new URL(url).openConnection().asInstanceOf[HttpURLConnection];
+  def DownloadData(url: String): Array[Byte] =
+    {
+      try {
+        //Create connection
+        val connection = new URL(url).openConnection().asInstanceOf[HttpURLConnection];
 
-      val is = connection.getInputStream();
-      val rd = new ByteArrayOutputStream();
-      val buf = new Array[Byte](1024);
+        val is = connection.getInputStream();
+        val rd = new ByteArrayOutputStream();
+        val buf = new Array[Byte](1024);
 
-      var read = 0;
-      do
-      {
-        read = is.read(buf, 0, buf.length);
-        if (read != -1)
-          rd.write(buf, 0, read);
+        var read = 0;
+        do {
+          read = is.read(buf, 0, buf.length);
+          if (read != -1)
+            rd.write(buf, 0, read);
+        } while (read != -1);
+
+        rd.flush();
+
+        return rd.toByteArray();
+      } catch {
+        case ex: IOException          => throw new WebException(ex.getMessage(), ex);
+        case ex: ConnectException     => throw new WebException(ex.getMessage(), ex);
+        case ex: UnknownHostException => throw new WebException(ex.getMessage(), ex);
       }
-      while (read != -1);
+    }
 
-      rd.flush();
+  def Dispose() {
 
-      return rd.toByteArray();
-	}
-
-	def Dispose()
-	{
-		
-	}
+  }
 }

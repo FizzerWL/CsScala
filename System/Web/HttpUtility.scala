@@ -27,6 +27,14 @@ object HttpUtility
     return StringEscapeUtils.escapeHtml4(s).replace("'", "&#39;");
   }
   
+  def JavaScriptStringEncode(s:String, addQuotes:Boolean):String =
+  {
+    if (s == null)
+      return if (addQuotes) "\"\"" else "";
+    val encoded = StringEscapeUtils.escapeEcmaScript(s);
+    return if (addQuotes) "\"" + encoded + "\"" else encoded; 
+  }
+  
   def HtmlAttributeEncode(s:String):String = 
   {
     return HtmlEncode(s).replaceAll("'", "&#x27;");

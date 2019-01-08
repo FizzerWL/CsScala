@@ -35,6 +35,13 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
   def Remove(k:K):Boolean = _map.remove(k) != null;
 
   def TryAdd(key: K, value: V): Boolean = _map.putIfAbsent(key, value) == null;
+  
+  def update(k:K, v:V)
+  {
+    _map.put(k, v);
+  }
+
+  
 
   def GetOrAdd(k: K, add: K => V): V =
     {

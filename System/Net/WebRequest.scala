@@ -12,12 +12,9 @@ object WebRequest {
   def Create(url: Uri): WebRequest = new HttpWebRequest(url._url.openConnection().asInstanceOf[HttpURLConnection])
 }
 
-
 class WebRequest(_req: HttpURLConnection) {
-  var Proxy:Any = _;
+  var Proxy: Any = _;
 
-  
-  
   java.lang.System.getProperties().setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 
   def Method: String = _req.getRequestMethod();
@@ -57,16 +54,16 @@ class WebRequest(_req: HttpURLConnection) {
 
       _req.setRequestProperty("Cookie", msCookieManager.getCookieStore().getCookies().asScala.mkString(";"))
     }
-
-    if (_requestStream != null) {
-      _req.setDoOutput(true);
-      _req.getOutputStream().write(_requestStream.ToArray());
-    }
-
     try {
+      if (_requestStream != null) {
+        _req.setDoOutput(true);
+        _req.getOutputStream().write(_requestStream.ToArray());
+      }
+
       return new HttpWebResponse(_req, CookieContainer, false);
     } catch {
-      case ex: ConnectException => throw new WebException(ex.getMessage(), ex);
+      case ex: ConnectException     => throw new WebException(ex.getMessage(), ex);
+      case ex: UnknownHostException => throw new WebException(ex.getMessage(), ex);
     }
   }
   def GetRequestStream(): Stream = {

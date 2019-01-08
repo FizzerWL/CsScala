@@ -14,8 +14,7 @@ object Process {
     //TODO: In java9, just use ProcessHandle.current().getPid();
 
     try {
-      val runtime =
-        java.lang.management.ManagementFactory.getRuntimeMXBean();
+      val runtime = java.lang.management.ManagementFactory.getRuntimeMXBean();
       val jvm = runtime.getClass().getDeclaredField("jvm");
       jvm.setAccessible(true);
       val mgmt = jvm.get(runtime).asInstanceOf[sun.management.VMManagement];

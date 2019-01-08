@@ -31,8 +31,9 @@ namespace CsScala
                 case "Float":
                 case "Double":
                 case "Short":
-                case "Long":
                     return "0";
+                case "Long":
+                    return "0L";
                 case "Char":
                     return "'\\u0000'";
                 case "Boolean":
