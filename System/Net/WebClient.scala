@@ -5,32 +5,27 @@ import java.io._;
 
 class WebClient {
 
-  def DownloadData(url: String): Array[Byte] =
-    {
-      try {
-        //Create connection
-        val connection = new URL(url).openConnection().asInstanceOf[HttpURLConnection];
+  def DownloadData(url: String): Array[Byte] = {
+    val req = WebRequest.Create(url);
 
-        val is = connection.getInputStream();
-        val rd = new ByteArrayOutputStream();
-        val buf = new Array[Byte](1024);
+    val res = req.GetResponse();
+    val stream = res.GetResponseStream();
 
-        var read = 0;
-        do {
-          read = is.read(buf, 0, buf.length);
-          if (read != -1)
-            rd.write(buf, 0, read);
-        } while (read != -1);
+    val rd = new ByteArrayOutputStream();
+    val buf = new Array[Byte](1024);
 
-        rd.flush();
+    var read = 0;
+    do {
+      read = stream.Read(buf, 0, buf.length);
+      if (read != -1)
+        rd.write(buf, 0, read);
+    } while (read != -1);
 
-        return rd.toByteArray();
-      } catch {
-        case ex: IOException          => throw new WebException(ex.getMessage(), ex);
-        case ex: ConnectException     => throw new WebException(ex.getMessage(), ex);
-        case ex: UnknownHostException => throw new WebException(ex.getMessage(), ex);
-      }
-    }
+    rd.flush();
+
+    return rd.toByteArray();
+
+  }
 
   def Dispose() {
 

@@ -16,6 +16,7 @@ object HttpUtility
   
   def UrlDecode(s:String):String = 
   {
+    //TODO: This does not behave the same way as the .net version on invalid sequences.  For example, the string "I like 2% Milk" returns unchanged in .net, but this function throws. 
     return URLDecoder.decode(s, "UTF-8");
   }
   
