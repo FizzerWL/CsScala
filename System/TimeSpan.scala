@@ -17,6 +17,16 @@ object TimeSpan
 
 class TimeSpan(ticks:Long = 0)
 {
+  def this(hours: Int, minutes: Int, seconds: Int) {
+    this(hours * 36000000000L + minutes * 600000000L + seconds * 10000000L);
+  }
+  def this(days: Int, hours: Int, minutes: Int, seconds: Int) {
+    this(days * 864000000000L + hours * 36000000000L + minutes * 600000000L + seconds * 10000000L);
+  }
+  def this(days: Int, hours: Int, minutes: Int, seconds: Int, milliseconds: Int){
+    this(days * 864000000000L + hours * 36000000000L + minutes * 600000000L + seconds * 10000000L + milliseconds * 10000L);
+  }
+
   final val Ticks:Long = ticks;
   
   override def toString():String =
@@ -44,5 +54,28 @@ class TimeSpan(ticks:Long = 0)
     if (!other.isInstanceOf[TimeSpan])
       return false;
     return other.asInstanceOf[TimeSpan].Ticks == this.Ticks;
+  }
+
+  def +(timeSpan: TimeSpan) : TimeSpan ={
+    Add(timeSpan)
+  }
+  def -(timeSpan: TimeSpan) : TimeSpan ={
+    Subtract(timeSpan)
+  }
+
+  def < (otherTime: TimeSpan): Boolean ={
+    Ticks < otherTime.Ticks
+  }
+
+  def <= (otherTime: TimeSpan): Boolean ={
+    Ticks <= otherTime.Ticks
+  }
+
+  def > (otherTime: TimeSpan): Boolean ={
+    Ticks > otherTime.Ticks
+  }
+
+  def >= (otherTime: TimeSpan): Boolean ={
+    Ticks >= otherTime.Ticks
   }
 }
