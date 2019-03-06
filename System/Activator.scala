@@ -1,7 +1,5 @@
 package System
 
-import raksha.RakshaRoot
-
 object Activator {
 
   def CreateInstance(t: System.Type): Any = {
