@@ -1,13 +1,9 @@
 package System
 import scala.util.control._
 import java.util.UUID
-import java.nio.ByteBuffer
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect._
 import java.util.ArrayList
-import scala.collection.JavaConverters._
-import org.apache.http.util.ExceptionUtils
-import java.nio.ByteOrder
 import java.math.BigInteger
 import org.apache.commons.lang3.StringUtils
 
@@ -133,13 +129,32 @@ object CsScala {
 
     }
 
+  def Compare(str1: String, str2: String, comparison: Int): Int =
+    {
+      if(comparison == StringComparison.OrdinalIgnoreCase) {
+        str1.compareToIgnoreCase(str2)
+      }
+      if(comparison == StringComparison.Ordinal) {
+        str1.compareTo(str2)
+      }
+      else {
+        throw new NotImplementedException("mode = " + comparison);
+      }
+    }
+
+  def CompareTo(str1: String, str2: String): Int =
+    {
+      throw new NotImplementedException("Not the same in C# and scala - use string.Compare() instead.");
+    }
+
   def Equals(str1: String, str2: String, comparison: Int): Boolean =
     {
       if (comparison == StringComparison.OrdinalIgnoreCase) {
         return str1.equalsIgnoreCase(str2);
       }
-      else
+      else {
         throw new NotImplementedException("mode = " + comparison);
+      }
     }
 
   def IsNullOrWhiteSpace(s: String): Boolean =
