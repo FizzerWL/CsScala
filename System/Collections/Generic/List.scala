@@ -1,8 +1,11 @@
 package System.Collections.Generic
 
+import java.util
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
+import System.Linq.Enumerable;
+
 import scala.reflect.ClassTag
 
 class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
@@ -19,6 +22,10 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
     this(new ArrayList[T]());
     for (e <- initial)
       _list.add(e);
+  }
+
+  def this(values: T*) {
+    this(values);
   }
 
   override def toString(): String = _list.toString();
@@ -121,10 +128,9 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
       if (pred(e)) {
         _list.remove(i);
         removed += 1;
-      } else
-        i -= 1;
+      }
+      i -= 1;
     }
-
     return removed;
   }
 
@@ -190,4 +196,11 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
 
   }
 
+  def Exists(fn: T => Boolean): Boolean = {
+    FindIndex(fn) >= 0
+  }
+
+  def FindAll(fn: T => Boolean) : List[T] = {
+    Enumerable.ToList(Enumerable.Where(this, fn))
+  }
 }
