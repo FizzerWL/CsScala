@@ -30,8 +30,7 @@ object CsScala {
       try {
         out.Value = s.toInt;
         return true;
-      }
-      catch {
+      } catch {
         case e: NumberFormatException => return false;
       }
     }
@@ -40,8 +39,7 @@ object CsScala {
       try {
         out.Value = s.toLong;
         return true;
-      }
-      catch {
+      } catch {
         case e: NumberFormatException => return false;
       }
     }
@@ -50,8 +48,7 @@ object CsScala {
       try {
         out.Value = s.toFloat;
         return true;
-      }
-      catch {
+      } catch {
         case e: NumberFormatException => return false;
       }
     }
@@ -60,8 +57,7 @@ object CsScala {
       try {
         out.Value = s.toDouble;
         return true;
-      }
-      catch {
+      } catch {
         case e: NumberFormatException => return false;
       }
     }
@@ -70,8 +66,7 @@ object CsScala {
       try {
         out.Value = s.toBoolean;
         return true;
-      }
-      catch {
+      } catch {
         case e: NumberFormatException => return false;
       }
     }
@@ -122,23 +117,24 @@ object CsScala {
       return haystack.indexOf(needle) != -1;
     }
 
-  def As[T >: Null: ClassTag](item: Any): T =
-    {
-      var c = classTag[T].runtimeClass;
+  def As[T >: Null: ClassTag](item: Any): T = {
+    if (item == null)
+      return null;
 
-      if (c.isInstance(item))
-        return item.asInstanceOf[T];
-      else
-        return null;
+    var c = classTag[T].runtimeClass;
 
-    }
+    if (c.isInstance(item))
+      return item.asInstanceOf[T];
+    else
+      return null;
+
+  }
 
   def Equals(str1: String, str2: String, comparison: Int): Boolean =
     {
       if (comparison == StringComparison.OrdinalIgnoreCase) {
         return str1.equalsIgnoreCase(str2);
-      }
-      else
+      } else
         throw new NotImplementedException("mode = " + comparison);
     }
 
@@ -253,7 +249,7 @@ object CsScala {
     }
   def IsLetterOrDigit(c: Char): Boolean = c.isLetterOrDigit;
   def IsDigit(c: Char): Boolean = c.isDigit;
-  def IsLetter(c: Char):Boolean = c.isLetter;
+  def IsLetter(c: Char): Boolean = c.isLetter;
 
   def ExceptionMessage(e: Throwable): String =
     {
@@ -297,7 +293,7 @@ object CsScala {
       else
         return i.toString();
     }
-  @inline def BooleanToString(b:Boolean):String = if (b) "True" else "False"; 
+  @inline def BooleanToString(b: Boolean): String = if (b) "True" else "False";
 
   def ExceptionToString(ex: Throwable): String =
     {
@@ -305,21 +301,21 @@ object CsScala {
         return "";
       else {
         return ex.getClass().getName() +
-          ": " + ex.getMessage() + 
-          "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n") + 
+          ": " + ex.getMessage() +
+          "\n" + ex.getStackTrace().map(o => "    " + o).mkString("\n") +
           (if (ex.getCause() == ex) "" else ("\n\n" + ExceptionToString(ex.getCause())));
       }
     }
 
   def Concat(strs: Traversable[String]): String = strs.mkString("");
 
-  def IndexOf(str:String, needle:String, compType:Int):Int =
-  {
-    if (compType == StringComparison.OrdinalIgnoreCase)
-      return str.toLowerCase().indexOf(needle.toLowerCase());
-    else
-      return str.indexOf(needle);
-  }
+  def IndexOf(str: String, needle: String, compType: Int): Int =
+    {
+      if (compType == StringComparison.OrdinalIgnoreCase)
+        return str.toLowerCase().indexOf(needle.toLowerCase());
+      else
+        return str.indexOf(needle);
+    }
   def IndexOfAny(str: String, chars: Array[Char], startIndex: Int = 0): Int =
     {
       var i = startIndex;
@@ -333,20 +329,17 @@ object CsScala {
 
       return -1;
     }
-  
-  
-  def EnumTryParse(str:String, out:CsRef[Int], fn:String=>Int):Boolean =
-  {
-    try {
-      out.Value = fn(str);
-      return true;
+
+  def EnumTryParse(str: String, out: CsRef[Int], fn: String => Int): Boolean =
+    {
+      try {
+        out.Value = fn(str);
+        return true;
+      } catch {
+        case e: MatchError =>
+          return false;
+      }
     }
-    catch {
-      case e: MatchError =>
-        return false;
-    }
-  }
-  
 
   @inline def NullCheck(str: String): String = if (str == null) "" else str;
   @inline def NullCheck(i: java.lang.Integer): String = if (i == null) "" else i.toString();
@@ -359,20 +352,19 @@ object CsScala {
 
   def SwapEndian(i: Int): Int = java.lang.Integer.reverseBytes(i);
   def SwapEndian(i: Long): Long = java.lang.Long.reverseBytes(i);
-  
-  def EmptyGuid():UUID = new UUID(0,0);
-  
-  
+
+  def EmptyGuid(): UUID = new UUID(0, 0);
+
   def Parse(s: String): UUID = {
     val s2 = s.replace("-", "");
     return new UUID(
       new BigInteger(s2.substring(0, 16), 16).longValue(),
       new BigInteger(s2.substring(16), 16).longValue());
   }
-  
-  def PadLeft(s:String, totalWidth:Int, paddingChar:Char):String = {
+
+  def PadLeft(s: String, totalWidth: Int, paddingChar: Char): String = {
     return StringUtils.leftPad(s, totalWidth, paddingChar);
   }
-  
-  def NewString(ch:Char, repeatCount:Int):String = StringUtils.repeat(ch, repeatCount);
+
+  def NewString(ch: Char, repeatCount: Int): String = StringUtils.repeat(ch, repeatCount);
 }
