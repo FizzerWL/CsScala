@@ -39,6 +39,7 @@ object DateTime {
   }
 
   def Now: DateTime = new DateTime(Instant.now(), 0, DateTimeKind.Utc).ToLocalTime();
+  def UtcNow: DateTime = new DateTime(Instant.now(), 0, DateTimeKind.Utc);
 
   final val _dateFormat = DateTimeFormat.forPattern("M/d/yyyy HH:mm:ss");
 
@@ -50,8 +51,17 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   val _d = d;
   val _extraTicks = extraTicks;
 
+
   if (_d == null)
     throw new ArgumentNullException("Null date");
+
+  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) {
+    this(new org.joda.time.DateTime(year, month, day, hour, minute, second, 0, DateTimeZone.UTC).toInstant(), 0, DateTimeKind.Unspecified);
+  }
+
+  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, milliseconds:Int) {
+    this(new org.joda.time.DateTime(year, month, day, hour, minute, second, milliseconds, DateTimeZone.UTC).toInstant(), 0, DateTimeKind.Unspecified);
+  }
 
   def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, milliseconds:Int, kind: Int) {
     this(new org.joda.time.DateTime(year, month, day, hour, minute, second, milliseconds, DateTimeZone.UTC).toInstant(), 0, kind);
@@ -130,6 +140,10 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   def AddMilliseconds(num: Double): DateTime = Add(TimeSpan.FromMilliseconds(num));
   def AddSeconds(num: Double): DateTime = Add(TimeSpan.FromSeconds(num));
 
+
+  def AddMilliseconds(num: Long): DateTime = Add(TimeSpan.FromMilliseconds(num));
+  def AddSeconds(num: Long): DateTime = Add(TimeSpan.FromSeconds(num));
+
   def TimeZoneOffsetMillis: Int = DateTime._currZone.getOffset(_d);
 
   final val Kind: Int = kind;
@@ -137,4 +151,32 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   def ToLocalTime(): DateTime = if (Kind == DateTimeKind.Local) this else new DateTime(_d.plus(TimeZoneOffsetMillis), extraTicks, DateTimeKind.Local);
 
   def getMillis(): Long = if (Kind == DateTimeKind.Utc) _d.getMillis() else _d.getMillis() - TimeZoneOffsetMillis;
+
+  def toEpochMilli(): Long = _d.getMillis();
+
+  def +(timeSpan: TimeSpan) : DateTime ={
+    Add(timeSpan)
+  }
+  def -(timeSpan: TimeSpan) : DateTime ={
+    Subtract(timeSpan)
+  }
+  def -(otherTime: DateTime) : TimeSpan ={
+    Subtract(otherTime)
+  }
+
+  def < (otherTime: DateTime): Boolean ={
+    Ticks < otherTime.Ticks
+  }
+
+  def <= (otherTime: DateTime): Boolean ={
+    Ticks <= otherTime.Ticks
+  }
+
+  def > (otherTime: DateTime): Boolean ={
+    Ticks > otherTime.Ticks
+  }
+
+  def >= (otherTime: DateTime): Boolean ={
+    Ticks >= otherTime.Ticks
+  }
 }

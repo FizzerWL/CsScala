@@ -8,6 +8,7 @@ object Regex {
   def IsMatch(input: String, pattern: String, opts: Int): Boolean = new Regex(pattern, opts).IsMatch(input);
   def Escape(input: String): String = Pattern.quote(input);
   def Matches(input: String, pattern: String): MatchCollection = new Regex(pattern).Matches(input);
+  def Split(input: String, pattern: String): Array[String] = { input.split(pattern) }
 }
 
 class Regex(pattern: String, options: Int = 0) {
@@ -48,6 +49,5 @@ class Regex(pattern: String, options: Int = 0) {
     ret.append(input, strindex, input.length());
 
     return ret.toString();
-
   }
 }
