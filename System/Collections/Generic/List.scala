@@ -24,10 +24,6 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
       _list.add(e);
   }
 
-  def this(values: T*) {
-    this(values);
-  }
-
   override def toString(): String = _list.toString();
 
   def Count: Int = _list.size();
