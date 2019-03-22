@@ -64,7 +64,7 @@ namespace CsScala
         private static int DetermineEnumValue(EnumMemberDeclarationSyntax syntax, ref int lastEnumValue)
         {
             if (syntax.EqualsValue == null)
-                return ++lastEnumValue;
+                return lastEnumValue++;
 
 
             if (!int.TryParse(syntax.EqualsValue.Value.ToString(), out lastEnumValue))
