@@ -18,7 +18,7 @@ namespace CsScala
             writer.Write("\r\n");
             writer.WriteOpenBrace();
 
-            int lastEnumValue = 0;
+            int lastEnumValue = -1;
 
             var values = allChildren.Select(o => new { Syntax = o, Value = DetermineEnumValue(o, ref lastEnumValue) }).ToList();
 
@@ -64,7 +64,7 @@ namespace CsScala
         private static int DetermineEnumValue(EnumMemberDeclarationSyntax syntax, ref int lastEnumValue)
         {
             if (syntax.EqualsValue == null)
-                return lastEnumValue++;
+                return ++lastEnumValue;
 
 
             if (!int.TryParse(syntax.EqualsValue.Value.ToString(), out lastEnumValue))
