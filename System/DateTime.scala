@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeParser
 import org.joda.time.ReadableInstant
 import org.joda.time.Instant
 import org.joda.time.format.DateTimeFormatterBuilder
+import System.Globalization.CultureInfo
 
 object DateTime {
   final val MinValueTicks = 0L;
@@ -29,7 +30,7 @@ object DateTime {
     "yyyy-MM-dd");
 
   final val _parser = new DateTimeFormatterBuilder().append(null, _patterns.map(DateTimeFormat.forPattern(_).getParser())).toFormatter();
-  def Parse(s: String): DateTime = { val t = _parser.parseMillis(s); new DateTime(new Instant(t + _currZone.getOffset(t))) };
+  def Parse(s: String, c:CultureInfo = null): DateTime = { val t = _parser.parseMillis(s); new DateTime(new Instant(t + _currZone.getOffset(t))) };
   
   def TryParse(s:String, out:CsRef[System.DateTime]):Boolean = {
     try { out.Value = Parse(s); return true; }

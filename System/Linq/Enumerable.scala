@@ -171,6 +171,29 @@ object Enumerable
   {
     return a.toBuffer.sortBy(fn);
   }
+  
+  
+  def OrderByDescending_Int[T](a:Traversable[T], fn:T=>Int):Traversable[T] =
+  {
+    return a.toBuffer.sortBy((o:T) => -fn(o));
+  }
+  def OrderByDescending_Float[T](a:Traversable[T], fn:T=>Float):Traversable[T] =
+  {
+    return a.toBuffer.sortBy((o:T) => -fn(o));
+  }
+  def OrderByDescending_Double[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
+  {
+    return a.toBuffer.sortBy((o:T) => -fn(o));
+  }
+  def OrderByDescending_Long[T](a:Traversable[T], fn:T=>Long):Traversable[T] =
+  {
+    return a.toBuffer.sortBy((o:T) => -fn(o));
+  }
+  def OrderByDescending_String[T](a:Traversable[T], fn:T=>String):Traversable[T] =
+  {
+    return a.toBuffer.sortBy(fn).reverse;
+  }
+  
   def OrderByDescending[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
   {
     return a.toBuffer.sortBy((o:T) => -fn(o));

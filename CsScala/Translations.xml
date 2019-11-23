@@ -83,6 +83,24 @@
   <Method SourceObject="System.Linq.Enumerable" Match="OrderBy" ReplaceWith="OrderBy_Float">
     <MatchTypeParameter TypeParameterIndex="1" Match="float" />
   </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderByDescending" ReplaceWith="OrderByDescending_Int">
+    <MatchTypeParameter TypeParameterIndex="1" Match="int" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderByDescending" ReplaceWith="OrderByDescending_Int">
+    <MatchTypeParameter TypeParameterIndex="1" Match="short" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderByDescending" ReplaceWith="OrderByDescending_String">
+    <MatchTypeParameter TypeParameterIndex="1" Match="string" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderByDescending" ReplaceWith="OrderByDescending_Long">
+    <MatchTypeParameter TypeParameterIndex="1" Match="long" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderByDescending" ReplaceWith="OrderByDescending_Double">
+    <MatchTypeParameter TypeParameterIndex="1" Match="double" />
+  </Method>
+  <Method SourceObject="System.Linq.Enumerable" Match="OrderByDescending" ReplaceWith="OrderByDescending_Float">
+    <MatchTypeParameter TypeParameterIndex="1" Match="float" />
+  </Method>
 
   <Type Match="System.Guid" ReplaceWith="java.util.UUID" />
   <Method SourceObject="System.Guid" Match="NewGuid" ReplaceWith="randomUUID" />
