@@ -51,7 +51,7 @@ object Directory {
 
   def PatternRegex(pattern: String): String = pattern.replaceAll("([^a-zA-z0-9 ])", "\\\\$1").replace("\\*", ".*");
 
-  def GetFiles(path: String, pattern: String, option: Int = SearchOption.TopDirectoryOnly): Array[String] =
+  def GetFiles(path: String, pattern: String = "*", option: Int = SearchOption.TopDirectoryOnly): Array[String] =
     {
       var all = GetFilesInternal(path, option);
       if (pattern == "*" || pattern == "*.*")

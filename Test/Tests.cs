@@ -3325,5 +3325,34 @@ class SomeCollection extends Traversable[String]
     }
 }");
         }
+
+
+        [TestMethod]
+        public void LongStringConstant()
+        {
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Blargh
+{
+    public class Foo
+    {
+        const string ReallyLong = """ + new string('z', 70000) + @""";
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+object Foo
+{
+    final val ReallyLong:String = System.CsScala.JoinConstants(""" + new string('z', 65000) + @""", """ + new string('z', 5000) + @""");
+
+}
+class Foo
+{ 
+}");
+        }
     }
 }

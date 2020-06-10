@@ -14,6 +14,16 @@ namespace CsScala
     public static class Utility
     {
 
+        public static string Ellipse(this string str, int length)
+        {
+            if (length < 3)
+                throw new Exception("Ellipse passed with too small of length");
+            if (str.Length <= length)
+                return str;
+
+            return str.Substring(0, length - 3) + "...";
+        }
+
         public static void Parallel<T>(this IEnumerable<T> list, Action<T> action)
         {
 #if true

@@ -64,6 +64,8 @@ class WebRequest(_req: HttpURLConnection) {
     } catch {
       case ex: ConnectException     => throw new WebException(ex.getMessage(), ex);
       case ex: UnknownHostException => throw new WebException(ex.getMessage(), ex);
+      case ex: SocketException      => throw new WebException(ex.getMessage(), ex);
+      case ex: javax.net.ssl.SSLException => throw new WebException(ex.getMessage(), ex);
     }
   }
   def GetRequestStream(): Stream = {

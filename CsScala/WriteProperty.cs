@@ -53,7 +53,7 @@ namespace CsScala
             if (getter == null && setter == null)
                 throw new Exception("Property must have either a get or a set");
 
-            if (getter != null && setter != null && setter.Body == null && getter.Body == null)
+            if (getter != null && setter != null && setter.Body == null && getter.Body == null && !property.Modifiers.Any(SyntaxKind.AbstractKeyword))
             {
                 //Both get and set are null, which means this is an automatic property.  For our purposes, this is the equivilant of a field
                 WriteField.Go(writer, property.Modifiers, WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText), property.Type);

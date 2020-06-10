@@ -20,10 +20,11 @@ object CsScala {
   val uintMinValue = 0;
   val uintMaxValue = 4294967295L;
 
-  def Join(seperator: String, strs: Traversable[String]): String =
-    {
-      return strs.mkString(seperator);
-    }
+  def Join(seperator: String, strs: Traversable[String]): String = strs.mkString(seperator);
+  
+  def JoinConstants(strs: String*):String = {
+    return strs.mkString("");
+  }
 
   def TryParseInt(s: String, out: CsRef[Int]): Boolean =
     {
@@ -68,6 +69,7 @@ object CsScala {
         return true;
       } catch {
         case e: NumberFormatException => return false;
+        case e: IllegalArgumentException => return false;
       }
     }
 
@@ -273,6 +275,13 @@ object CsScala {
 
   //Simulates the C# method of returning an empty string for null nullables
   def NullableToString(i: java.lang.Integer): String =
+    {
+      if (i == null)
+        return "";
+      else
+        return i.toString();
+    }
+  def NullableToString(i: java.lang.Long): String =
     {
       if (i == null)
         return "";

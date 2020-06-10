@@ -74,9 +74,9 @@ namespace Test
 
                     err.AppendLine("Code different");
                     err.AppendLine("---------------Expected----------------");
-                    err.AppendLine(expectedOutputStripped[i]);
+                    err.AppendLine(expectedOutputStripped[i].Ellipse(1024));
                     err.AppendLine("---------------Actual----------------");
-                    err.AppendLine(scalaFilesFromDisk[i]);
+                    err.AppendLine(scalaFilesFromDisk[i].Ellipse(1024));
 
                     var at = DifferentAt(expectedOutputStripped[i], scalaFilesFromDisk[i]);
                     err.AppendLine("Different at " + at);
