@@ -85,7 +85,7 @@ namespace CsScala
 
             var typeInfo = Program.GetModel(node).GetTypeInfo(expression);
 
-            if (typeInfo.Type == null || typeInfo.ConvertedType == null || typeInfo.Type == typeInfo.ConvertedType || typeInfo.Type.BaseType == null)
+            if (typeInfo.Type == null || typeInfo.ConvertedType == null || SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType) || typeInfo.Type.BaseType == null)
                 return;
             if (typeInfo.ConvertedType.SpecialType != SpecialType.System_Object)
                 return;

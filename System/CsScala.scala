@@ -355,6 +355,7 @@ object CsScala {
   @inline def NullCheck(i: java.lang.Double): String = if (i == null) "" else i.toString();
   @inline def NullCheck(d: DateTime): String = if (d == null) "" else d.toString();
   @inline def NullCheck(b: java.lang.Boolean): String = if (b == null) "" else b.toString();
+  @inline def NullCheck(b: java.lang.Long): String = if (b == null) "" else b.toString();
   @inline def ByteToInt(b: Byte): Int = b & 0xFF;
   @inline def ByteToFloat(b: Byte): Float = (b & 0xFF).toFloat;
   @inline def ByteToLong(b: Byte): Long = (b & 0xFF).toLong;
