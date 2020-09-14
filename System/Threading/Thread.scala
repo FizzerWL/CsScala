@@ -17,7 +17,7 @@ class Thread(_t: java.lang.Thread) {
   def this(fn: Any => Unit) {
     this(new java.lang.Thread(new ThreadRunnable(fn)));
   }
-  
+
   def this(fn: () => Unit) {
     this(new java.lang.Thread(new ThreadRunnable(z => fn())));
   }
@@ -33,4 +33,8 @@ class Thread(_t: java.lang.Thread) {
   def SetApartmentState(state: Int) {}
   def Abort() { _t.stop(); }
 
+  def Priority: Int = 2; //not implemented yet
+  def Priority_=(i: Int) {}
+
 }
+

@@ -389,6 +389,10 @@ object Enumerable
   {
     return a.max;
   }
+  def Max(a:Traversable[Double]):Double =
+  {
+    return a.max;
+  }
 
   def Take[T](a:Traversable[T], numtoTake:Int):Traversable[T] =
   {
@@ -436,6 +440,18 @@ object Enumerable
   def Average[T](a:Traversable[T], fn:T=>Double):Double = 
   {
     var sum:Double = 0;
+    var count:Int = 0;
+    for (e <- a)
+    {
+      sum += fn(e);
+      count += 1;
+    }
+    return sum / count;
+  }
+  
+  def Average[T](a:Traversable[T], fn:T=>Float):Float = 
+  {
+    var sum:Float = 0;
     var count:Int = 0;
     for (e <- a)
     {
