@@ -8,6 +8,7 @@ class Stream(input:InputStream, output:OutputStream, textinput:Reader, textoutpu
   var _output:OutputStream = output;
   var _textinput:Reader = textinput;
   var _textoutput:Writer = textoutput;
+  final var CanRead = true;
 
   def Dispose()
   {

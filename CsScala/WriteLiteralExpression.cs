@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,9 @@ namespace CsScala
         public static void Go(ScalaWriter writer, LiteralExpressionSyntax expression, bool isConst)
         {
             var str = expression.ToString();
-
+            
             if (str.StartsWith("@"))
-                str = "\"" + str.RemoveFromStartOfString("@\"").RemoveFromEndOfString("\"").Replace("\\", "\\\\").Replace("\"\"", "\\\"").Replace("\r\n", "\\n") + "\"";
+                str = "\"" + str.RemoveFromStartOfString("@\"").RemoveFromEndOfString("\"").Replace("\\", "\\\\").Replace("\"\"", "\\\"").Replace("\n", "\\n").Replace("\r", "") + "\"";
 
 
             if (str.Length > 65000)

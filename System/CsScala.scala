@@ -373,8 +373,11 @@ object CsScala {
       new BigInteger(s2.substring(16), 16).longValue());
   }
 
-  def PadLeft(s: String, totalWidth: Int, paddingChar: Char): String = {
+  def PadLeft(s: String, totalWidth: Int, paddingChar: Char = ' '): String = {
     return StringUtils.leftPad(s, totalWidth, paddingChar);
+  }
+  def PadRight(s: String, totalWidth: Int, paddingChar: Char = ' '): String = {
+    return StringUtils.rightPad(s, totalWidth, paddingChar);
   }
 
   def NewString(ch: Char, repeatCount: Int): String = StringUtils.repeat(ch, repeatCount);

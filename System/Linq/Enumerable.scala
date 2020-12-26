@@ -73,6 +73,10 @@ object Enumerable
   {
     return a.map(fn).min;
   }
+  def Min[T](a:Traversable[T], fn:T=>Double):Double =
+  {
+    return a.map(fn).min;
+  }
   
   def GroupBy[S,K](a:Traversable[S], fn:S=>K):Traversable[IGrouping[K,S]] =
   {
@@ -473,6 +477,7 @@ object Enumerable
     }
     return sum / count;
   }
+  
 }
 
 
