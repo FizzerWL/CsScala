@@ -13,6 +13,16 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, BreakStatementSyntax statement)
         {
+            //Traverse up to figure out what we're breaking from.  If we're breaking from a loop, it's fine.  However, if we're breaking from a switch statement, throw an error as we don't allow this except directly inside of a case block.
+            var breakingFrom = statement.Parent;
+            while (!(breakingFrom is WhileStatementSyntax || breakingFrom is ForStatementSyntax || breakingFrom is DoStatementSyntax || breakingFrom is ForEachStatementSyntax))
+            {
+                if (breakingFrom is SwitchStatementSyntax)
+                    throw new Exception("Cannot \"break\" from within a switch statement except directly inside of a case statement. " + Utility.Descriptor(statement));
+
+                breakingFrom = breakingFrom.Parent;
+            }
+
             writer.WriteLine("CsScala.csbreak.break;");
         }
     }

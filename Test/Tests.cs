@@ -1638,6 +1638,7 @@ object MostlyNumbered
             case 3 => ""Three""; 
             case 4 => ""Unnumbered""; 
             case 50 => ""SomethingElse""; 
+            case u => u.toString;
         }
     } 
     
@@ -1645,11 +1646,12 @@ object MostlyNumbered
     { 
         return s match
         { 
-            case ""One"" | ""1"" => 1; 
-            case ""Two"" | ""2"" => 2;        
-            case ""Three"" | ""3"" => 3; 
-            case ""Unnumbered"" | ""4"" => 4; 
-            case ""SomethingElse"" | ""50"" => 50; 
+            case ""One"" => 1; 
+            case ""Two"" => 2; 
+            case ""Three"" => 3; 
+            case ""Unnumbered"" => 4; 
+            case ""SomethingElse"" => 50; 
+            case u => u.toInt;
         } 
     }
 
@@ -1659,17 +1661,18 @@ package Blargh;
 " + WriteImports.StandardImports + @"
 object UnNumbered
 {
-    final val One:Int = 1; 
-    final val Two:Int = 2;
-    final val Three:Int = 3;
+    final val One:Int = 0; 
+    final val Two:Int = 1;
+    final val Three:Int = 2;
     def ToString(n:java.lang.Integer):String = if (n == null) """" else ToString(n.intValue());
     def ToString(e:Int):String =
     { 
         return e match
         { 
-            case 1 => ""One""; 
-            case 2 => ""Two""; 
-            case 3 => ""Three""; 
+            case 0 => ""One""; 
+            case 1 => ""Two""; 
+            case 2 => ""Three""; 
+            case u => u.toString;
         }
     } 
     
@@ -1677,12 +1680,13 @@ object UnNumbered
     { 
         return s match
         { 
-            case ""One"" | ""1"" => 1; 
-            case ""Two"" | ""2"" => 2;        
-            case ""Three"" | ""3"" => 3; 
+            case ""One"" => 0; 
+            case ""Two"" => 1;        
+            case ""Three"" => 2; 
+            case u => u.toInt;
         } 
     }
-    final val Values:Array[Int] = Array(1, 2, 3);
+    final val Values:Array[Int] = Array(0, 1, 2);
 }", @"
 package Blargh;
 " + WriteImports.StandardImports + @"
@@ -1775,18 +1779,19 @@ package Blargh;
 " + WriteImports.StandardImports + @"
 object Foo_TestEnum
 {
-    final val One:Int = 1; 
-    final val Two:Int = 2;
-    final val Three:Int = 3;
+    final val One:Int = 0; 
+    final val Two:Int = 1;
+    final val Three:Int = 2;
 
     def ToString(n:java.lang.Integer):String = if (n == null) """" else ToString(n.intValue());
     def ToString(e:Int):String =
     { 
         return e match
         { 
-            case 1 => ""One""; 
-            case 2 => ""Two""; 
-            case 3 => ""Three""; 
+            case 0 => ""One""; 
+            case 1 => ""Two""; 
+            case 2 => ""Three""; 
+            case u => u.toString;
         }
     } 
     
@@ -1794,12 +1799,13 @@ object Foo_TestEnum
     { 
         return s match
         { 
-            case ""One"" | ""1"" => 1; 
-            case ""Two"" | ""2"" => 2;        
-            case ""Three"" | ""3"" => 3; 
+            case ""One"" => 0; 
+            case ""Two"" => 1;        
+            case ""Three"" => 2; 
+            case u => u.toInt;
         } 
     }
-    final val Values:Array[Int] = Array(1, 2, 3);
+    final val Values:Array[Int] = Array(0, 1, 2);
 }" });
         }
 
@@ -1823,6 +1829,11 @@ namespace Blargh
                 case ""Box"": Console.WriteLine(4); break;
                 case ""Blah"": 
                 case ""Blah2"": Console.WriteLine(3); break;
+                case ""With braces"":
+                {
+                    Console.WriteLine(4);
+                }
+                break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -1844,6 +1855,10 @@ object Utilities
                 System.Console.WriteLine(4); 
             case ""Blah"" | ""Blah2"" =>
                 System.Console.WriteLine(3); 
+            case ""With braces"" =>
+                {
+                    System.Console.WriteLine(4);
+                }
             case _ => 
                 throw new System.InvalidOperationException();
         }

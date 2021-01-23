@@ -48,7 +48,9 @@ namespace CsScala
             writer.WriteOpenBrace();
 
             foreach (var value in values)
-                writer.WriteLine("case \"" + value.Syntax.Identifier.ValueText + "\" | \"" + value.Value + "\" => " + value.Value + ";");
+                writer.WriteLine("case \"" + value.Syntax.Identifier.ValueText + "\" => " + value.Value + ";");
+
+            writer.WriteLine("case u => u.toInt;");
 
             writer.WriteCloseBrace();
             writer.WriteCloseBrace();

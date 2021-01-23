@@ -14,6 +14,10 @@ namespace CsScala.Translations
     {
         public static MethodTranslation Get(IMethodSymbol origIMethodSymbol)
         {
+            if (origIMethodSymbol == null)
+                throw new ArgumentNullException("origIMethodSymbol");
+            if (origIMethodSymbol.OriginalDefinition == null)
+                throw new ArgumentNullException("origIMethodSymbol.OriginalDefition");
             var methodSymbol = origIMethodSymbol.OriginalDefinition.As<IMethodSymbol>().UnReduce();
 
             var sourceName = methodSymbol.ContainingNamespace.FullNameWithDot() + methodSymbol.ContainingType.Name;

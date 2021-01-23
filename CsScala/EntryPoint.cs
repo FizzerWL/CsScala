@@ -88,12 +88,15 @@ Options available:
 
 
                 var workspace = MSBuildWorkspace.Create();
+
                 var solution = workspace.OpenSolutionAsync(pathToSolution).Result;
 
                 foreach (var diag in workspace.Diagnostics)
                     Console.WriteLine("Diagnostic: " + diag);
 
                 var projectsList = solution.Projects.ToList();
+
+                Console.WriteLine("All projects in solution: " + string.Join(", ", solution.Projects.Select(o => o.Name)));
 
                 if (projects != null)
                     TrimList(projectsList, projects);

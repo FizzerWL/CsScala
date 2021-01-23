@@ -11,4 +11,8 @@ class ASCIIEncoding extends Encoding
 		return str.getBytes(Charset.forName("US-ASCII"));
 	}
 	
+  def GetString(b:Array[Byte]):String =
+  {
+    return new String(b, "US-ASCII");
+  }
 }

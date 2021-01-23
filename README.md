@@ -22,7 +22,7 @@ As a shortcut, CsScala will generate a Constructors type that contains calls to 
 
 Scala doesn't allow defining your own value-types like C# does.  CsScala will write out any structs as classes.  Any structures in you code will be a reference type in Scala, and this may cause bugs if your code assumes the structure is being copied by value.  
 
-To fix this, change your structs to classes or make the structs immutable. (Mutable structs are a [bad idea](http://blogs.msdn.com/ericlippert/archive/2008/05/14/mutating-readonly-structs.aspx) in C# anyway.)  
+To fix this, change your structs to classes or make the structs immutable. (Mutable structs are a [bad idea](https://ericlippert.com/2008/05/14/mutating-readonly-structs/) in C# anyway.)  
 
 ### "Using" statements must reference a local variable
 
