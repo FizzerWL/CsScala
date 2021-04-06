@@ -47,7 +47,6 @@ namespace CsScala
             OutDir = outDir;
 
             Utility.Parallel(new Action[] { Build, Generate }, a => a());
-            //Build(); Generate();
         }
 
         private static void Build()
@@ -58,7 +57,7 @@ namespace CsScala
             //Test if it builds so we can fail early if we don't.  This isn't required for anything else to work.
             var buildResult = Compilation.Emit(new MemoryStream());
             if (buildResult.Success == false)
-                throw new Exception("Build failed. " + buildResult.Diagnostics.Count() + " errors: " + string.Join("", buildResult.Diagnostics.Select(o => "\n  " + o.ToString())));
+                throw new Exception("Build failed. " + buildResult.Diagnostics.Count() + " errors: " + string.Join("", buildResult.Diagnostics.Take(500).Select(o => "\n  " + o.ToString())));
             Console.WriteLine("Built in " + sw.Elapsed);
         }
 

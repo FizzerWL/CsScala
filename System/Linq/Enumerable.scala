@@ -340,6 +340,10 @@ object Enumerable
   {
     return a.flatMap(fn);
   }
+  def SelectMany[F,T,R](a:Traversable[F], fn:F=>Traversable[T], resultSelector:(F,T)=>R):Traversable[R] =
+  {
+    return a.map(e => fn(e).map(e2 => resultSelector(e, e2))).flatten;
+  }
   def SelectMany[F,T](a:Traversable[F], fn:(F,Int)=>Traversable[T]):Traversable[T] =
   {
     var i = 0;

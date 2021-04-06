@@ -21,8 +21,8 @@ object CsScala {
   val uintMaxValue = 4294967295L;
 
   def Join(seperator: String, strs: Traversable[String]): String = strs.mkString(seperator);
-  
-  def JoinConstants(strs: String*):String = {
+
+  def JoinConstants(strs: String*): String = {
     return strs.mkString("");
   }
 
@@ -68,7 +68,7 @@ object CsScala {
         out.Value = s.toBoolean;
         return true;
       } catch {
-        case e: NumberFormatException => return false;
+        case e: NumberFormatException    => return false;
         case e: IllegalArgumentException => return false;
       }
     }
@@ -273,6 +273,15 @@ object CsScala {
       return s.substring(startIndex);
     }
 
+  def DoubleToString(d: Double): String = {
+    val ret = d.toString();
+    //JVM adds ".0" to whole numbers, C# leaves it off. Remove it to replicate the C# behavior.
+    if (ret.endsWith(".0"))
+      return ret.substring(0, ret.length - 2);
+    else
+      return ret;
+  }
+
   //Simulates the C# method of returning an empty string for null nullables
   def NullableToString(i: java.lang.Integer): String =
     {
@@ -357,6 +366,7 @@ object CsScala {
   @inline def NullCheck(b: java.lang.Boolean): String = if (b == null) "" else b.toString();
   @inline def NullCheck(b: java.lang.Long): String = if (b == null) "" else b.toString();
   @inline def ByteToInt(b: Byte): Int = b & 0xFF;
+  @inline def ByteToShort(b: Byte): Short = (b & 0xFF).toShort;
   @inline def ByteToFloat(b: Byte): Float = (b & 0xFF).toFloat;
   @inline def ByteToLong(b: Byte): Long = (b & 0xFF).toLong;
   @inline def ByteToString(b: Byte): String = (b & 0xFF).toString();

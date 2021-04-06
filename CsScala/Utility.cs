@@ -29,7 +29,8 @@ namespace CsScala
 #if true
             System.Threading.Tasks.Parallel.ForEach(list, action);
 #else
-			foreach (var t in list)
+#warning temporary
+            foreach (var t in list)
 				action(t);
 #endif
         }

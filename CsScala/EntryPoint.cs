@@ -149,6 +149,10 @@ Options available:
             if (!instances.Any())
                 throw new Exception("No Visual Studio instances found.");
 
+
+            Console.WriteLine("Visual Studio intances: " + string.Join(", ", instances.Select(o => o.Name + " -" + o.Version + " " + o.MSBuildPath)));
+
+
             //Console.WriteLine("Visual Studio intances:");
 
             //foreach (var instance in instances)
@@ -160,31 +164,19 @@ Options available:
 
             // We register the first instance that we found. This will cause MSBuildWorkspace to use the MSBuild installed in that instance.
             // Note: This has to be registered *before* creating MSBuildWorkspace. Otherwise, the MEF composition used by  MSBuildWorkspace will fail to compose.
-            var registeredInstance = instances.First();
+            var registeredInstance = instances.Last(); //TODO: How do we know which to choose?
             MSBuildLocator.RegisterInstance(registeredInstance);
- 
-            //Console.WriteLine($"Registered: {registeredInstance.Name} - {registeredInstance.Version}");
-            //Console.WriteLine();
+
+            Console.WriteLine($"Registered visual studio: {registeredInstance.Name} - {registeredInstance.Version}");
         }
 
         private static void TrimList(List<Project> projectsList, string projectsCsv)
         {
-            var split = projectsCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var orig = projectsList.ToList();
 
-            for (int i = 0; i < projectsList.Count; i++)
-            {
-                var si = split.IndexOf(projectsList[i].Name);
-                if (si != -1)
-                    split.RemoveAt(si);
-                else
-                {
-                    projectsList.RemoveAt(i);
-                    i--;
-                }
-            }
-
-            if (split.Count > 0)
-                throw new Exception("Project(s) not found: " + string.Join(", ", split));
+            projectsList.Clear();
+            foreach(var name in projectsCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                projectsList.Add(orig.Single(o => o.Name == name));
         }
 
     }
