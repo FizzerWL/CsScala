@@ -2,6 +2,20 @@ package System;
 
 import java.net.URL
 
+object Uri { 
+  def TryCreate(str:String, kind:Int, out:CsRef[Uri]):Boolean = {
+    try {
+      out.Value = new Uri(str);
+      return true;
+      
+    } catch {
+      case ex: java.net.MalformedURLException => return false;
+    }
+    
+  }
+    
+}
+
 class Uri(str: String) {
   val _url = new URL(str);
 

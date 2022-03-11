@@ -369,6 +369,7 @@ object CsScala {
   @inline def ByteToShort(b: Byte): Short = (b & 0xFF).toShort;
   @inline def ByteToFloat(b: Byte): Float = (b & 0xFF).toFloat;
   @inline def ByteToLong(b: Byte): Long = (b & 0xFF).toLong;
+  @inline def ByteToDouble(b: Byte): Double = (b & 0xFF).toDouble;
   @inline def ByteToString(b: Byte): String = (b & 0xFF).toString();
 
   def SwapEndian(i: Int): Int = java.lang.Integer.reverseBytes(i);

@@ -164,7 +164,7 @@ Options available:
 
             // We register the first instance that we found. This will cause MSBuildWorkspace to use the MSBuild installed in that instance.
             // Note: This has to be registered *before* creating MSBuildWorkspace. Otherwise, the MEF composition used by  MSBuildWorkspace will fail to compose.
-            var registeredInstance = instances.Last(); //TODO: How do we know which to choose?
+            var registeredInstance = instances.ElementAt(1); //TODO: How do we know which to choose?
             MSBuildLocator.RegisterInstance(registeredInstance);
 
             Console.WriteLine($"Registered visual studio: {registeredInstance.Name} - {registeredInstance.Version}");
