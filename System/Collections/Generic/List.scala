@@ -1,5 +1,6 @@
 package System.Collections.Generic
 
+import scala.collection.JavaConverters._
 import java.util
 import java.util.ArrayList
 import java.util.Collections
@@ -8,17 +9,17 @@ import System.Linq.Enumerable;
 
 import scala.reflect.ClassTag
 
-class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
+class List[T: ClassTag](initialList: ArrayList[T]) extends Iterable[T] {
   final val _list = initialList;
 
-  def this(size: Int) {
+  def this(size: Int) = {
     this(new ArrayList[T](size));
   }
 
-  def this() {
+  def this() = {
     this(new ArrayList[T]());
   }
-  def this(initial: Traversable[T]) {
+  def this(initial: Iterable[T]) = {
     this(new ArrayList[T]());
     for (e <- initial)
       _list.add(e);
@@ -27,36 +28,30 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
   override def toString(): String = _list.toString();
 
   def Count: Int = _list.size();
-  def Add(a: T) { _list.add(a); }
+  def Add(a: T):Unit = { _list.add(a); }
   def apply(i: Int): T = _list.get(i);
-  def update(i: Int, v: T) { _list.set(i, v); }
-  def RemoveAt(i: Int) { _list.remove(i); }
-  def Clear() { _list.clear(); }
-  def Insert(index: Int, item: T) { _list.add(index, item); }
-  def iterator(): java.util.Iterator[T] = _list.iterator();
+  def update(i: Int, v: T):Unit = { _list.set(i, v); }
+  def RemoveAt(i: Int):Unit = { _list.remove(i); }
+  def Clear():Unit = { _list.clear(); }
+  def Insert(index: Int, item: T):Unit = { _list.add(index, item); }
+  def iterator(): Iterator[T] = _list.iterator().asScala;
 
   private var _capacity: Int = 0;
   def Capacity = _capacity;
-  def Capacity_=(v: Int) {
+  def Capacity_=(v: Int):Unit = {
     _capacity = v;
     _list.ensureCapacity(v);
   }
 
-  def foreach[U](fn: T => U) {
+
+  def ForEach(fn: T => Unit):Unit = {
     val it = _list.iterator();
     while (it.hasNext())
       fn(it.next());
 
   }
 
-  def ForEach(fn: T => Unit) {
-    val it = _list.iterator();
-    while (it.hasNext())
-      fn(it.next());
-
-  }
-
-  def Reverse() {
+  def Reverse():Unit = {
     var i = 0;
     val size = _list.size();
     while (i < size / 2) {
@@ -107,7 +102,7 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
 
     }
 
-  def RemoveRange(startAt: Int, count: Int) {
+  def RemoveRange(startAt: Int, count: Int):Unit = {
     //TODO: Can we do this more efficiently?
     var remain = count;
     while (remain > 0) {
@@ -130,12 +125,12 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
     return removed;
   }
 
-  def AddRange(i: Traversable[T]) {
+  def AddRange(i: Iterable[T]):Unit = {
     for (e <- i)
       _list.add(e);
   }
 
-  def InsertRange(index: Int, a: Traversable[T]) {
+  def InsertRange(index: Int, a: Iterable[T]):Unit = {
     var i = index;
     for (e <- a) {
       _list.add(i, e);
@@ -164,15 +159,15 @@ class List[T: ClassTag](initialList: ArrayList[T]) extends Traversable[T] {
     def compare(a: T, b: T): Int = fn.Compare(a, b);
   }
 
-  def Sort(fn: (T, T) => Int) {
+  def Sort(fn: (T, T) => Int):Unit = {
     Collections.sort(_list, new Cmp(fn));
   }
 
-  def Sort(startAt: Int, length: Int, comparer: IComparer[T]) {
+  def Sort(startAt: Int, length: Int, comparer: IComparer[T]):Unit = {
     Collections.sort(_list.subList(startAt, startAt + length), new Cmp2(comparer));
   }
 
-  def Sort() {
+  def Sort():Unit = {
     Collections.sort(_list, new Cmp((a, b) =>
       {
         a.asInstanceOf[Comparable[T]].compareTo(b);

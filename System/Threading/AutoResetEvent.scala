@@ -3,10 +3,10 @@ package System.Threading;
 class AutoResetEvent(b:Boolean)
 {
 
-	final val _monitor = new Object();
+    final val _monitor = new Object();
     @volatile final var _isOpen = b;
 
-    def WaitOne()
+    def WaitOne() =
     {
       _monitor.synchronized({
             while (!_isOpen) {
@@ -17,7 +17,7 @@ class AutoResetEvent(b:Boolean)
       });
     }
 
-    def WaitOne(timeout:Long)
+    def WaitOne(timeout:Long):Unit =
     {
         _monitor.synchronized({
             val t = java.lang.System.currentTimeMillis();
@@ -34,7 +34,7 @@ class AutoResetEvent(b:Boolean)
         });
     }
 
-    def Set()
+    def Set():Unit =
     {
         _monitor.synchronized({
             _isOpen = true;
@@ -42,9 +42,9 @@ class AutoResetEvent(b:Boolean)
         });
     }
 
-    def Reset()
+    def Reset():Unit =
     {
         _isOpen = false;
     }
-	
+  
 }

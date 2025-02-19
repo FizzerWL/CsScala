@@ -1,7 +1,7 @@
 package System.Threading;
 
 object Thread {
-  def Sleep(ms: Int) {
+  def Sleep(ms: Int) = {
     java.lang.Thread.sleep(ms);
   }
 
@@ -9,32 +9,32 @@ object Thread {
 }
 
 class ThreadRunnable(fn: Any => Unit) extends Runnable {
-  def run() { fn(null); }
+  def run() = { fn(null); }
 }
 
 class Thread(_t: java.lang.Thread) {
 
-  def this(fn: Any => Unit) {
+  def this(fn: Any => Unit) = {
     this(new java.lang.Thread(new ThreadRunnable(fn)));
   }
 
-  def this(fn: () => Unit) {
+  def this(fn: () => Unit) = {
     this(new java.lang.Thread(new ThreadRunnable(z => fn())));
   }
 
   def Name: String = _t.getName();
-  def Name_=(v: String) { _t.setName(v); }
+  def Name_=(v: String):Unit = { _t.setName(v); }
 
   def ManagedThreadId: Int = _t.getId().toInt;
   def IsAlive: Boolean = _t.isAlive(); //.getState() != java.lang.Thread.State.TERMINATED;
 
   def Start() = _t.start();
 
-  def SetApartmentState(state: Int) {}
-  def Abort() { _t.stop(); }
+  def SetApartmentState(state: Int):Unit = {}
+  def Abort():Unit = { _t.stop(); }
 
   def Priority: Int = 2; //not implemented yet
-  def Priority_=(i: Int) {}
+  def Priority_=(i: Int):Unit = {}
 
 }
 

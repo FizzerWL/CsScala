@@ -16,7 +16,7 @@ class Stopwatch
   def Elapsed:TimeSpan = TimeSpan.FromMilliseconds((java.lang.System.nanoTime() - _started) / 1000000.0);
   def ElapsedMilliseconds:Long = (java.lang.System.nanoTime() - _started) / 1000000L;
   
-  def Restart()
+  def Restart() =
   {
     _started = java.lang.System.nanoTime();
   }

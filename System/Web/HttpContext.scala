@@ -27,10 +27,10 @@ class HttpContext
 class HttpItems {
   final val _hash = new HashMap[String, Any]();
   
-  def Contains(key:String):Boolean = _hash.containsKey(key)
-  def Add(key:String, value:Any) { _hash.put(key, value); }
-  def Remove(key:String) { _hash.remove(key); }
+  def Contains(key:String):Boolean = _hash.containsKey(key);
+  def Add(key:String, value:Any):Unit = { _hash.put(key, value); }
+  def Remove(key:String):Unit = { _hash.remove(key); }
   
   def apply(key:String):Any = _hash.get(key);
-  def update(key:String, value:Any) { _hash.put(key, value); }
+  def update(key:String, value:Any):Unit = { _hash.put(key, value); }
 }

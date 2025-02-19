@@ -18,15 +18,15 @@ class HttpResponse {
   var ContentType = "text/html; charset=utf-8";
 
   var _writer:HtmlTextWriter = null;
-  def Write(s: String) {
+  def Write(s: String):Unit = {
     _writer.Write(s);
   }
 
-  def End() {
+  def End():Unit = {
     throw new ResponseEndException();
   }
 
-  def Redirect(url: String) {
+  def Redirect(url: String):Unit = {
     throw new RedirectException(url);
   }
 }

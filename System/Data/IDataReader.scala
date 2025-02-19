@@ -17,4 +17,6 @@ trait IDataReader
   def GetDouble(col:Int):Double;
   def GetDateTime(col:Int):DateTime;
 
+  def Dispose():Unit;
+
 }

@@ -1,22 +1,13 @@
 package System.Collections.Generic
 
+import scala.collection.JavaConverters._
 
-class Dictionary_KeyCollection[T](i:java.util.Set[T]) extends Traversable[T] 
+
+class Dictionary_KeyCollection[T](i:java.util.Set[T]) extends Iterable[T] 
 {
 
-  def Count:Int = 
-  {
-    return i.size();
-  }
-  def foreach[U](fn:T=>U)
-  {
-    val it = i.iterator;
-	while (it.hasNext()) 
-	{
-	   fn(it.next());
-	}
-  }
+  def Count:Int = i.size();
   
-  def iterator():java.util.Iterator[T] = i.iterator();
+  def iterator():Iterator[T] = i.iterator().asScala;
 
 }

@@ -5,17 +5,15 @@ import java.util.concurrent.ConcurrentHashMap
 import scala.collection.JavaConverters._
 import System.Collections.Generic.KeyValuePair
 
-class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversable[KeyValuePair[K, V]] {
-  def this() {
+class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Iterable[KeyValuePair[K, V]] {
+  def this() = {
     this(new ConcurrentHashMap[K, V]());
   }
 
-  def foreach[U](fn: KeyValuePair[K, V] => U) {
-    val it = _map.entrySet().iterator();
-    while (it.hasNext()) {
-      val e = it.next();
-      fn(new KeyValuePair(e.getKey(), e.getValue()));
-    }
+  override def iterator: Iterator[KeyValuePair[K,V]] = new Iterator[KeyValuePair[K,V]] {
+    private val it = _map.entrySet().iterator()
+    override def hasNext: Boolean = it.hasNext
+    override def next(): KeyValuePair[K,V] = { val e = it.next(); return new KeyValuePair(e.getKey(), e.getValue()); }
   }
 
   def TryGetValue(k: K, out: CsRef[V]): Boolean =
@@ -36,7 +34,7 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
 
   def TryAdd(key: K, value: V): Boolean = _map.putIfAbsent(key, value) == null;
   
-  def update(k:K, v:V)
+  def update(k:K, v:V) =
   {
     _map.put(k, v);
   }
@@ -67,21 +65,21 @@ class ConcurrentDictionary[K, V](_map: ConcurrentHashMap[K, V]) extends Traversa
         return r;
     }
 
-  def AddOrUpdate(k: K, add: V, update: (K, V) => V) {
+  def AddOrUpdate(k: K, add: V, update: (K, V) => V):Unit = {
     val item = _map.putIfAbsent(k, add);
 
     if (item != null)
       _map.put(k, update(k, item));
   }
 
-  def Keys: Traversable[K] = {
+  def Keys: Iterable[K] = {
     return _map.keySet().asScala;
   }
-  def Values: Traversable[V] = {
+  def Values: Iterable[V] = {
     return _map.values().asScala;
   }
 
-  def Clear() {
+  def Clear():Unit = {
     _map.clear();
   }
 

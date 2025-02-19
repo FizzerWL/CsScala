@@ -27,16 +27,16 @@ abstract class Control {
   var ID = "";
   var Visible = true;
 
-  def RenderControl(writer: HtmlTextWriter) {
+  def RenderControl(writer: HtmlTextWriter):Unit = {
     throw new Exception("RenderControl not overridden by " + this);
   }
-  def Render(writer: HtmlTextWriter) {
+  def Render(writer: HtmlTextWriter):Unit = {
     if (Visible) {
       OnPreRender(null);
       RenderControl(writer);
     }
   }
-  def CachedRender(writer: HtmlTextWriter) {
+  def CachedRender(writer: HtmlTextWriter):Unit = {
     if (!Visible)
       return ;
 
@@ -47,7 +47,7 @@ abstract class Control {
       if (_cache != null)
         writer.Write(_cache.Html);
       else {
-        val pos = writer.Position;
+        val pos = writer.Position();
         Render(writer);
         val newCache = new ControlCache(writer.GetSubstring(pos), DateTime.Now.AddSeconds(CacheFor));
         Control.Cache.put(getClass(), newCache);
@@ -57,13 +57,13 @@ abstract class Control {
         lock.unlock();
     }
   }
-  def OnInit(args: EventArgs) {}
-  def OnLoad(args: EventArgs) {}
-  def OnPreRender(args: EventArgs) {}
+  def OnInit(args: EventArgs):Unit = {}
+  def OnLoad(args: EventArgs):Unit = {}
+  def OnPreRender(args: EventArgs):Unit = {}
 
   def GetControls(): Array[Control];
 
-  def RecurseAll(fn: Control => Unit) {
+  def RecurseAll(fn: Control => Unit):Unit = {
     if (_cache != null)
       return ;
 
@@ -91,7 +91,7 @@ abstract class Control {
     }
 
   var _cache: ControlCache = null;
-  def DetermineCache(locksOwn: ArrayList[ReentrantLock]) {
+  def DetermineCache(locksOwn: ArrayList[ReentrantLock]):Unit = {
     if (CacheFor == 0)
       return ;
 
@@ -105,7 +105,7 @@ abstract class Control {
     }
   }
 
-  def TryGetCache() {
+  def TryGetCache():Unit = {
     _cache = Control.Cache.get(getClass());
     if (_cache != null && _cache.Expires.Ticks < DateTime.Now.Ticks)
       _cache = null;

@@ -32,7 +32,7 @@ class Image(img: BufferedImage) {
 
   val _img = img;
 
-  def RotateFlip(fliptype: Int) {
+  def RotateFlip(fliptype: Int):Unit = {
     throw new NotImplementedException();
   }
 
@@ -43,12 +43,12 @@ class Image(img: BufferedImage) {
     return new Image(buf);
   }
 
-  def Save(s: Stream, format: ImageFormat) {
+  def Save(s: Stream, format: ImageFormat):Unit = {
     if (!ImageIO.write(img, format.Str, s._output))
       throw new Exception("ImageIO.write returned false");
   }
 
-  def Save(path: String, format: ImageFormat) {
+  def Save(path: String, format: ImageFormat):Unit = {
     if (!ImageIO.write(img, format.Str, new File(path)))
       throw new Exception("ImageIO.write returned false");
   }

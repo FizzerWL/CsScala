@@ -96,29 +96,83 @@ namespace CsScala
 
             writer.Write(")");
             bool returnsVoid = method.ReturnType.ToString() == "void";
-            if (!returnsVoid)
+            if (returnsVoid)
+                writer.Write(":Unit");
+            else
                 writer.Write(TypeProcessor.ConvertTypeWithColon(method.ReturnType));
 
             if (method.Modifiers.Any(SyntaxKind.AbstractKeyword) || method.Parent is InterfaceDeclarationSyntax)
                 writer.Write(";\r\n");
             else
             {
-                if (!returnsVoid)
-                    writer.Write(" =");
-
-                writer.Write("\r\n");
+                writer.Write(" =\r\n");
                 writer.WriteOpenBrace();
 
                 if (method.Body != null)
                 {
+
+                    var hasNonLocalReturn = HasNonLocalReturn(method);
+                    if (hasNonLocalReturn)
+                    {
+                        if (TypeState.Instance.InFunctionBreakable)
+                            throw new Exception("Nested function breakable");
+                        TypeState.Instance.InFunctionBreakable = true;
+
+                        writer.WriteLine("val __fnbreak = new Breaks;");
+
+                        if (!returnsVoid)
+                        {
+                            writer.WriteIndent();
+                            writer.Write("var __fnreturn:");
+                            writer.Write(TypeProcessor.ConvertType(methodSymbol.ReturnType));
+                            writer.Write(" = ");
+                            writer.Write(TypeProcessor.DefaultValue(methodSymbol.ReturnType));
+                            writer.Write(";\r\n");
+                        }
+                        writer.WriteLine("__fnbreak.breakable {");
+                        writer.Indent++;
+                    }
+
                     foreach (var statement in method.Body.Statements)
                         Core.Write(writer, statement);
 
                     TriviaProcessor.ProcessTrivias(writer, method.Body.DescendantTrivia());
+
+                    if (hasNonLocalReturn)
+                    {
+                        writer.WriteCloseBrace();
+                        if (!returnsVoid)
+                            writer.WriteLine("__fnreturn;");
+
+                        if (!TypeState.Instance.InFunctionBreakable)
+                            throw new Exception("Expected function breakable");
+                        TypeState.Instance.InFunctionBreakable = false;
+                    }
                 }
 
                 writer.WriteCloseBrace();
             }
+        }
+
+        /// <summary>
+        /// Scala doesn't support returning from within a breakable region.  Determine if our function does this
+        /// </summary>
+        private static bool HasNonLocalReturn(MethodDeclarationSyntax method)
+        {
+            Func<SyntaxNode, bool> recurse = null;
+            recurse = node =>
+            {
+                if (LoopInfo.IsLoopSyntax(node))
+                {
+                    var info = new LoopInfo(node);
+                    if (info.HasReturnStatement && (info.HasContinue || info.HasBreak))
+                        return true;
+                }
+
+                return node.ChildNodes().Where(o => !(o is LambdaExpressionSyntax)).Any(recurse);
+            };
+
+            return recurse(method.Body);
         }
 
         private static bool ShouldUseOverrideKeyword(MethodDeclarationSyntax method, IMethodSymbol symbol)
@@ -169,16 +223,28 @@ namespace CsScala
             if (member == null)
                 return;
 
-            writer.WriteIndent();
-            writer.Write("def foreach[U](fn: ");
-            writer.Write(enumerableType);
-            writer.Write(" => U)\r\n");
-            writer.WriteOpenBrace();
+            //writer.WriteIndent();
+            //writer.Write("def foreach[U](fn: ");
+            //writer.Write(enumerableType);
+            //writer.Write(" => U) =\r\n");
+            //writer.WriteOpenBrace();
+
+            //writer.WriteIndent();
+            //Core.Write(writer, member.Expression);
+            //writer.Write(".foreach(fn);\r\n");
+            //writer.WriteCloseBrace();
+
+
 
             writer.WriteIndent();
+            writer.Write("def iterator: Iterator[");
+            writer.Write(enumerableType);
+            writer.Write("] = CsScala.ToScala(");
             Core.Write(writer, member.Expression);
-            writer.Write(".foreach(fn);\r\n");
-            writer.WriteCloseBrace();
+            writer.Write(".iterator);\r\n");
+
+
+
         }
 
     }

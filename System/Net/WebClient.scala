@@ -15,11 +15,12 @@ class WebClient {
     val buf = new Array[Byte](1024);
 
     var read = 0;
-    do {
+    while {
       read = stream.Read(buf, 0, buf.length);
       if (read != -1)
         rd.write(buf, 0, read);
-    } while (read != -1);
+      read != -1;
+    } do ();
 
     rd.flush();
 
@@ -27,7 +28,7 @@ class WebClient {
 
   }
 
-  def Dispose() {
+  def Dispose():Unit = {
 
   }
 }

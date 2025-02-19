@@ -20,6 +20,7 @@ namespace CsScala
 
         public List<MemberDeclarationSyntax> AllMembers;
         public int InLambdaBreakable = 0;
+        public bool InFunctionBreakable;
 
 
         public class SyntaxAndSymbol

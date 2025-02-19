@@ -3,29 +3,29 @@ package System.Collections.Generic
 import java.util.HashMap
 import System.CsRef
 
-class Dictionary[K, V](initialMap:HashMap[K,V]) extends Traversable[KeyValuePair[K,V]] 
+class Dictionary[K, V](initialMap:HashMap[K,V]) extends Iterable[KeyValuePair[K,V]] 
 {
   val _map = initialMap;
   
   
-  def this(initialCount:Int)
+  def this(initialCount:Int) =
   {
     this(new HashMap[K,V](initialCount));
   }
   
-  def this()
+  def this() =
   {
       this(new HashMap[K,V]());
   }
   
-  def this(other:Dictionary[K,V])
+  def this(other:Dictionary[K,V]) =
   {
     this(other.Count);
     for(pair <- other)
       Add(pair.Key, pair.Value);
   }
   
-  def Add(k:K, v:V)
+  def Add(k:K, v:V) =
   {
     if (ContainsKey(k))
       throw new Exception("Key already exists");
@@ -50,19 +50,15 @@ class Dictionary[K, V](initialMap:HashMap[K,V]) extends Traversable[KeyValuePair
     return r;
   }
   
-  def update(k:K, v:V)
+  def update(k:K, v:V) =
   {
     _map.put(k, v);
   }
   
-  def foreach[U](f:KeyValuePair[K,V]=>U)
-  {
-    val it = _map.entrySet().iterator();
-    while (it.hasNext())
-    {
-      val e = it.next();
-      f(new KeyValuePair(e.getKey(), e.getValue()));
-    }
+  override def iterator: Iterator[KeyValuePair[K,V]] = new Iterator[KeyValuePair[K,V]] {
+    private val it = _map.entrySet().iterator()
+    override def hasNext: Boolean = it.hasNext
+    override def next(): KeyValuePair[K,V] = { val e = it.next(); return new KeyValuePair(e.getKey(), e.getValue()); }
   }
   
   def Keys:Dictionary_KeyCollection[K] = 
@@ -88,7 +84,7 @@ class Dictionary[K, V](initialMap:HashMap[K,V]) extends Traversable[KeyValuePair
   {
     return new Dictionary[K,V](_map.clone().asInstanceOf[HashMap[K,V]]);
   }
-  def Clear()
+  def Clear() =
   {
     _map.clear();
   }

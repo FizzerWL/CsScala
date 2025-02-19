@@ -12,12 +12,12 @@ class Task[T](fn: () => T) {
   var IsFaulted: Boolean = false;
   var Exception: Exception = null;
 
-  def Wait() {
+  def Wait():Unit = {
     while (!IsCompleted)
       java.lang.Thread.sleep(10);
   }
 
-  def Start() {
+  def Start():Unit = {
     ThreadPool.QueueUserWorkItem(_ => {
       try {
         Result = fn();
@@ -44,12 +44,12 @@ class NonGenericTask(fn: () => Unit) {
   var IsFaulted: Boolean = false;
   var Exception: Exception = null;
 
-  def Wait() {
+  def Wait():Unit = {
     while (!IsCompleted)
       java.lang.Thread.sleep(10);
   }
 
-  def Start() {
+  def Start():Unit = {
     ThreadPool.QueueUserWorkItem(_ => {
       try {
         fn();

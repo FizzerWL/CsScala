@@ -12,11 +12,11 @@ object File {
       val f = new java.io.File(path);
       return f.exists() && !f.isDirectory();
     }
-  def Delete(path: String) {
+  def Delete(path: String):Unit = {
     Files.deleteIfExists(new java.io.File(path).toPath());
   }
 
-  def AppendAllText(path: String, text: String) {
+  def AppendAllText(path: String, text: String):Unit = {
     val fileWriter = new FileWriter(path, true);
     fileWriter.write(text);
     fileWriter.close();
@@ -36,22 +36,23 @@ object File {
     val reader = new BufferedReader(freader);
     val buf = new Array[Char](1024);
     var numRead = 0;
-    do {
+    while {
       numRead = reader.read(buf);
       if (numRead != -1)
         fileData.append(String.valueOf(buf, 0, numRead));
-    } while (numRead != -1);
+      numRead != -1
+    } do ();
     reader.close();
     freader.close();
     return fileData.toString();
   }
-  def WriteAllBytes(path: String, bytes: Array[Byte]) = {
+  def WriteAllBytes(path: String, bytes: Array[Byte]):Unit = {
     val f = new java.io.RandomAccessFile(path, "rw");
     f.setLength(0);
     f.write(bytes);
     f.close();
   }
-  def WriteAllText(path: String, text: String) = {
+  def WriteAllText(path: String, text: String):Unit = {
     val fileWriter = new FileWriter(path);
     fileWriter.write(text);
     fileWriter.close();
@@ -61,17 +62,17 @@ object File {
     return if (new File(path).canWrite()) FileAttributes.Normal else FileAttributes.ReadOnly;
 
   }
-  def SetAttributes(path: String, attrs: Int) {
+  def SetAttributes(path: String, attrs: Int):Unit = {
     new File(path).setReadable(attrs == FileAttributes.Normal);
   }
 
-  def Copy(src: String, dest: String, overwrite: Boolean = false) {
+  def Copy(src: String, dest: String, overwrite: Boolean = false):Unit = {
     if (overwrite)
       Files.copy(new File(src).toPath(), new File(dest).toPath(), StandardCopyOption.REPLACE_EXISTING);
     else
       Files.copy(new File(src).toPath(), new File(dest).toPath());
   }
-  def Move(src: String, dest: String) {
+  def Move(src: String, dest: String):Unit = {
     Files.move(new File(src).toPath(), new File(dest).toPath());
   }
 }

@@ -9,7 +9,7 @@ object Monitor {
 
   final val _locks = new MapMaker().weakKeys().makeMap[Any, ReentrantLock]();
 
-  def Enter(obj: Any) {
+  def Enter(obj: Any):Unit = {
     if (obj == null)
       throw new ArgumentNullException("obj is null");
 
@@ -33,7 +33,7 @@ object Monitor {
     else
       lock.tryLock(timeoutMS, TimeUnit.MILLISECONDS);
   }
-  def Exit(obj: Any) {
+  def Exit(obj: Any):Unit = {
     if (obj == null)
       throw new ArgumentNullException("obj is null");
 

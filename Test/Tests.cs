@@ -35,7 +35,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         System.Console.WriteLine(""Hello, World!"");
     }
@@ -73,7 +73,7 @@ package Blargh;
 " + WriteImports.StandardImports + @"
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var notInitialized:String = null;
         var myNum:Int = 0;
@@ -160,7 +160,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
           CsScala.csbreak.breakable
           {
@@ -184,11 +184,12 @@ object Utilities
                 i = i + 1;
             }
         } //end for
-        do
+        while
         {
             System.Console.WriteLine(""Dowhile"");
+            false;
         }
-        while (false);  
+        do();
 
         while (true)
         {
@@ -260,8 +261,12 @@ class Foo
     {
         var s:String = ""hello"";
         var chars:Array[Char] = s.toCharArray();
-        for (c <- s)
         {
+            val __foreachiterator = s.iterator;
+            while (__foreachiterator.hasNext) 
+            {
+                val c = __foreachiterator.next;
+            }
         }
         System.Linq.Enumerable.Select(s, (o:Char) => { o; }:Char);
     }
@@ -339,7 +344,7 @@ object Box
     var StaticUninitializedTimeSpan:System.TimeSpan = new System.TimeSpan();
 
 
-    def cctor()
+    def cctor():Unit =
     {
         System.Console.WriteLine(""cctor"");
     }
@@ -412,7 +417,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         { //for
             while (true)
@@ -495,7 +500,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var dict:System.Collections.Generic.Dictionary[Int, Int] = new System.Collections.Generic.Dictionary[Int, Int]();
         dict.Add(4, 3);
@@ -505,27 +510,31 @@ object Utilities
 
 
         {
-            val __foreachiterator = dict.Keys.iterator(); 
-            while (__foreachiterator.hasNext()) 
+            val __foreachiterator = dict.Keys.iterator;
+            while (__foreachiterator.hasNext) 
             { 
-                val key = __foreachiterator.next(); 
+                val key = __foreachiterator.next; 
                 System.Console.WriteLine(key); 
             }
         }
 
         { 
-            val __foreachiterator = dict.Values.iterator(); 
-            while (__foreachiterator.hasNext()) 
+            val __foreachiterator = dict.Values.iterator; 
+            while (__foreachiterator.hasNext) 
             { 
-                val csval = __foreachiterator.next(); 
+                val csval = __foreachiterator.next; 
                 System.Console.WriteLine(csval); 
             } 
         }
 
         
-        for (kv <- dict)
         {
-            System.Console.WriteLine(kv.Key + "" "" + kv.Value);
+            val __foreachiterator = dict.iterator;
+            while (__foreachiterator.hasNext) 
+            {
+                val kv = __foreachiterator.next;
+                System.Console.WriteLine(kv.Key + "" "" + kv.Value);
+            }
         }
         var dict2:System.Collections.Generic.Dictionary[Int, Int] = System.Linq.Enumerable.ToDictionary(dict, (o:System.Collections.Generic.KeyValuePair[Int, Int]) => { o.Key; }:Int, (o:System.Collections.Generic.KeyValuePair[Int, Int]) => { o.Value; }:Int);
         var vals:System.Collections.Generic.Dictionary_ValueCollection[Int] = dict.Values;
@@ -535,9 +544,14 @@ object Utilities
         System.Console.WriteLine(hash.Contains(999));
         hash.Remove(999);
         System.Console.WriteLine(hash.Contains(999));
-        for (hashItem <- hash)
         {
-            System.Console.WriteLine(hashItem);
+            val __foreachiterator = hash.iterator;
+            while (__foreachiterator.hasNext) 
+            {
+                val hashItem = __foreachiterator.next;
+
+                System.Console.WriteLine(hashItem);
+            }
         }
         var z:Array[Int] = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(hash, (o:Int) => { 3; }:Int));
         var g:Int = System.Linq.Enumerable.Min(System.Linq.Enumerable.Select(System.Linq.Enumerable.GroupBy(hash, (o:Int) => { o; }:Int), (o:System.Linq.IGrouping[Int, Int]) => { System.Linq.Enumerable.Count(o); }:Int));
@@ -575,22 +589,22 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
-        var f1:(Int) => Int = (x:Int) => 
+        var f1:((Int) => Int) = (x:Int) => 
         { 
         x + 5; 
         }:Int;
         System.Console.WriteLine(f1(3));
-        var f2:(Int) => Int = (x:Int) => 
+        var f2:((Int) => Int) = (x:Int) => 
         { 
         x + 6; 
         }:Int;
         System.Console.WriteLine(f2(3));
-        var actions:System.Collections.Generic.List[() => Unit] = new System.Collections.Generic.List[() => Unit]();
+        var actions:System.Collections.Generic.List[(() => Unit)] = new System.Collections.Generic.List[(() => Unit)]();
         actions.Add(() =>
         {
-        });
+        }:Unit);
     }
 }");
         }
@@ -622,23 +636,23 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var i:Int = 3;
-        var a:() => Unit = () =>
+        var a:(() => Unit) = () =>
         { 
             i = 4;
-        };
-        var b:() => Int = () =>
+        }:Unit;
+        var b:(() => Int) = () =>
         { 
             i;
         }:Int;
         Blargh.Utilities.Foo(() =>
         {
             i = 6;
-        });
+        }:Unit);
     }
-    def Foo(a:() => Unit)
+    def Foo(a:(() => Unit)):Unit =
     {
     }  
 }");
@@ -678,9 +692,9 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
-        var z:(Boolean, Boolean) => Int = (a:Boolean, b:Boolean) => 
+        var z:((Boolean, Boolean) => Int) = (a:Boolean, b:Boolean) => 
         {
             val __lambdabreak = new Breaks;
             var __lambdareturn:Int = 0;
@@ -742,9 +756,9 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
-        var z:(Boolean, Boolean) => Unit = (a:Boolean, b:Boolean) => 
+        var z:((Boolean, Boolean) => Unit) = (a:Boolean, b:Boolean) => 
         {
             val __lambdabreak = new Breaks;
             __lambdabreak.breakable
@@ -762,7 +776,7 @@ object Utilities
                 }
                 System.Console.WriteLine(4);
             }
-        };
+        }:Unit;
     }
 }");
         }
@@ -846,7 +860,7 @@ package Blargh;
 
 class Foo
 {
-    def Bar(a:Int, b:Int, c:Int, d:Int = 3)
+    def Bar(a:Int, b:Int, c:Int, d:Int = 3):Unit =
     {
     }
 
@@ -1116,7 +1130,7 @@ package Blargh;
 
 class SomeClass(i3:Int = 9)
 {
-    def Foo(i1:Int, i2:Int = 4, s1:String = ""hi"")
+    def Foo(i1:Int, i2:Int = 4, s1:String = ""hi""):Unit =
     {
     }
 
@@ -1163,7 +1177,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
              
         var e:Array[Int] = Array[Int](0, 1, 2, 3);
@@ -1246,19 +1260,19 @@ class KeyValueList[K, V] extends System.IEquatable[K]
   
     private var _list:System.Collections.Generic.List[System.Collections.Generic.KeyValuePair[K, V]] = new System.Collections.Generic.List[System.Collections.Generic.KeyValuePair[K, V]]();
 
-    def Add(key:K, value:V)
+    def Add(key:K, value:V):Unit =
     {
         this._list.Add(new System.Collections.Generic.KeyValuePair[K, V](key, value));
     }
-    def Insert(index:Int, key:K, value:V)
+    def Insert(index:Int, key:K, value:V):Unit =
     {
         _list.Insert(index, new System.Collections.Generic.KeyValuePair[K, V](key, value));
     }
-    def Clear()
+    def Clear():Unit =
     {
         _list.Clear();
     }
-    def RemoveAt(index:Int)
+    def RemoveAt(index:Int):Unit =
     {
         _list.RemoveAt(index);
     }
@@ -1336,7 +1350,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var usingMe:System.IO.MemoryStream = new System.IO.MemoryStream();
         try
@@ -1388,7 +1402,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var i:Int = 3;
         i += 4;
@@ -1399,7 +1413,7 @@ object Utilities
         i = i % 4;
         i = i - 1;
         i = i * 100;
-        var f:Double = i / 3f;
+        var f:Double = i / 3f.toDouble;
         var hex:Int = 0x00ff;
         i = f.toInt;
         var z:Boolean = (i & hex) == 5;
@@ -1441,12 +1455,12 @@ package Blargh;
 
 object Utilities
 {
-    var StaticAction:() => Unit = null;
+    var StaticAction:(() => Unit) = null;
 
-    def SomeFunction(getit:(Int) => Int, getitnow:() => Int, unused:(Float, Int) => Float)
+    def SomeFunction(getit:((Int) => Int), getitnow:(() => Int), unused:((Float, Int) => Float)):Unit =
     {
         System.Console.WriteLine(getit(getitnow()));
-        var a:Array[() => Int] = Array(getitnow);
+        var a:Array[(() => Int)] = Array(getitnow);
         a(0)();
         Blargh.Utilities.StaticAction();
         Blargh.Utilities.StaticAction();
@@ -1490,7 +1504,7 @@ package Blargh;
 object Utilities
 {
     var Foo:Int = 0;
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         Blargh.Utilities.Foo = 4;
         System.Console.WriteLine(Int.MaxValue);
@@ -1550,7 +1564,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var nullableInt:java.lang.Integer = null;
         var d:Float = 3;
@@ -1693,7 +1707,7 @@ package Blargh;
 
 object Clazz
 {
-    def Methodz()
+    def Methodz():Unit =
     {
         var f:Int = Blargh.MostlyNumbered.One;
         var arr:Array[Int] = Array[Int](Blargh.UnNumbered.One, Blargh.UnNumbered.Two, Blargh.UnNumbered.Three);
@@ -1709,7 +1723,7 @@ object Clazz
         s2 = ""asdf"" + Blargh.MostlyNumbered.ToString(n);
         var vals = Blargh.MostlyNumbered.Values;
     }
-}"});
+}" });
         }
 
         [TestMethod]
@@ -1844,7 +1858,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var s:String = ""Blah"";
         s match
@@ -1898,7 +1912,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var s:String = ""Blah"";
         var list:System.Collections.Generic.List[Int] = new System.Collections.Generic.List[Int]();
@@ -1985,11 +1999,11 @@ package Blargh;
 
 abstract class TopLevel
 {
-    def AbstractMethod();
+    def AbstractMethod():Unit;
 
     def AbstractProperty:String;
     
-    def VirtualMethod()
+    def VirtualMethod():Unit =
     {
         System.Console.WriteLine(""TopLevel::VirtualMethod"");
     }
@@ -2012,7 +2026,7 @@ package Blargh;
         
 class Derived extends Blargh.TopLevel
 {
-    override def AbstractMethod()
+    override def AbstractMethod():Unit =
     {
         System.Console.WriteLine(""Derived::AbstractMethod"");
     }
@@ -2020,7 +2034,7 @@ class Derived extends Blargh.TopLevel
     {
         return ""Derived::AbstractProperty"";
     }
-    override def VirtualMethod()
+    override def VirtualMethod():Unit =
     {
         super.VirtualMethod();
         System.Console.WriteLine(""Derived::VirtualMethod"");
@@ -2067,7 +2081,7 @@ package Blargh;
 
 trait ITesting
 {
-    def Poke();
+    def Poke():Unit;
 }",
   @"
 package Blargh;
@@ -2075,7 +2089,7 @@ package Blargh;
 
 class Pokable extends Blargh.ITesting
 {
-    def Poke()
+    def Poke():Unit =
     {
         System.Console.WriteLine(""Implementation"");
     }
@@ -2132,7 +2146,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         System.Console.WriteLine(""Before try"");
         try
@@ -2207,22 +2221,30 @@ package Blargh;
 
 object Utilities
 {
-    def ToQueue[T](array:Traversable[T]):System.Collections.Generic.Queue[T] =
+    def ToQueue[T](array:Iterable[T]):System.Collections.Generic.Queue[T] =
     {
         var queue:System.Collections.Generic.Queue[T] = new System.Collections.Generic.Queue[T]();
-        for (a <- array)
         {
-            queue.Enqueue(a);
+            val __foreachiterator = array.iterator;
+            while (__foreachiterator.hasNext) 
+            {
+                val a = __foreachiterator.next;
+                queue.Enqueue(a);
+            }
         }
         queue.Dequeue();
         Blargh.Utilities.Foo[Long]();
         return queue;
     }
-    def SideEffect[T](array:Traversable[T], effect:(T) => Unit):Traversable[T] =
+    def SideEffect[T](array:Iterable[T], effect:((T) => Unit)):Iterable[T] =
     {
-        for (i <- array)
         {
-            effect(i);
+            val __foreachiterator = array.iterator;
+            while (__foreachiterator.hasNext) 
+            {
+                val i = __foreachiterator.next;
+                effect(i);
+            }
         }
         return array;
     }
@@ -2269,7 +2291,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var queue:System.Collections.Generic.Queue[Int] = new System.Collections.Generic.Queue[Int](10);
         queue.Enqueue(4);
@@ -2363,12 +2385,12 @@ package Blargh;
 
 object Test
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var a:String = System.DateTime.Now.asInstanceOf[String];
         var o:Any = 4;
         var b:Byte = o.asInstanceOf[Short].toByte;
-        var c:Traversable[Int] = System.Linq.Enumerable.Select((o.asInstanceOf[Array[Int]]), (z:Int) => { z; }:Int);
+        var c:Iterable[Int] = System.Linq.Enumerable.Select((o.asInstanceOf[Array[Int]]), (z:Int) => { z; }:Int);
     }
 }";
 
@@ -2417,7 +2439,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var ar:Array[Int] = Array[Int](1, 2, 3);
 
@@ -2476,11 +2498,11 @@ package Blargh;
 
 class Utilities
 {
-    def FunFromOne()
+    def FunFromOne():Unit =
     {
         System.Console.WriteLine(""I'm in one!"");
     }
-    def FunFromTwo()
+    def FunFromTwo():Unit =
     {
         System.Console.WriteLine(""I'm in Two!"");
     }
@@ -2518,7 +2540,7 @@ package Blargh;
 " + WriteImports.StandardImports + @"
 object Utilities
 {
-    def SomeFunction(s2:String)
+    def SomeFunction(s2:String):Unit =
     {
         var s:String = ""50\\0"";
         System.Console.WriteLine(s.indexOf(""0""));
@@ -2564,11 +2586,16 @@ namespace Blargh
             var b = i.IsFour();
             Console.WriteLine(""true "" + b);
             Utilities.IsFour(5);
+            ""hello"".WithParams(1,2,3);
         }
 
         public static bool IsFour(this int i)
         {
             return i == 4;
+        }
+
+        public static void WithParams(this string s, params int[] ints)
+        {
         }
     }
 }", @"
@@ -2577,7 +2604,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction()
+    def SomeFunction():Unit =
     {
         var i:Int = -3;
         System.Console.WriteLine(""false "" + System.CsScala.BooleanToString(Blargh.Utilities.IsFour(i)));
@@ -2585,11 +2612,15 @@ object Utilities
         var b:Boolean = Blargh.Utilities.IsFour(i);
         System.Console.WriteLine(""true "" + System.CsScala.BooleanToString(b));
         Blargh.Utilities.IsFour(5);
+        Blargh.Utilities.WithParams(""hello"", Array(1, 2, 3));
     }
 
     def IsFour(i:Int):Boolean =
     {
         return i == 4;
+    }
+    def WithParams(s:String, ints:Array[Int]):Unit =
+    {
     }
 }");
         }
@@ -2665,13 +2696,13 @@ package Blargh;
         
 class Foo
 {
-    def TestRef(i:CsRef[Int])
+    def TestRef(i:CsRef[Int]):Unit =
     {
         var sb:System.Text.StringBuilder = new System.Text.StringBuilder(i.Value);
         i.Value = 4;
     }
         
-    def TestOut(i:CsRef[Int])
+    def TestOut(i:CsRef[Int]):Unit =
     {
         i.Value = 4;
         var sb:System.Text.StringBuilder = new System.Text.StringBuilder(i.Value);
@@ -2686,7 +2717,7 @@ class Foo
         TestRef(i);
         i.Value = 5;
         new System.Text.StringBuilder(i.Value);
-        var fun:() => Int = () => { x.Value; }:Int;
+        var fun:(() => Int) = () => { x.Value; }:Int;
     }
         
 }");
@@ -2720,10 +2751,10 @@ package Blargh;
 
 class Foo
 {
-    def NoOther()
+    def NoOther():Unit =
     {
     }
-    def Other()
+    def Other():Unit =
     {
         System.Console.WriteLine();
     }
@@ -2751,7 +2782,7 @@ package Blargh;
 
 object Utilities
 {
-    def SomeFunction[T >: Null <% System.IComparable[T]]()
+    def SomeFunction[T >: Null <: System.IComparable[T]]():Unit =
     {
     }
 }");
@@ -2790,7 +2821,7 @@ object Bar
     {
         return ""blah"";
     }
-    def Foo()
+    def Foo():Unit =
     {
         var b:Foo.Bar = new Foo.Bar();
         var s:String = Foo.Bar.op_Explicit_String(b);
@@ -2846,16 +2877,16 @@ package Foo;
 
 object Bar
 {
-    def Method1(p:Array[Int])
+    def Method1(p:Array[Int]):Unit =
     {
     }
-    def Method2(i:Int, p:Array[Int])
+    def Method2(i:Int, p:Array[Int]):Unit =
     {
     }
-    def Method3(i:Int, z:Int, p:Array[Int])
+    def Method3(i:Int, z:Int, p:Array[Int]):Unit =
     {
     }
-    def Foo()
+    def Foo():Unit =
     {
         Foo.Bar.Method1(Array(1));
         Foo.Bar.Method1(Array(1, 2));
@@ -2898,14 +2929,14 @@ package Blargh;
 object Foo
 {
     var StaticField:Int = 1;
-    def StaticMethod()
+    def StaticMethod():Unit =
     {
     }
 }
 
 class Foo
 {
-    def Method()
+    def Method():Unit =
     {
         System.Console.WriteLine(Blargh.Foo.StaticField);
         Blargh.Foo.StaticMethod();
@@ -2964,30 +2995,30 @@ package Blargh;
 
 class Foo
 {
-    def Method1[T1:ClassTag](t:Traversable[T1])
+    def Method1[T1:ClassTag](t:Iterable[T1]):Unit =
     {
         System.Linq.Enumerable.ToList(t);
     }
-    def Method2[T2](t:Traversable[T2])
+    def Method2[T2](t:Iterable[T2]):Unit =
     {
     }
-    def Method3[T3:ClassTag](t:Traversable[T3])
+    def Method3[T3:ClassTag](t:Iterable[T3]):Unit =
     {
         Method1(t);
     }
-    def Method4[A4, B4, C4:ClassTag](a:Traversable[A4], b:Traversable[B4], c:Traversable[C4])
+    def Method4[A4, B4, C4:ClassTag](a:Iterable[A4], b:Iterable[B4], c:Iterable[C4]):Unit =
     {
         System.Linq.Enumerable.OfType[B4, C4](b);
     }
-    def Method5[T5](t:Traversable[T5])
+    def Method5[T5](t:Iterable[T5]):Unit =
     {
         Method4(t, Array[Int](), Array[Int]());
     }
-    def Method6[T6](t:Traversable[T6])
+    def Method6[T6](t:Iterable[T6]):Unit =
     {
         Method4(Array[Int](), t, Array[Int]());
     }
-    def Method7[T7:ClassTag](t:Traversable[T7])
+    def Method7[T7:ClassTag](t:Iterable[T7]):Unit =
     {
         Method4(Array[Int](), Array[Int](), t);
     }
@@ -3036,42 +3067,42 @@ package Blargh;
 
 object Utilities
 {
-    def Foo(i:Byte)
+    def Foo(i:Byte):Unit =
     {
     }
-    def Foo(i:Short)
+    def Foo(i:Short):Unit =
     {
     }
-    def Foo(i:Int)
+    def Foo(i:Int):Unit =
     {
     }
-    def Foo(i:Long)
+    def Foo(i:Long):Unit =
     {
     }
-    def Foo(i:Float)
+    def Foo(i:Float):Unit =
     {
     }
-    def Foo(i:Double)
+    def Foo(i:Double):Unit =
     {
     }
-    def Foo_UInt16(i:Int)
+    def Foo_UInt16(i:Int):Unit =
     {
     }
-    def Foo_UInt32(i:Long)
+    def Foo_UInt32(i:Long):Unit =
     {
     }
-    def Foo_UInt64(i:Double)
+    def Foo_UInt64(i:Double):Unit =
     {
     }
 
-    def cctor()
+    def cctor():Unit =
     {
         var b:Byte = 1.toByte;
         var s:Short = 1;
         var i:Int = 1;
         var l:Long = 1;
         var f:Float = 1;
-        var d:Double = 1;
+        var d:Double = 1.toDouble;
         var us:Int = 1;
         var ui:Long = 1;
         var ul:Double = 1;
@@ -3182,7 +3213,7 @@ package Blargh;
 
 object Utilities
 {
-    def Foo()
+    def Foo():Unit =
     {
         var b:Byte = 200.toByte;
         var i:Int = System.CsScala.ByteToInt(b);
@@ -3223,7 +3254,7 @@ package Blargh;
 
 object Utilities
 {
-    def Foo()
+    def Foo():Unit =
     {
         var b:Boolean = true;
         var s:String = """" + System.CsScala.BooleanToString(b);
@@ -3262,7 +3293,7 @@ package Blargh;
 
 object Utilities
 {
-    def Foo()
+    def Foo():Unit =
     {
         var t1:System.Threading.Tasks.NonGenericTask = new System.Threading.Tasks.NonGenericTask(null);
         var t2:System.Threading.Tasks.Task[Int] = new System.Threading.Tasks.Task[Int](null);
@@ -3293,7 +3324,7 @@ package Blargh;
 
 object Utilities
 {
-    def Foo()
+    def Foo():Unit =
     {
         var g1:java.util.UUID = System.CsScala.EmptyGuid();
         var g2:java.util.UUID = System.CsScala.Parse(""g2"");
@@ -3330,14 +3361,11 @@ namespace Blargh
 package Blargh;
 " + WriteImports.StandardImports + @"
 
-class SomeCollection extends Traversable[String]
+class SomeCollection extends Iterable[String]
 {
     private var coll:System.Collections.Generic.List[String] = new System.Collections.Generic.List[String]();
 
-    def foreach[U](fn: String => U)
-    {
-        coll.foreach(fn);
-    }
+    def iterator: Iterator[String] = CsScala.ToScala(coll.iterator);
 }");
         }
 

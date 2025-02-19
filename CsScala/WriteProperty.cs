@@ -27,6 +27,15 @@ namespace CsScala
                 if (get)
                 {
                     writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
+
+                    if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || region.Body == null)
+                        writer.Write(";\r\n");
+                    else
+                    {
+                        writer.Write(" =\r\n");
+                        Core.WriteBlock(writer, region.Body.As<BlockSyntax>());
+                    }
+
                 }
                 else
                 {
@@ -34,15 +43,16 @@ namespace CsScala
                     writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
                     writer.Write(")");
 
+                    if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || region.Body == null)
+                        writer.Write(":Unit;\r\n");
+                    else
+                    {
+                        writer.Write(" =\r\n");
+                        Core.WriteBlock(writer, region.Body.As<BlockSyntax>());
+                    }
+
                 }
 
-                if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || region.Body == null)
-                    writer.Write(";\r\n");
-                else
-                {
-                    writer.Write(" =\r\n");
-                    Core.WriteBlock(writer, region.Body.As<BlockSyntax>());
-                }
 
 
             };

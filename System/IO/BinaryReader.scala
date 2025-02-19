@@ -21,7 +21,7 @@ class BinaryReader(s:Stream)
   private var _internalBuffer:Array[Byte] = null;
   private var _byteBuffer:ByteBuffer = null;
   
-  def MakeBuffer(size:Int)
+  def MakeBuffer(size:Int) =
   {
     _internalBuffer = new Array[Byte](size);
     _byteBuffer = ByteBuffer.wrap(_internalBuffer);
@@ -44,16 +44,16 @@ class BinaryReader(s:Stream)
   def Read7BitEncodedInt():Int =
   {
     var num = 0;
-	var num2 = 0;
-	while (num2 != 35)
-	{
-		var b = this.ReadByte();
-		num |= (b & 127).toInt << num2;
-		num2 += 7;
-		if ((b & 128) == 0)
-			return num;
-	}
-	throw new Exception("Format_Bad7BitInt32");
+    var num2 = 0;
+    while (num2 != 35)
+    {
+      var b = this.ReadByte();
+      num |= (b & 127).toInt << num2;
+      num2 += 7;
+      if ((b & 128) == 0)
+        return num;
+    }
+    throw new Exception("Format_Bad7BitInt32");
   }
   
   def ReadDouble():Double =
@@ -96,9 +96,8 @@ class BinaryReader(s:Stream)
     val length = this.Read7BitEncodedInt();
     if (length == 0)
       return "";
-	val bytes = this.FillInternalBuffer(length);
-	
-	return new String(bytes, 0, length, "UTF-8");
+    val bytes = this.FillInternalBuffer(length);
+    return new String(bytes, 0, length, "UTF-8");
   }
   def ReadSingle():Float =
   {
@@ -111,7 +110,7 @@ class BinaryReader(s:Stream)
     return _byteBuffer.getLong(0);
   }
   
-  def Dispose()
+  def Dispose() =
   {
     
   }

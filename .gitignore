@@ -10,3 +10,4 @@
 *.ide
 /packages
 .vs
+*.metals*

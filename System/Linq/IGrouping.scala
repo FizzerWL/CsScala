@@ -1,12 +1,8 @@
 package System.Linq
 
-class IGrouping[K,V](k:K, vals:Traversable[V]) extends Traversable[V] 
+class IGrouping[K,V](k:K, vals:Iterable[V]) extends Iterable[V] 
 {
   val Key:K = k;
 
-  def foreach[U](fn:V=>U)
-  {
-    for(c <- vals)
-      fn(c);
-  }
+  def iterator:Iterator[V] = vals.iterator;
 }

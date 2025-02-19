@@ -16,13 +16,15 @@ namespace CsScala
             if (!IsLoopSyntax(loopSyntax))
                 throw new Exception("LoopInfo constructed on non-loop");
 
-            Recurse(loopSyntax, false);
+            RecurseForBreakContinue(loopSyntax, false);
+            RecurseForReturnStatement(loopSyntax);
         }
 
-        private bool HasContinue;
-        private bool HasBreak;
+        public bool HasContinue;
+        public bool HasBreak;
+        public bool HasReturnStatement;
 
-        void Recurse(SyntaxNode node, bool isInSwitch)
+        void RecurseForBreakContinue(SyntaxNode node, bool isInSwitch)
         {
             if (node is ContinueStatementSyntax)
                 HasContinue = true;
@@ -30,20 +32,33 @@ namespace CsScala
                 HasBreak = true;
             else
             {
-                foreach (var child in node.ChildNodes())
+                foreach (var child in node.ChildNodes().Where(o => !(o is LambdaExpressionSyntax)))
                 {
                     if (!IsLoopSyntax(child)) //any breaks or continues in child loops will belong to that loop, so we can skip recusing into them.
-                        Recurse(child, isInSwitch || child is SwitchStatementSyntax);
+                        RecurseForBreakContinue(child, isInSwitch || child is SwitchStatementSyntax);
                 }
             }
+        }
+
+        void RecurseForReturnStatement(SyntaxNode node)
+        {
+            if (node is ReturnStatementSyntax)
+                this.HasReturnStatement = true;
+            else
+                foreach (var child in node.ChildNodes().Where(o => !(o is LambdaExpressionSyntax)))
+                {
+                    RecurseForReturnStatement(child);
+                    if (HasReturnStatement)
+                        return; //can stop scanning, we found one, nothing else to find.  Just helps perf.
+                }
         }
 
         public void WritePreLoop(ScalaWriter writer)
         {
             if (HasBreak)
             {
-                writer.WriteLine("CsScala.csbreak.breakable");
-                writer.WriteOpenBrace();
+                writer.WriteLine("CsScala.csbreak.breakable {");
+                writer.Indent++; //breakable can't have a newline after it
             }
         }
 
@@ -59,8 +74,8 @@ namespace CsScala
         {
             if (HasContinue)
             {
-                writer.WriteLine("CsScala.cscontinue.breakable");
-                writer.WriteOpenBrace();
+                writer.WriteLine("CsScala.cscontinue.breakable {");
+                writer.Indent++; //breakable can't have a newline after it
             }
         }
 
@@ -70,7 +85,7 @@ namespace CsScala
                 writer.WriteCloseBrace();
         }
 
-        static bool IsLoopSyntax(SyntaxNode syntax)
+        public static bool IsLoopSyntax(SyntaxNode syntax)
         {
             return syntax is ForEachStatementSyntax
                 || syntax is ForStatementSyntax

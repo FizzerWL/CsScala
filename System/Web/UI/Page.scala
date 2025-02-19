@@ -12,7 +12,7 @@ abstract class Page extends Control {
   def Response = Context.Response;
   final val Server = new HttpServerUtility();
 
-  def OnError(args: EventArgs) {
+  def OnError(args: EventArgs):Unit = {
 
   }
 

@@ -7,6 +7,7 @@ using CsScala.Translations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CsScala
 {
@@ -228,7 +229,7 @@ namespace CsScala
                 else
                     writer.Write(", ");
 
-                if (!inParams && IsParamsArgument(invocationExpression, arg.ArgumentOpt, methodSymbol))
+                if (!inParams && IsParamsArgument(invocationExpression, arg.ArgumentOpt, methodSymbol, extensionNamespace != null))
                 {
                     foundParamsArray = true;
 
@@ -275,7 +276,7 @@ namespace CsScala
                 writer.Write(typeParameters);
         }
 
-        private static bool IsParamsArgument(InvocationExpressionSyntax invocationExpression, ArgumentSyntax argumentOpt, IMethodSymbol methodSymbol)
+        private static bool IsParamsArgument(InvocationExpressionSyntax invocationExpression, ArgumentSyntax argumentOpt, IMethodSymbol methodSymbol, bool calledAsExtensionMethod)
         {
             if (argumentOpt == null)
                 return false;
@@ -284,7 +285,10 @@ namespace CsScala
                 return false; //params cannot be used with named arguments
 
             int i = invocationExpression.ArgumentList.Arguments.IndexOf(argumentOpt);
-            return methodSymbol.Parameters.ElementAt(i).IsParams;
+            if (methodSymbol.IsExtensionMethod && calledAsExtensionMethod)
+                i++;
+
+            return methodSymbol.Parameters.Length > i && methodSymbol.Parameters.ElementAt(i).IsParams;
         }
 
         /// <summary>

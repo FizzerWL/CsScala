@@ -1,13 +1,13 @@
 package System.Collections.Generic
 
-class Queue[T](_queue:scala.collection.mutable.Queue[T]) extends Traversable[T] 
+class Queue[T](_queue:scala.collection.mutable.Queue[T]) extends Iterable[T] 
 {
-  def this()
+  def this() =
   {
     this(new scala.collection.mutable.Queue[T]());
   }
   
-  def this(initial:Traversable[T])
+  def this(initial:Iterable[T]) =
   {
     this(new scala.collection.mutable.Queue[T]());
     
@@ -16,9 +16,9 @@ class Queue[T](_queue:scala.collection.mutable.Queue[T]) extends Traversable[T]
   }
   
   def Count:Int = _queue.length;
-  def Enqueue(t:T) { _queue.enqueue(t); }
+  def Enqueue(t:T):Unit = { _queue.enqueue(t); }
   def Dequeue():T = _queue.dequeue();
   def Peek():T = System.Linq.Enumerable.First(_queue);
-  def Clear() { _queue.clear(); }
-  def foreach[U](fn:T=>U) { _queue.foreach(fn); }
+  def Clear():Unit = { _queue.clear(); }
+  def iterator:Iterator[T] = _queue.iterator;
 }

@@ -57,39 +57,39 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   if (_d == null)
     throw new ArgumentNullException("Null date");
 
-  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) {
+  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) = {
     this(new org.joda.time.DateTime(year, month, day, hour, minute, second, 0, DateTimeZone.UTC).toInstant(), 0, DateTimeKind.Unspecified);
   }
 
-  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, milliseconds:Int) {
+  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, milliseconds:Int) = {
     this(new org.joda.time.DateTime(year, month, day, hour, minute, second, milliseconds, DateTimeZone.UTC).toInstant(), 0, DateTimeKind.Unspecified);
   }
 
-  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, milliseconds:Int, kind: Int) {
+  def this(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, milliseconds:Int, kind: Int) = {
     this(new org.joda.time.DateTime(year, month, day, hour, minute, second, milliseconds, DateTimeZone.UTC).toInstant(), 0, kind);
   }
 
-  def this(year: Int, month: Int, day: Int) {
+  def this(year: Int, month: Int, day: Int) = {
     this(year, month, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
   }
 
-  def this(ticks: Long, k: Int) {
+  def this(ticks: Long, k: Int) = {
     this(new org.joda.time.Instant((ticks - DateTime._ticksDiff) / 10000L), ticks % 10000, k);
   }
-  def this(ticks: Long) {
+  def this(ticks: Long) = {
     this(ticks, DateTimeKind.Unspecified);
   }
 
   def Ticks: Long = _d.getMillis() * 10000 + DateTime._ticksDiff + extraTicks;
 
-  def this() {
+  def this() = {
     this(new org.joda.time.Instant(0L))
   }
 
-  def this(jd: java.util.Date) {
+  def this(jd: java.util.Date) = {
     this(new org.joda.time.Instant(jd.getTime()));
   }
-  def this(jd: java.util.Date, k: Int) {
+  def this(jd: java.util.Date, k: Int) = {
     this(new org.joda.time.Instant(jd.getTime()), 0, k);
   }
 
@@ -181,4 +181,6 @@ class DateTime(d: org.joda.time.Instant, extraTicks: Long = 0, kind: Int = DateT
   def >= (otherTime: DateTime): Boolean ={
     Ticks >= otherTime.Ticks
   }
+
+  def +(str:String): String = this.toString() + str;
 }

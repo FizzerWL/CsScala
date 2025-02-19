@@ -1,8 +1,9 @@
 package System.Web
 
 import java.util.ArrayList
+import scala.collection.JavaConverters._
 
-class HttpFileCollection extends Traversable[HttpPostedFile] 
+class HttpFileCollection extends Iterable[HttpPostedFile] 
 {
 
   final val Collection = new ArrayList[HttpPostedFile]();
@@ -13,11 +14,7 @@ class HttpFileCollection extends Traversable[HttpPostedFile]
     return Collection.get(indx);
   }
   
-  def foreach[U](fn:HttpPostedFile=>U)
-  {
-    val it = Collection.iterator();
-    while (it.hasNext())
-      fn(it.next());
-  }
+
+  def iterator:Iterator[HttpPostedFile] = Collection.iterator().asScala;
 
 }

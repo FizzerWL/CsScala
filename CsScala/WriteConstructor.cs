@@ -75,7 +75,7 @@ namespace CsScala
                 return;
 
 
-            writer.WriteLine("def cctor()");
+            writer.WriteLine("def cctor():Unit =");
             writer.WriteOpenBrace();
 
             //foreach (var field in staticFieldsNeedingInitialization)
@@ -133,7 +133,7 @@ This file lists all the static constructors.  Scala doesn't have the same concep
                 writer.WriteLine("object Constructors");
                 writer.WriteOpenBrace();
 
-                writer.WriteLine("def init()");
+                writer.WriteLine("def init() =");
                 writer.WriteOpenBrace();
                 foreach (var cctor in StaticConstructors.OrderBy(o => o))
                     writer.WriteLine(cctor + ".cctor();");

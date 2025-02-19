@@ -20,7 +20,7 @@ object CsScala {
   val uintMinValue = 0;
   val uintMaxValue = 4294967295L;
 
-  def Join(seperator: String, strs: Traversable[String]): String = strs.mkString(seperator);
+  def Join(seperator: String, strs: Iterable[String]): String = strs.mkString(seperator);
 
   def JoinConstants(strs: String*): String = {
     return strs.mkString("");
@@ -83,41 +83,37 @@ object CsScala {
       return new Type(obj.getClass());
     }
 
-  def Sort[T](buf: ArrayBuffer[T], cmp: (T, T) => Int) {
+  def Sort[T](buf: ArrayBuffer[T], cmp: (T, T) => Int):Unit = {
     buf.sortWith((f, s) => cmp(f, s) < 0);
   }
 
-  def Sort(buf: ArrayBuffer[Int]) {
+  def Sort(buf: ArrayBuffer[Int]):Unit = {
     buf.sortBy(a => a);
   }
 
-  def Contains[T](a: Traversable[T], item: T): Boolean =
-    {
-      for (e <- a)
-        if (e == item)
-          return true;
-      return false;
+  def Contains[T](a: Iterable[T], item: T): Boolean = {
+    val it = a.iterator;
+    while (it.hasNext) {
+      val e = it.next;
+      if (e == item)
+        return true;
     }
+    return false;
+  }
 
-  def ToArray[T: ClassTag](buf: ArrayList[T]): Array[T] =
-    {
-      return buf.toArray().asInstanceOf[Array[T]];
-    }
+  def ToArray[T: ClassTag](buf: ArrayList[T]): Array[T] = buf.toArray().asInstanceOf[Array[T]];
 
-  def IsNaN(d: Double): Boolean =
-    {
-      return d.isNaN();
-    }
+  def IsNaN(d: Double): Boolean = {
+    return d.isNaN();
+  }
 
-  def IsInfinity(d: Double): Boolean =
-    {
-      return d.isInfinity;
-    }
+  def IsInfinity(d: Double): Boolean = {
+    return d.isInfinity;
+  }
 
-  def StringContains(haystack: String, needle: String): Boolean =
-    {
-      return haystack.indexOf(needle) != -1;
-    }
+  def StringContains(haystack: String, needle: String): Boolean = {
+    return haystack.indexOf(needle) != -1;
+  }
 
   def As[T >: Null: ClassTag](item: Any): T = {
     if (item == null)
@@ -325,7 +321,7 @@ object CsScala {
       }
     }
 
-  def Concat(strs: Traversable[String]): String = strs.mkString("");
+  def Concat(strs: Iterable[String]): String = strs.mkString("");
 
   def IndexOf(str: String, needle: String, compType: Int): Int =
     {
@@ -338,10 +334,13 @@ object CsScala {
     {
       var i = startIndex;
       while (i < str.length()) {
-        val char = str.charAt(i)
-        for (c <- chars)
+        val char = str.charAt(i);
+        val it = chars.iterator;
+        while (it.hasNext) {
+          val c = it.next;
           if (c == char)
             return i;
+        }
         i += 1;
       }
 
@@ -354,8 +353,8 @@ object CsScala {
         out.Value = fn(str);
         return true;
       } catch {
-        case e: MatchError =>
-          return false;
+        case e: MatchError => return false;
+        case e: NumberFormatException => return false;
       }
     }
 
@@ -392,4 +391,6 @@ object CsScala {
   }
 
   def NewString(ch: Char, repeatCount: Int): String = StringUtils.repeat(ch, repeatCount);
+  def ToScala[T](it:java.util.Iterator[T]):scala.collection.Iterator[T] = it.asScala;
+  def ToScala[T](it:scala.collection.Iterator[T]):scala.collection.Iterator[T] = it;
 }

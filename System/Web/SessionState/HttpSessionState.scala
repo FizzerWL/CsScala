@@ -32,7 +32,7 @@ class HttpSessionState(ctx:HttpContext) {
 
       return cache.get(k);
     }
-  def update(k: String, v: Any) {
+  def update(k: String, v: Any):Unit = {
     var cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie == null) {
@@ -55,7 +55,7 @@ class HttpSessionState(ctx:HttpContext) {
 
   }
 
-  def Renew(ctx: HttpContext) {
+  def Renew(ctx: HttpContext):Unit = {
 
     val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
@@ -64,7 +64,7 @@ class HttpSessionState(ctx:HttpContext) {
 
   }
 
-  def Remove(k: String) {
+  def Remove(k: String):Unit = {
     val cookie = ctx.Request.Cookies(HttpSessionState.SessionKey);
 
     if (cookie != null) {

@@ -22,7 +22,7 @@ class NameValueCollection(caseInsensitive: Boolean = false) {
     return _map.keySet().asScala.toArray;
   }
 
-  def update(name: String, value: String) {
+  def update(name: String, value: String):Unit = {
     _lowerMap.put(name.toLowerCase(), value);
     _map.put(name, value);
   }

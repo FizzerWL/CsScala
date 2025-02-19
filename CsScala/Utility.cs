@@ -275,7 +275,7 @@ namespace CsScala
         private static string TransformTypeConstraint(TypeParameterConstraintSyntax constraint)
         {
             if (constraint is TypeConstraintSyntax)
-                return " <% " + TypeProcessor.ConvertType(constraint.As<TypeConstraintSyntax>().Type);
+                return " <: " + TypeProcessor.ConvertType(constraint.As<TypeConstraintSyntax>().Type);
             else if (constraint is ClassOrStructConstraintSyntax)
             {
                 if (constraint.As<ClassOrStructConstraintSyntax>().ClassOrStructKeyword.Kind() == SyntaxKind.ClassKeyword)

@@ -21,7 +21,7 @@ class GroupCollection(matcher: Matcher, findNext:Boolean) {
       }
     }
 
-  private def Advance() {
+  private def Advance():Unit = {
     if (matcher.find())
       _currIndex += 1;
     else {

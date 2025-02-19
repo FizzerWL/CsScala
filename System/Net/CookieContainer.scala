@@ -8,11 +8,11 @@ class CookieContainer {
     return _cookies.get(name);
   }
   
-  def Add(c:Cookie) {
+  def Add(c:Cookie):Unit = {
     _cookies.put(c.Domain, c);
   }
 
-  def AddRaw(rawStr: String) {
+  def AddRaw(rawStr: String):Unit = {
     val split = rawStr.split(';');
     val name = split(0).split('=');
     _cookies.put(name(0), new Cookie(name(0), name(1)));

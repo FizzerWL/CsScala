@@ -5,5 +5,5 @@ trait IDbCommand {
   def ExecuteReader():IDataReader;
   def ExecuteNonQuery():Int;
   var CommandText:String;
-  def Dispose();
+  def Dispose():Unit;
 }

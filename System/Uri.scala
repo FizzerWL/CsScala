@@ -19,7 +19,7 @@ object Uri {
 class Uri(str: String) {
   val _url = new URL(str);
 
-  override def toString(): String = _url.toString()
+  override def toString(): String = _url.toString();
 
   def Query: String = {
     val q = _url.getQuery();

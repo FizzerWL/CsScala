@@ -72,8 +72,8 @@ namespace CsScala
                         writer.Write(";\r\n");
                     }
 
-                    writer.WriteLine("__lambdabreak.breakable");
-                    writer.WriteOpenBrace();
+                    writer.WriteLine("__lambdabreak.breakable {");
+                    writer.Indent++; //breakable can't have a newline after it
 
                     foreach (var statement in statements)
                     {
@@ -127,8 +127,7 @@ namespace CsScala
                 writer.Write("; }");
             }
 
-            if (!returnsVoid)
-                writer.Write(TypeProcessor.ConvertTypeWithColon(methodSymbol.ReturnType));
+            writer.Write(TypeProcessor.ConvertTypeWithColon(methodSymbol.ReturnType));
 
         }
 

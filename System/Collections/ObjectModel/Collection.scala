@@ -4,7 +4,7 @@ class Collection[T]
 {
 
 	
-	def Add(t:T)
+	def Add(t:T) =
 	{
 		
 	}

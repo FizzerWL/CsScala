@@ -4,12 +4,12 @@ import System.CsRef
 
 class ConcurrentQueue[T](_queue:java.util.concurrent.ConcurrentLinkedQueue[T])
 {
-  def this()
+  def this() =
   {
     this(new java.util.concurrent.ConcurrentLinkedQueue[T]());
   }
   
-  def this(initial:Traversable[T])
+  def this(initial:Iterable[T]) =
   {
     this(new java.util.concurrent.ConcurrentLinkedQueue[T]());
     
@@ -18,9 +18,9 @@ class ConcurrentQueue[T](_queue:java.util.concurrent.ConcurrentLinkedQueue[T])
   }
   
   def Count:Int = _queue.size();
-  def Enqueue(t:T) { _queue.add(t); }
+  def Enqueue(t:T):Unit = { _queue.add(t); }
   def Peek():T = _queue.peek();
-  def Clear() { _queue.clear(); }
+  def Clear():Unit = { _queue.clear(); }
   
   def TryDequeue(result:CsRef[T]):Boolean = {
     result.Value = _queue.poll();

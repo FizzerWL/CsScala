@@ -5,9 +5,9 @@ class Type(val clazz:Class[_])
   def Name:String = clazz.getSimpleName();
   def FullName:String = clazz.getName();
 
-  def IsAssignableFrom(other:Type) = {
+  def IsAssignableFrom(other:Type):Boolean = {
 
-    clazz.isAssignableFrom(other.clazz)
+    return clazz.isAssignableFrom(other.clazz)
   }
   
   override def equals(other:Any):Boolean = 

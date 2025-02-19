@@ -6,7 +6,7 @@ class SortedList[K,V]
 {
   val _map = new HashMap[K,V]();
 
-  def Add(k:K, v:V)
+  def Add(k:K, v:V) =
   {
     _map.put(k, v);
   }

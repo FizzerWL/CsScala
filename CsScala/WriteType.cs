@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 namespace CsScala
 {
@@ -19,19 +21,47 @@ namespace CsScala
             var first = partials.First();
 
 
+            if (first.Syntax is EnumDeclarationSyntax)
+            {
+                using (var writer = new ScalaWriter(first.Symbol.ContainingNamespace.FullName(), TypeState.Instance.TypeName))
+                {
+                    var package = first.Symbol.ContainingNamespace.FullName();
+                    if (package.Length > 0)
+                        writer.WriteLine("package " + package + @";");
+
+                    WriteImports.Go(writer);
+
+                    WriteEnum.Go(writer, TypeState.Instance.Partials.Select(o => o.Syntax).Cast<EnumDeclarationSyntax>().SelectMany(o => o.Members).Where(o => !Program.DoNotWrite.ContainsKey(o)));
+                }
+                return;
+            }
+
+
+            var bases = partials
+                .Select(o => o.Syntax.BaseList)
+                .Where(o => o != null)
+                .SelectMany(o => o.Types)
+                .Select(o => Program.GetModel(o).GetTypeInfo(o.Type).ConvertedType)
+                .Distinct()
+                .ToList();
+
+            var interfaces = bases.Where(o => o.TypeKind == TypeKind.Interface).ToList();
+
+            TypeState.Instance.AllMembers = partials.Select(o => o.Syntax).Cast<TypeDeclarationSyntax>().SelectMany(o => o.Members).Where(o => !Program.DoNotWrite.ContainsKey(o)).ToList();
+
+            var allMembersToWrite = TypeState.Instance.AllMembers
+                .Where(member => !(member is TypeDeclarationSyntax)
+                    && !(member is EnumDeclarationSyntax)
+                    && !(member is DelegateDeclarationSyntax))
+                .ToList();
+
+            var isStaticClass = partials.Any(o => o.Syntax.Modifiers.Any(SyntaxKind.StaticKeyword));
+
+            if (allMembersToWrite.Count == 0 && isStaticClass)
+                return; //don't write empty classes, scala generates a warning
 
             using (var writer = new ScalaWriter(first.Symbol.ContainingNamespace.FullName(), TypeState.Instance.TypeName))
             {
-                var bases = partials
-                    .Select(o => o.Syntax.BaseList)
-                    .Where(o => o != null)
-                    .SelectMany(o => o.Types)
-                    .Select(o => Program.GetModel(o).GetTypeInfo(o.Type).ConvertedType)
-                    .Distinct()
-                    .ToList();
-
-                var interfaces = bases.Where(o => o.TypeKind == TypeKind.Interface).ToList();
-
                 //TypeState.Instance.DerivesFromObject = bases.Count == interfaces.Count;
 
                 var package = first.Symbol.ContainingNamespace.FullName();
@@ -39,21 +69,6 @@ namespace CsScala
                     writer.WriteLine("package " + package + @";");
 
                 WriteImports.Go(writer);
-
-                if (first.Syntax is EnumDeclarationSyntax)
-                {
-                    WriteEnum.Go(writer, TypeState.Instance.Partials.Select(o => o.Syntax).Cast<EnumDeclarationSyntax>().SelectMany(o => o.Members).Where(o => !Program.DoNotWrite.ContainsKey(o)));
-                    return;
-                }
-
-
-                TypeState.Instance.AllMembers = partials.Select(o => o.Syntax).Cast<TypeDeclarationSyntax>().SelectMany(o => o.Members).Where(o => !Program.DoNotWrite.ContainsKey(o)).ToList();
-
-                var allMembersToWrite = TypeState.Instance.AllMembers
-                    .Where(member => !(member is TypeDeclarationSyntax)
-                        && !(member is EnumDeclarationSyntax)
-                        && !(member is DelegateDeclarationSyntax))
-                    .ToList();
 
                 var instanceCtors = TypeState.Instance.AllMembers.OfType<ConstructorDeclarationSyntax>()
                     .Where(o => !o.Modifiers.Any(SyntaxKind.StaticKeyword))
@@ -68,7 +83,7 @@ namespace CsScala
                 {
                     var membersToWrite = allMembersToWrite.Where(o => IsStatic(o) == staticMembers).ToList();
 
-                    if (membersToWrite.Count == 0 && (staticMembers || partials.Any(o => o.Syntax.Modifiers.Any(SyntaxKind.StaticKeyword))))
+                    if (membersToWrite.Count == 0 && (staticMembers || isStaticClass))
                         continue;
 
                     if (staticMembers)

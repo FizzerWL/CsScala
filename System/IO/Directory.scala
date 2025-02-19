@@ -10,17 +10,17 @@ object Directory {
       return f.exists() && f.isDirectory();
     }
 
-  def CreateDirectory(path: String) {
+  def CreateDirectory(path: String):Unit = {
     new java.io.File(path).mkdirs();
   }
 
-  private def WalkFiles(path: String, ret: ArrayList[String]) {
+  private def WalkFiles(path: String, ret: ArrayList[String]):Unit = {
 
     val root = new java.io.File(path);
     val list = root.listFiles();
 
     if (list == null)
-      return ;
+      return;
 
     for (f <- list) {
       if (f.isDirectory())
@@ -71,7 +71,7 @@ object Directory {
         return files.filter(_.isDirectory()).map(_.getAbsolutePath());
     }
 
-  def WalkDirectories(path: String, ret: ArrayList[String]) {
+  def WalkDirectories(path: String, ret: ArrayList[String]):Unit = {
     for (d <- GetDirectories(path)) {
       ret.add(d);
       WalkDirectories(d, ret);
@@ -100,7 +100,7 @@ object Directory {
       }
     }
 
-  private def DeleteRecursive(directory: java.io.File) {
+  private def DeleteRecursive(directory: java.io.File):Unit = {
 
     val files = directory.listFiles();
     if (files != null) {
@@ -118,7 +118,7 @@ object Directory {
 
   }
 
-  def Delete(path: String, recur: Boolean) {
+  def Delete(path: String, recur: Boolean):Unit = {
 
     if (!recur) {
       if (!new java.io.File(path).delete())

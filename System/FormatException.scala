@@ -1,7 +1,5 @@
 package System;
 
-class FormatException extends Exception
-{
+class FormatException(msg: String = "FormatException") extends Exception(msg) {
 
-	
 }

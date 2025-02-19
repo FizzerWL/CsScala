@@ -17,13 +17,13 @@ object TimeSpan
 
 class TimeSpan(ticks:Long = 0)
 {
-  def this(hours: Int, minutes: Int, seconds: Int) {
+  def this(hours: Int, minutes: Int, seconds: Int) = {
     this(hours * 36000000000L + minutes * 600000000L + seconds * 10000000L);
   }
-  def this(days: Int, hours: Int, minutes: Int, seconds: Int) {
+  def this(days: Int, hours: Int, minutes: Int, seconds: Int) = {
     this(days * 864000000000L + hours * 36000000000L + minutes * 600000000L + seconds * 10000000L);
   }
-  def this(days: Int, hours: Int, minutes: Int, seconds: Int, milliseconds: Int){
+  def this(days: Int, hours: Int, minutes: Int, seconds: Int, milliseconds: Int)= {
     this(days * 864000000000L + hours * 36000000000L + minutes * 600000000L + seconds * 10000000L + milliseconds * 10000L);
   }
 
@@ -55,7 +55,10 @@ class TimeSpan(ticks:Long = 0)
       return false;
     return other.asInstanceOf[TimeSpan].Ticks == this.Ticks;
   }
-
+  def +(str: String) : String = {
+    return this.toString() + str;
+  }
+ 
   def +(timeSpan: TimeSpan) : TimeSpan ={
     Add(timeSpan)
   }

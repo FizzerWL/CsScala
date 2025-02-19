@@ -25,18 +25,18 @@ class Matrix(m11: Float = 1, m12: Float = 0, m21: Float = 0, m22: Float = 1, dx:
     return Array[Float](doubles(0).toFloat, doubles(1).toFloat, doubles(2).toFloat, doubles(3).toFloat, doubles(4).toFloat, doubles(5).toFloat);
   }
   
-  def Translate(x: Float, y: Float) {
+  def Translate(x: Float, y: Float):Unit = {
     _m.translate(x,y);
   }
 
-  def Scale(x: Float, y: Float) {
+  def Scale(x: Float, y: Float):Unit = {
     _m.scale(x,y);
   }
-  def Rotate(angle: Float) {
+  def Rotate(angle: Float):Unit = {
     _m.rotate(angle / 360f * Math.PI * 2);
   }
 
-  def TransformPoints(p: Array[PointF]) {
+  def TransformPoints(p: Array[PointF]):Unit = {
     var i = 0;
     while (i < p.length)
     {
@@ -47,7 +47,7 @@ class Matrix(m11: Float = 1, m12: Float = 0, m21: Float = 0, m22: Float = 1, dx:
     }
   }
 
-  def TransformVectors(p: Array[PointF]) {
+  def TransformVectors(p: Array[PointF]):Unit = {
     
     val noTranslateDoubles = new Array[Double](4);
     _m.getMatrix(noTranslateDoubles);
@@ -63,7 +63,7 @@ class Matrix(m11: Float = 1, m12: Float = 0, m21: Float = 0, m22: Float = 1, dx:
     }
   }
 
-  def Multiply(m: Matrix) {
+  def Multiply(m: Matrix):Unit = {
     _m.concatenate(m._m);
   }
 

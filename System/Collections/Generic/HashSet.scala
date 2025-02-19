@@ -1,25 +1,20 @@
 package System.Collections.Generic
 
 import System.Linq.Enumerable
+import scala.collection.JavaConverters._
 
-class HashSet[T] extends Traversable[T] {
+class HashSet[T] extends Iterable[T] {
   val _set = new java.util.HashSet[T]();
 
-  def this(initial: Traversable[T]) {
+  def this(initial: Iterable[T]) = {
     this();
     for (e <- initial)
       Add(e);
   }
 
-  def Add(t: T): Boolean =
-    {
-      return _set.add(t);
-    }
+  def Add(t: T): Boolean = _set.add(t);
 
-  def Contains(t: T): Boolean =
-    {
-      return _set.contains(t);
-    }
+  def Contains(t: T): Boolean = _set.contains(t);
 
   def Remove(t: T): Boolean =
     {
@@ -39,23 +34,16 @@ class HashSet[T] extends Traversable[T] {
       return list.Count;
     }
 
-  def foreach[U](fn: T => U) {
-    val it = _set.iterator();
-    while (it.hasNext())
-      fn(it.next());
-  }
+  def iterator:Iterator[T] = _set.iterator().asScala;
 
-  def Count: Int =
-    {
-      return _set.size;
-    }
+  def Count: Int = _set.size;
 
-  def Clear() {
+  def Clear():Unit = {
     _set.clear();
   }
 
   override def equals(other: Any): Boolean = {
-    if (!other.isInstanceOf[HashSet[T]])
+    if (!classOf[HashSet[T]].isAssignableFrom(other.getClass()))
       return false;
     val o = other.asInstanceOf[HashSet[T]];
     if (o.Count != this.Count)

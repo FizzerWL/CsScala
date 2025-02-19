@@ -25,24 +25,24 @@ class XmlWriter(buf: StringWriter) {
   final var _currElement:Element = null;
 
   final var _flushed = false;
-  def Flush() {
+  def Flush():Unit = {
     if (_flushed)
       throw new Exception("Cannot flush twice");
     buf.write(new XMLOutputter(Format.getCompactFormat().setOmitDeclaration(true)).outputString(_doc))
     _flushed = true;
   }
 
-  def WriteAttributeString(localName: String, value: String) {
+  def WriteAttributeString(localName: String, value: String):Unit = {
     _currElement.setAttribute(localName, value);
   }
 
-  def WriteStartElement(name: String) {
+  def WriteStartElement(name: String):Unit = {
     val p = _currElement;
     _currElement = new Element(name);
     (if (p == null) _doc else p).addContent(_currElement);
   }
 
-  def WriteEndElement() {
+  def WriteEndElement():Unit = {
     val parent = _currElement.getParent();
     if (parent == null || parent == _doc)
       _currElement = null;
@@ -50,7 +50,7 @@ class XmlWriter(buf: StringWriter) {
       _currElement = parent.asInstanceOf[Element];
   }
 
-  def WriteString(text: String) {
+  def WriteString(text: String):Unit = {
     _currElement.setText(text);
   }
 

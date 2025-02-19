@@ -14,7 +14,7 @@ namespace CsScala
         public static void Go(ScalaWriter writer, LockStatementSyntax statement)
         {
             if (statement.DescendantNodes().OfType<ReturnStatementSyntax>().Any())
-                throw new Exception("Cannot return from within a lock statement " + Utility.Descriptor(statement));
+                throw new Exception("Cannot return from within a lock statement " + Utility.Descriptor(statement)); //TODO: If a lambda with a return is inside the lock, that should be OK right?  Stop scanning when we get a lambda
 
             writer.WriteIndent();
             writer.Write("CsLock.Lock(");

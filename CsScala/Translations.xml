@@ -113,9 +113,9 @@
   <Type Match="System.MulticastDelegate" ReplaceWith="Dynamic" />
   
   
-  <Type Match="System.Collections.Generic.IEnumerable" ReplaceWith="Traversable" />
-  <Type Match="System.Collections.IEnumerable" ReplaceWith="Traversable[_]" />
-  <Type Match="System.Linq.IOrderedEnumerable" ReplaceWith="Traversable" />
+  <Type Match="System.Collections.Generic.IEnumerable" ReplaceWith="Iterable" />
+  <Type Match="System.Collections.IEnumerable" ReplaceWith="Iterable[_]" />
+  <Type Match="System.Linq.IOrderedEnumerable" ReplaceWith="Iterable" />
 
   <Type Match="System.Collections.Generic.LinkedList" ReplaceWith="LinkedList" />
 

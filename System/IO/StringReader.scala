@@ -29,7 +29,7 @@ class StringReader(str: String) {
     return System.CsScala.Trim(s, Array('\r'));
   }
 
-  def Dispose() {
+  def Dispose():Unit = {
 
   }
 

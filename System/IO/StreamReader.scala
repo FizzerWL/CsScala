@@ -10,22 +10,19 @@ class StreamReader(s: Stream) {
     {
       var sb = new StringBuilder();
       var line: String = null;
-      do {
+      while {
         line = _bufReader.readLine();
         if (line != null) {
           sb.append(line);
           sb.append("\n");
         }
-      } while (line != null);
+        line != null;
+      } do ();
       return sb.toString();
     }
 
-  def ReadLine(): String =
-    {
-      return _bufReader.readLine();
-    }
+  def ReadLine(): String = _bufReader.readLine();
 
-  def Dispose() {
-
-  }
+  def Dispose():Unit = { }
+  def Close():Unit = { }
 }

@@ -9,7 +9,7 @@ import System.IO.MemoryStream
 
 object WebRequest {
   def Create(url: String): WebRequest = Create(new Uri(url));
-  def Create(url: Uri): WebRequest = new HttpWebRequest(url._url.openConnection().asInstanceOf[HttpURLConnection])
+  def Create(url: Uri): WebRequest = new HttpWebRequest(url._url.openConnection().asInstanceOf[HttpURLConnection]);
 }
 
 class WebRequest(_req: HttpURLConnection) {

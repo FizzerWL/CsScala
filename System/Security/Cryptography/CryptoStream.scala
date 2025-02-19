@@ -21,7 +21,7 @@ object CryptoStream {
 
 class CryptoStream(stream: MemoryStream, encryptor: ICryptoTransform, streamMode: Int) {
 
-  def Write(readFrom: Array[Byte], offset: Int, length: Int) {
+  def Write(readFrom: Array[Byte], offset: Int, length: Int):Unit = {
     try {
       val fact = SecretKeyFactory.getInstance("DESede");
       val key = new SecretKeySpec(encryptor.DES.Key, "DESede");
@@ -38,5 +38,5 @@ class CryptoStream(stream: MemoryStream, encryptor: ICryptoTransform, streamMode
     }
   }
 
-  def Dispose() {}
+  def Dispose():Unit = {}
 }

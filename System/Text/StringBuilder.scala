@@ -5,18 +5,18 @@ import System.CsScala
 
 class StringBuilder(sb: java.lang.StringBuilder) {
 
-  def this(capacity: Int) {
+  def this(capacity: Int) = {
     this(new java.lang.StringBuilder(capacity));
   }
-  def this(initial: String) {
+  def this(initial: String) = {
     this(new java.lang.StringBuilder(initial));
   }
-  def this() {
+  def this() = {
     this(new java.lang.StringBuilder());
   }
 
   private var _writer: StringWriter = null;
-  def SetStringWriter(writer: StringWriter) {
+  def SetStringWriter(writer: StringWriter):Unit = {
     _writer = writer;
   }
 
@@ -89,11 +89,11 @@ class StringBuilder(sb: java.lang.StringBuilder) {
         return _writer.toString();
     }
 
-  def Clear() {
+  def Clear():Unit = {
     sb.setLength(0);
   }
 
-  def Remove(startAt: Int, count: Int) {
+  def Remove(startAt: Int, count: Int):Unit = {
     sb.delete(startAt, startAt + count);
   }
   def Replace(from: String, to: String): StringBuilder =
@@ -108,10 +108,10 @@ class StringBuilder(sb: java.lang.StringBuilder) {
     }
 
   def apply(i: Int): Char = sb.charAt(i);
-  def update(i: Int, ch: Char) {
+  def update(i: Int, ch: Char):Unit = {
     sb.setCharAt(i, ch);
   }
   
   def Capacity:Int = 0;
-  def Capacity_=(value:Int) = { }
+  def Capacity_=(value:Int):Unit = { }
 }

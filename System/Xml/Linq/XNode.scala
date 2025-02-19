@@ -5,7 +5,7 @@ import org.jdom2._
 abstract class XNode(node: Content) extends XObject {
   val _node = node;
 
-  def ReplaceWith(node: XNode) {
+  def ReplaceWith(node: XNode):Unit = {
     val parent = _node.getParent();
     val index = parent.indexOf(_node);
     parent.removeContent(_node);
@@ -20,7 +20,7 @@ abstract class XNode(node: Content) extends XObject {
   }
   
   
-  def Remove() {
+  def Remove():Unit = {
     node.detach();
   }
 }

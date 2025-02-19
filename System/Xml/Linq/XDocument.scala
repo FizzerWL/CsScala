@@ -34,10 +34,10 @@ object XDocument {
 }
 
 class XDocument(_doc: Document) extends XContainer(null) {
-  def this() {
+  def this() = {
     this(new Document());
   }
-  def this(root: XElement) {
+  def this(root: XElement) = {
     this(new Document(root._elem));
   }
 
@@ -45,9 +45,9 @@ class XDocument(_doc: Document) extends XContainer(null) {
 
   def NodeType: Int = XmlNodeType.Document;
 
-  override def Elements(): Traversable[XElement] = Array(Root);
-  override def Elements(name: String): Traversable[XElement] = Array(Element(name));
-  override def Attributes(): Traversable[XAttribute] = Array[XAttribute]();
+  override def Elements(): Iterable[XElement] = Array(Root);
+  override def Elements(name: String): Iterable[XElement] = Array(Element(name));
+  override def Attributes(): Iterable[XAttribute] = Array[XAttribute]();
   override def Element(name: String): XElement =
     {
       if (Root.Name.LocalName == name)
@@ -56,7 +56,7 @@ class XDocument(_doc: Document) extends XContainer(null) {
         return null;
     }
 
-  override def Add(obj: Any) {
+  override def Add(obj: Any):Unit = {
     if (obj.isInstanceOf[XNode])
       _doc.addContent(obj.asInstanceOf[XNode]._node);
     else
@@ -64,12 +64,12 @@ class XDocument(_doc: Document) extends XContainer(null) {
 
   }
 
-  override def DescendantNodes(): Traversable[XNode] = Array[XNode](Root) ++ Root.DescendantNodes();
+  override def DescendantNodes(): Iterable[XNode] = Array[XNode](Root) ++ Root.DescendantNodes();
   
   override def toString(): String = XDocument.Outputter.outputString(_doc);
   def toString(opts:Int): String = toString(); //TODO: Support formatting option
   
-  def Save(path: String) {
+  def Save(path: String):Unit = {
     System.IO.File.WriteAllText(path, toString());
   }
 }

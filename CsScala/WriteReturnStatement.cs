@@ -14,7 +14,7 @@ namespace CsScala
         public static void Go(ScalaWriter writer, ReturnStatementSyntax statement)
         {
 
-
+            
             if (TypeState.Instance.InLambdaBreakable > 0)
             {
                 if (statement.Expression != null)
@@ -26,6 +26,19 @@ namespace CsScala
                 }
 
                 writer.WriteLine("__lambdabreak.break();");
+            }
+            else if (TypeState.Instance.InFunctionBreakable)
+            {
+                if (statement.Expression != null)
+                {
+                    writer.WriteIndent();
+                    writer.Write("__fnreturn = ");
+                    Core.Write(writer, statement.Expression);
+                    writer.Write(";\r\n");
+                }
+
+                //TODO: If we're the last line of the function, we could skip calling __fnbreak.break, as we'd just fall out of the breakable naturally.  May be better perf but I'm not sure if scala optimizes this away
+                writer.WriteLine("__fnbreak.break();");
             }
             else
             {

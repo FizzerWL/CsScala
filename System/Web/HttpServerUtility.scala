@@ -7,5 +7,5 @@ class HttpServerUtility {
   var LastError:Exception = null;
   
   def GetLastError():Exception = LastError;
-  def ClearError() { LastError = null; }
+  def ClearError():Unit = { LastError = null; }
 }

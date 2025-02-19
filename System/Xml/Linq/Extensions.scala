@@ -3,7 +3,7 @@ package System.Xml.Linq;
 object Extensions
 {
 	
-	def Remove[T <% XNode](a:Traversable[T])
+	def Remove[T <: XNode](a:Iterable[T]) =
 	{
 		for(e <- a)
 		{

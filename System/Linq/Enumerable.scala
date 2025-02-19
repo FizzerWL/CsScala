@@ -8,11 +8,11 @@ import scala.collection.JavaConverters._
 
 object Enumerable 
 {
-  def Select[F,T](a:Traversable[F], fn:F=>T):Traversable[T] = 
+  def Select[F,T](a:Iterable[F], fn:F=>T):Iterable[T] = 
   {
     return a.map(fn);
   }
-  def Select[F,T](a:Traversable[F], fn:(F,Int)=>T):Traversable[T] = 
+  def Select[F,T](a:Iterable[F], fn:(F,Int)=>T):Iterable[T] = 
   {
     var i = 0;
     return a.map(b =>
@@ -23,12 +23,12 @@ object Enumerable
       });
       
   }
-  def Where[T](a:Traversable[T], fn:T=>Boolean):Traversable[T] =
+  def Where[T](a:Iterable[T], fn:T=>Boolean):Iterable[T] =
   {
     return a.filter(fn);
   }
   
-  def ToDictionary[S,K,V](a:Traversable[S], makeKey:S=>K, makeVal:S=>V):Dictionary[K,V] =
+  def ToDictionary[S,K,V](a:Iterable[S], makeKey:S=>K, makeVal:S=>V):Dictionary[K,V] =
   {
     var r = new Dictionary[K,V]();
     for(e <- a)
@@ -36,12 +36,12 @@ object Enumerable
     return r;
   }
   
-  def ToArray[T:ClassTag](a:Traversable[T]):Array[T] =
+  def ToArray[T:ClassTag](a:Iterable[T]):Array[T] =
   {
     return a.toArray;
   }
   
-  def ToList[T:ClassTag](a:Traversable[T]):List[T] =
+  def ToList[T:ClassTag](a:Iterable[T]):List[T] =
   {
     val ret = new List[T]();
     for(e <- a)
@@ -49,78 +49,96 @@ object Enumerable
     return ret;
   }
   
-  def Min(a:Traversable[Int]):Int =
+  def Min(a:Iterable[Int]):Int =
   {
     return a.min;
   }
-  def Min(a:Traversable[Double]):Double =
+  def Min(a:Iterable[Long]):Long =
   {
     return a.min;
   }
-  def Min(a:Traversable[DateTime]):DateTime =
+  def Min(a:Iterable[Double]):Double =
+  {
+    return a.min;
+  }
+  def Min(a:Iterable[DateTime]):DateTime =
   {
     return a.minBy(_.Ticks);
   }
-  def Min[T](a:Traversable[T], fn:T=>DateTime):DateTime =
+  def Min[T](a:Iterable[T], fn:T=>DateTime):DateTime =
   {
     return a.map(fn).minBy(_.Ticks);
   }
-  def Min[T](a:Traversable[T], fn:T=>Int):Int =
+  def Min[T](a:Iterable[T], fn:T=>Int):Int =
   {
     return a.map(fn).min;
   }
-  def Min[T](a:Traversable[T], fn:T=>Float):Float =
+  def Min[T](a:Iterable[T], fn:T=>Long):Long =
   {
     return a.map(fn).min;
   }
-  def Min[T](a:Traversable[T], fn:T=>Double):Double =
+  def Min[T](a:Iterable[T], fn:T=>Float):Float =
+  {
+    return a.map(fn).min;
+  }
+  def Min[T](a:Iterable[T], fn:T=>Double):Double =
   {
     return a.map(fn).min;
   }
   
-  def GroupBy[S,K](a:Traversable[S], fn:S=>K):Traversable[IGrouping[K,S]] =
+  def GroupBy[S,K](a:Iterable[S], fn:S=>K):Iterable[IGrouping[K,S]] =
   {
     return a.groupBy(fn).map(g => new IGrouping(g._1, g._2));
   }
   
-  def Count[T](a:Traversable[T]):Int =
+  def Count[T](a:Iterable[T]):Int =
   {
     return a.count(_ => true);
   }
-  def Count[T](a:Traversable[T], pred:T=>Boolean):Int =
+  def Count[T](a:Iterable[T], pred:T=>Boolean):Int =
   {
     return a.count(pred);
   }
   
-  def First[T](a:Traversable[T]):T =
+  def First[T](a:Iterable[T]):T =
   {
     return a.head;
   }
-  def First[T](a:Traversable[T], pred:T=>Boolean):T =
+  def First[T](a:Iterable[T], pred:T=>Boolean):T =
   {
-    for(c <- a)
+    val it = a.iterator;
+    while (it.hasNext) {
+      val c = it.next;
       if (pred(c))
         return c;
+    }
     throw new Exception("No elements match");
   }
-  def FirstOrDefault[T >: Null](a:Traversable[T], pred:T=>Boolean):T =
+  def FirstOrDefault[T >: Null](a:Iterable[T], pred:T=>Boolean):T =
   {
-    for(c <- a)
+    val it = a.iterator;
+    while (it.hasNext) {
+      val c = it.next;
       if (pred(c))
         return c;
+    }
     return null;
   }
-  def FirstOrDefault[T >: Null](a:Traversable[T]):T =
+  def FirstOrDefault[T >: Null](a:Iterable[T]):T =
   {
-    for(c <- a)
-      return c;
-    return null;
+    val it = a.iterator;
+    if (it.hasNext)
+      return it.next;
+    else
+      return null;
   }
-  def ElementAt[T](a:Traversable[T], index:Int):T =
+  def ElementAt[T](a:Iterable[T], index:Int):T =
   {
     var i = index;
-    for(c <- a)
+    val it = a.iterator;
+    while (it.hasNext)
     {
+      val c = it.next;
       if (i == 0)
         return c;
       i -= 1;
@@ -129,81 +147,92 @@ object Enumerable
     throw new Exception("ElementAt exceeds bounds");
   }
   
-  def Last[T](a:Traversable[T]):T =
+  def Last[T](a:Iterable[T]):T =
   {
     var ret:T = a.head;
+    val it = a.iterator;
+
+    while (it.hasNext)
+      ret = it.next;
     
-    for(c <- a)
-      ret = c;
     return ret;
   }
-  def LastOrDefault[T >: Null](a:Traversable[T], pred:T=>Boolean):T =
-  {
-    var ret:T = null;
-    
-    for(c <- a)
+  def Last[T](a:Iterable[T], pred:T=>Boolean):T = {
+    val rev = a.toBuffer.reverse;
+
+    val it = a.iterator;
+    while (it.hasNext) {
+      val c = it.next;
       if (pred(c))
-    	ret = c;
-    return ret;
+        return c;
+    }    
+    throw new Exception("No elements match");
   }
-  def LastOrDefault[T >: Null](a:Traversable[T]):T =
+  def LastOrDefault[T >: Null](a:Iterable[T], pred:T=>Boolean):T = {
+    val rev = a.toBuffer.reverse;
+    val it = a.iterator;
+    
+    while (it.hasNext) {
+      val c = it.next;
+      if (pred(c))
+        return c;
+    }
+    
+    return null;
+  }
+  def LastOrDefault[T >: Null](a:Iterable[T]):T =
   {
     var ret:T = null;
     
-    for(c <- a)
-      ret = c;
+    val it = a.iterator;
+    while (it.hasNext)
+      ret = it.next;
     return ret;
   }
   
-  def OrderBy_Int[T](a:Traversable[T], fn:T=>Int):Traversable[T] =
-  {
+  def OrderBy_Int[T](a:Iterable[T], fn:T=>Int):Iterable[T] = {
     return a.toBuffer.sortBy(fn);
   }
-  def OrderBy_Float[T](a:Traversable[T], fn:T=>Float):Traversable[T] =
-  {
+  def OrderBy_Float[T](a:Iterable[T], fn:T=>Float):Iterable[T] = {
     return a.toBuffer.sortBy(fn);
   }
-  def OrderBy_Double[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
-  {
+  def OrderBy_Double[T](a:Iterable[T], fn:T=>Double):Iterable[T] = {
     return a.toBuffer.sortBy(fn);
   }
-  def OrderBy_Long[T](a:Traversable[T], fn:T=>Long):Traversable[T] =
-  {
+  def OrderBy_Long[T](a:Iterable[T], fn:T=>Long):Iterable[T] = {
     return a.toBuffer.sortBy(fn);
   }
-  def OrderBy_String[T](a:Traversable[T], fn:T=>String):Traversable[T] =
-  {
+  def OrderBy_String[T](a:Iterable[T], fn:T=>String):Iterable[T] = {
     return a.toBuffer.sortBy(fn);
   }
   
   
-  def OrderByDescending_Int[T](a:Traversable[T], fn:T=>Int):Traversable[T] =
+  def OrderByDescending_Int[T](a:Iterable[T], fn:T=>Int):Iterable[T] = {
+    return a.toBuffer.sortBy((o:T) => -fn(o));
+  }
+  def OrderByDescending_Float[T](a:Iterable[T], fn:T=>Float):Iterable[T] =
   {
     return a.toBuffer.sortBy((o:T) => -fn(o));
   }
-  def OrderByDescending_Float[T](a:Traversable[T], fn:T=>Float):Traversable[T] =
+  def OrderByDescending_Double[T](a:Iterable[T], fn:T=>Double):Iterable[T] =
   {
     return a.toBuffer.sortBy((o:T) => -fn(o));
   }
-  def OrderByDescending_Double[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
+  def OrderByDescending_Long[T](a:Iterable[T], fn:T=>Long):Iterable[T] =
   {
     return a.toBuffer.sortBy((o:T) => -fn(o));
   }
-  def OrderByDescending_Long[T](a:Traversable[T], fn:T=>Long):Traversable[T] =
-  {
-    return a.toBuffer.sortBy((o:T) => -fn(o));
-  }
-  def OrderByDescending_String[T](a:Traversable[T], fn:T=>String):Traversable[T] =
+  def OrderByDescending_String[T](a:Iterable[T], fn:T=>String):Iterable[T] =
   {
     return a.toBuffer.sortBy(fn).reverse;
   }
   
-  def OrderByDescending[T](a:Traversable[T], fn:T=>Double):Traversable[T] =
+  def OrderByDescending[T](a:Iterable[T], fn:T=>Double):Iterable[T] =
   {
     return a.toBuffer.sortBy((o:T) => -fn(o));
   }
   
-  def OfType[T,K:ClassTag](a:Traversable[T]):Traversable[K] =
+  def OfType[T,K:ClassTag](a:Iterable[T]):Iterable[K] =
   {
     var c = classTag[K].runtimeClass;
     var ret = new List[K]();
@@ -224,57 +253,71 @@ object Enumerable
     */
   }
   
-  def Sum(a:Traversable[Double]):Double =
+  def Sum(a:Iterable[Double]):Double =
   {
     var ret:Double = 0;
     for (e <- a)
       ret += e;
     return ret;
   }
-  def Sum(a:Traversable[Int]):Int =
+  def Sum(a:Iterable[Float]):Float =
+  {
+    var ret:Float = 0;
+    for (e <- a)
+      ret += e;
+    return ret;
+  }
+  def Sum(a:Iterable[Int]):Int =
   {
     var ret:Int = 0;
     for (e <- a)
       ret += e;
     return ret;
   }
-  def Sum[T](a:Traversable[T], fn:T=>Int):Int =
+  def Sum[T](a:Iterable[T], fn:T=>Int):Int =
   {
     var ret:Int = 0;
     for (e <- a)
       ret += fn(e);
     return ret;
   }
-  def Sum[T](a:Traversable[T], fn:T=>Long):Long =
+  def Sum[T](a:Iterable[T], fn:T=>Long):Long =
   {
     var ret:Long = 0;
     for (e <- a)
       ret += fn(e);
     return ret;
   }
-  def Sum[T](a:Traversable[T], fn:T=>Double):Double =
+  def Sum[T](a:Iterable[T], fn:T=>Double):Double =
   {
     var ret:Double = 0;
     for (e <- a)
       ret += fn(e);
     return ret;
   }
+  def Sum[T](a:Iterable[T], fn:T=>Float):Float =
+  {
+    var ret:Float = 0;
+    for (e <- a)
+      ret += fn(e);
+    return ret;
+  }
   
-  def Range(startAt:Int, count:Int):Traversable[Int] =
+  def Range(startAt:Int, count:Int):Iterable[Int] =
   {
     return startAt until (count + startAt);
   }
   
-  def Concat[T](a:Traversable[T], b:Traversable[T]):Traversable[T] = 
+  def Concat[T](a:Iterable[T], b:Iterable[T]):Iterable[T] = 
   {
     return a ++ b;
   }
-  def Except[T](a:Traversable[T], b:Traversable[T]):Traversable[T] = 
+  def Except[T](a:Iterable[T], b:Iterable[T]):Iterable[T] = 
   {
     return a.toBuffer.diff(b.toBuffer);
   }
   
-  def Single[T](a:Traversable[T]):T =
+  def Single[T](a:Iterable[T]):T =
   {
     val it = a.toIterator;
     
@@ -286,7 +329,7 @@ object Enumerable
       throw new Exception("Single called with too many elements");
     return ret;
   }
-  def Single[T](a:Traversable[T], pred:T=>Boolean):T =
+  def Single[T](a:Iterable[T], pred:T=>Boolean):T =
   {
     var ret:T = a.head;
     var found = false;
@@ -304,7 +347,7 @@ object Enumerable
     
     return ret;
   }
-  def SingleOrDefault[T >: Null](a:Traversable[T]):T =
+  def SingleOrDefault[T >: Null](a:Iterable[T]):T =
   {
     if (a == null)
       throw new Exception("SingleOrDefault called on null");
@@ -321,7 +364,7 @@ object Enumerable
     
     return ret;
   }
-  def SingleOrDefault[T >: Null](a:Traversable[T], pred:T=>Boolean):T =
+  def SingleOrDefault[T >: Null](a:Iterable[T], pred:T=>Boolean):T =
   {
     var ret:T = null;
     var found = false;
@@ -336,15 +379,15 @@ object Enumerable
     return ret;
   }
   
-  def SelectMany[F,T](a:Traversable[F], fn:F=>Traversable[T]):Traversable[T] =
+  def SelectMany[F,T](a:Iterable[F], fn:F=>Iterable[T]):Iterable[T] =
   {
     return a.flatMap(fn);
   }
-  def SelectMany[F,T,R](a:Traversable[F], fn:F=>Traversable[T], resultSelector:(F,T)=>R):Traversable[R] =
+  def SelectMany[F,T,R](a:Iterable[F], fn:F=>Iterable[T], resultSelector:(F,T)=>R):Iterable[R] =
   {
     return a.map(e => fn(e).map(e2 => resultSelector(e, e2))).flatten;
   }
-  def SelectMany[F,T](a:Traversable[F], fn:(F,Int)=>Traversable[T]):Traversable[T] =
+  def SelectMany[F,T](a:Iterable[F], fn:(F,Int)=>Iterable[T]):Iterable[T] =
   {
     var i = 0;
     return a.map(e => 
@@ -355,97 +398,101 @@ object Enumerable
       }).flatten;
   }
   
-  def Distinct[T](a:Traversable[T]):Traversable[T] =
+  def Distinct[T](a:Iterable[T]):Iterable[T] =
   {
     return a.toBuffer.distinct;
   }
   
-  def Any[T](a:Traversable[T], pred:T=>Boolean):Boolean =
+  def Any[T](a:Iterable[T], pred:T=>Boolean):Boolean =
   {
     return a.exists(pred);
   }
-  def Any[T](a:Traversable[T]):Boolean =
+  def Any[T](a:Iterable[T]):Boolean =
   {
     return !a.isEmpty;
   }
   
-  def Max[T](a:Traversable[T], fn:T=>DateTime):DateTime =
+  def Max[T](a:Iterable[T], fn:T=>DateTime):DateTime =
   {
     return a.map(fn).maxBy(_.Ticks);
   }
-  def Max[T](a:Traversable[T], fn:T=>Long):Long =
+  def Max[T](a:Iterable[T], fn:T=>Long):Long =
   {
     return a.map(fn).max;
   }
-  def Max[T](a:Traversable[T], fn:T=>Int):Int =
+  def Max[T](a:Iterable[T], fn:T=>Int):Int =
   {
     return a.map(fn).max;
   }
-  def Max[T](a:Traversable[T], fn:T=>Float):Float =
+  def Max[T](a:Iterable[T], fn:T=>Float):Float =
   {
     return a.map(fn).max;
   }
-  def Max[T](a:Traversable[T], fn:T=>Double):Double =
+  def Max[T](a:Iterable[T], fn:T=>Double):Double =
   {
     return a.map(fn).max;
   }
-  def Max(a:Traversable[DateTime]):DateTime =
+  def Max(a:Iterable[DateTime]):DateTime =
   {
     return a.maxBy(_.Ticks);
   }
-  def Max(a:Traversable[Int]):Int =
+  def Max(a:Iterable[Int]):Int =
   {
     return a.max;
   }
-  def Max(a:Traversable[Double]):Double =
+  def Max(a:Iterable[Double]):Double =
+  {
+    return a.max;
+  }
+  def Max(a:Iterable[Float]):Float =
   {
     return a.max;
   }
 
-  def Take[T](a:Traversable[T], numtoTake:Int):Traversable[T] =
+  def Take[T](a:Iterable[T], numtoTake:Int):Iterable[T] =
   {
     return a.take(numtoTake);
   }
-  def TakeWhile[T](a:Traversable[T], fn:T=>Boolean):Traversable[T] =
+  def TakeWhile[T](a:Iterable[T], fn:T=>Boolean):Iterable[T] =
   {
     return a.takeWhile(fn);
   }
-  def All[T](a:Traversable[T], fn:T=>Boolean):Boolean =
+  def All[T](a:Iterable[T], fn:T=>Boolean):Boolean =
   {
     return a.forall(fn);
   }
   
-  def Intersect[T](a:Traversable[T], b:Traversable[T]):Traversable[T] = 
+  def Intersect[T](a:Iterable[T], b:Iterable[T]):Iterable[T] = 
   {
     return a.toBuffer.intersect(b.toBuffer);
   }
   
-  def Cast[T](a:Traversable[Any]):Traversable[T] =
+  def Cast[T](a:Iterable[Any]):Iterable[T] =
   {
     return a.map(_.asInstanceOf[T]);
   }
   
-  def Union[T](a:Traversable[T], b:Traversable[T]):Traversable[T] =
+  def Union[T](a:Iterable[T], b:Iterable[T]):Iterable[T] =
   {
     return a.toBuffer.union(b.toBuffer);
   }
   
-  def Aggregate[T](a:Traversable[T], fn:(T,T)=>T):T =
+  def Aggregate[T](a:Iterable[T], fn:(T,T)=>T):T =
   {
     return a.reduceLeft(fn); 
   }
   
-  def Skip[T](a:Traversable[T], numToSkip:Int):Traversable[T] =
+  def Skip[T](a:Iterable[T], numToSkip:Int):Iterable[T] =
   {
     return a.drop(numToSkip);
   }
   
-  def Reverse[T](a:Traversable[T]):Traversable[T] =
+  def Reverse[T](a:Iterable[T]):Iterable[T] =
   {
     return a.toBuffer.reverse;
   }
   
-  def Average[T](a:Traversable[T], fn:T=>Double):Double = 
+  def Average[T](a:Iterable[T], fn:T=>Double):Double = 
   {
     var sum:Double = 0;
     var count:Int = 0;
@@ -457,7 +504,7 @@ object Enumerable
     return sum / count;
   }
   
-  def Average[T](a:Traversable[T], fn:T=>Float):Float = 
+  def Average[T](a:Iterable[T], fn:T=>Float):Float = 
   {
     var sum:Float = 0;
     var count:Int = 0;
@@ -470,7 +517,7 @@ object Enumerable
   }
   
   
-  def Average[T](a:Traversable[Double]):Double = 
+  def Average[T](a:Iterable[Double]):Double = 
   {
     var sum:Double = 0;
     var count:Int = 0;

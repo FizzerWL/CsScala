@@ -22,7 +22,7 @@ object Extensions
 		
 		return new XElement(it.next());
 	}
-	def XPathSelectElements(node:XNode, expression:String):Traversable[XElement] =
+	def XPathSelectElements(node:XNode, expression:String):Iterable[XElement] =
 	{
 		val xpfac = XPathFactory.instance();
 		val xp = xpfac.compile(expression, Filters.element());

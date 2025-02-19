@@ -50,28 +50,28 @@ namespace CsScala
                 info.WritePostLoop(writer);
                 writer.WriteCloseBrace();
             }
-            else if (typeStr == "System.Collections.Generic.List<>"
+            else /*if (typeStr == "System.Collections.Generic.List<>"
                 //|| typeStr == "System.Collections.Generic.Dictionary<,>" 
                 || typeStr == "System.Collections.Generic.Dictionary<,>.KeyCollection"
-                || typeStr == "System.Collections.Generic.Dictionary<,>.ValueCollection")
+                || typeStr == "System.Collections.Generic.Dictionary<,>.ValueCollection")*/
             {
-                //It's faster to "while" over a list's iterator than to "for" through it
+                //It's faster to "while" over a list's iterator than to "for" through it.  It also makes "return" statements from within a loop easier, since we can't return from within scala for loops anymore.
                 writer.WriteOpenBrace();
                 info.WritePreLoop(writer);
 
                 writer.WriteIndent();
                 writer.Write("val __foreachiterator = ");
                 Core.Write(writer, foreachStatement.Expression);
-                writer.Write(".iterator();\r\n");
+                writer.Write(".iterator;\r\n");
 
 
-                writer.WriteLine("while (__foreachiterator.hasNext())");
+                writer.WriteLine("while (__foreachiterator.hasNext)");
                 writer.WriteOpenBrace();
 
                 writer.WriteIndent();
                 writer.Write("val ");
                 writer.Write(WriteIdentifierName.TransformIdentifier(foreachStatement.Identifier.ValueText));
-                writer.Write(" = __foreachiterator.next();\r\n");
+                writer.Write(" = __foreachiterator.next;\r\n");
 
                 info.WriteLoopOpening(writer);
                 Core.WriteStatementAsBlock(writer, foreachStatement.Statement, false);
@@ -81,23 +81,23 @@ namespace CsScala
                 info.WritePostLoop(writer);
                 writer.WriteCloseBrace();
             }
-            else
-            {
+            //else
+            //{
 
-                info.WritePreLoop(writer);
-                writer.WriteIndent();
-                writer.Write("for (");
-                writer.Write(WriteIdentifierName.TransformIdentifier(foreachStatement.Identifier.ValueText));
-                writer.Write(" <- ");
-                Core.Write(writer, foreachStatement.Expression);
-                writer.Write(")\r\n");
-                writer.WriteOpenBrace();
-                info.WriteLoopOpening(writer);
-                Core.WriteStatementAsBlock(writer, foreachStatement.Statement, false);
-                info.WriteLoopClosing(writer);
-                writer.WriteCloseBrace();
-                info.WritePostLoop(writer);
-            }
+            //    info.WritePreLoop(writer);
+            //    writer.WriteIndent();
+            //    writer.Write("for (");
+            //    writer.Write(WriteIdentifierName.TransformIdentifier(foreachStatement.Identifier.ValueText));
+            //    writer.Write(" <- ");
+            //    Core.Write(writer, foreachStatement.Expression);
+            //    writer.Write(")\r\n");
+            //    writer.WriteOpenBrace();
+            //    info.WriteLoopOpening(writer);
+            //    Core.WriteStatementAsBlock(writer, foreachStatement.Statement, false);
+            //    info.WriteLoopClosing(writer);
+            //    writer.WriteCloseBrace();
+            //    info.WritePostLoop(writer);
+            //}
         }
 
     }

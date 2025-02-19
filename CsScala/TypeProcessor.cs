@@ -173,9 +173,9 @@ namespace CsScala
             {
                 var dlg = named.DelegateInvokeMethod.As<IMethodSymbol>();
                 if (dlg.Parameters.Length == 0)
-                    return "() => " + TryConvertType(dlg.ReturnType);
+                    return "(() => " + TryConvertType(dlg.ReturnType) + ")";
                 else
-                    return "(" + string.Join(", ", dlg.Parameters.ToList().Select(o => TryConvertType(o.Type))) + ") => " + TryConvertType(dlg.ReturnType);
+                    return "((" + string.Join(", ", dlg.Parameters.ToList().Select(o => TryConvertType(o.Type))) + ") => " + TryConvertType(dlg.ReturnType) + ")";
             }
 
             if (typeSymbol.TypeKind == TypeKind.Enum)

@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 abstract class XContainer(elem: Element) extends XNode(elem) {
   val _elem = elem; //null if we're an XDocument, which overrides our methods so these should never be called.
 
-  def Add(obj: Any) {
+  def Add(obj: Any):Unit = {
     if (obj == null)
       return ;
 
@@ -21,15 +21,15 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
         _elem.addContent(toAdd.clone()); //if it has a parent already, we must clone since jdom2 won't let us add the same element to two parents, but .net does.
     } else if (obj.isInstanceOf[XAttribute])
       _elem.setAttribute(obj.asInstanceOf[XAttribute]._attr);
-    else if (obj.isInstanceOf[Traversable[Any]]) {
-      for (c <- obj.asInstanceOf[Traversable[Any]])
+    else if (obj.isInstanceOf[Iterable[Any]]) {
+      for (c <- obj.asInstanceOf[Iterable[Any]])
         Add(c);
     } else if (obj.isInstanceOf[String])
       _elem.setText(obj.asInstanceOf[String]);
     else
       throw new NotImplementedException("Adding unexpected type " + obj.getClass().getName());
   }
-  def AddFirst(obj: Any) {
+  def AddFirst(obj: Any):Unit = {
     if (obj.isInstanceOf[XNode]) {
       val toAdd = obj.asInstanceOf[XNode]._node;
 
@@ -41,10 +41,10 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
     else
       Add(obj);
   }
-  def Elements(): Traversable[XElement] = _elem.getChildren().asScala.map(new XElement(_));
-  def Elements(name: String): Traversable[XElement] = _elem.getChildren(name).asScala.map(new XElement(_));
+  def Elements(): Iterable[XElement] = _elem.getChildren().asScala.map(new XElement(_));
+  def Elements(name: String): Iterable[XElement] = _elem.getChildren(name).asScala.map(new XElement(_));
 
-  def Descendants(): Traversable[XElement] = {
+  def Descendants(): Iterable[XElement] = {
     val ret = new ArrayBuffer[XElement]();
     for (e <- Elements()) {
       ret += e;
@@ -54,7 +54,7 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
     return ret;
   }
 
-  def Attributes(): Traversable[XAttribute] = _elem.getAttributes().asScala.map(new XAttribute(_));
+  def Attributes(): Iterable[XAttribute] = _elem.getAttributes().asScala.map(new XAttribute(_));
 
   def Element(name: String): XElement = {
     val child = _elem.getChild(name);
@@ -64,9 +64,9 @@ abstract class XContainer(elem: Element) extends XNode(elem) {
       return new XElement(child);
   }
 
-  def Nodes(): Traversable[XNode] = _elem.getContent().asScala.map(XDocument.Factory(_));
+  def Nodes(): Iterable[XNode] = _elem.getContent().asScala.map(XDocument.Factory(_));
 
-  def DescendantNodes(): Traversable[XNode] = {
+  def DescendantNodes(): Iterable[XNode] = {
     val ret = new ArrayBuffer[XNode]();
     val it = _elem.getDescendants();
     while (it.hasNext())

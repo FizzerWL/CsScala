@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -31,6 +32,23 @@ namespace CsScala
                     writer.Write(TypeProcessor.ConvertType(type.ConvertedType));
                     writer.Write("(");
                     postFactory = ")";
+                }
+
+                if (type.Type != null && (type.ConvertedType.SpecialType == SpecialType.System_Double || type.ConvertedType.ToString() == "double?") && Utility.IsNumeric(type.Type) && type.Type.SpecialType != SpecialType.System_Double)
+                {
+                    /* Starting in scala 3, there are cases where we have to specifically call toDouble to convert an int to a double, for example:
+import java.util.ArrayList
+
+def TakesDouble(d:Double):Unit = {}
+def ReturnsT[T](a:ArrayList[T]):T = a.get(0);
+val list = new ArrayList[Int]();
+TakesDouble(ReturnsT(list));
+                    TODO: There are likely other places that a similar conversion is needed, but I'm not sure how to write this in a fully generic way yet until I encounter more cases
+                    */
+
+                    postFactory = ".toDouble";
+
+
                 }
             }
             

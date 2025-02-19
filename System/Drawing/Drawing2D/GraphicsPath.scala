@@ -11,24 +11,24 @@ class GraphicsPath {
   final var penY = 0f;
 
   final def FillMode: Int = if (Shape.getWindingRule() == Path2D.WIND_EVEN_ODD) System.Drawing.Drawing2D.FillMode.Alternate else System.Drawing.Drawing2D.FillMode.Winding;
-  final def FillMode_=(winding: Int) {
+  final def FillMode_=(winding: Int):Unit = {
     Shape.setWindingRule(if (winding == System.Drawing.Drawing2D.FillMode.Alternate) Path2D.WIND_EVEN_ODD else Path2D.WIND_NON_ZERO);
   }
   
-  def CheckPen(x:Float, y:Float, endX:Float, endY:Float) {
+  def CheckPen(x:Float, y:Float, endX:Float, endY:Float):Unit = {
     if (penX != x || penY != y)
       Shape.moveTo(x, y);
     penX = endX;
     penY = endY;
   }
 
-  def AddLine(x1: Float, y1: Float, x2: Float, y2: Float) {
+  def AddLine(x1: Float, y1: Float, x2: Float, y2: Float):Unit = {
     _isEmpty = false;
     CheckPen(x1, y1, x2, y2);
     Shape.lineTo(x2, y2);
   }
 
-  def AddArc(x: Float, y: Float, w: Float, h: Float, startAngle: Float, sweepAngle: Float) {
+  def AddArc(x: Float, y: Float, w: Float, h: Float, startAngle: Float, sweepAngle: Float):Unit = {
     _isEmpty = false;
     val arc = new Arc2D.Float(x, y, w, h, startAngle, sweepAngle, Arc2D.OPEN);
     val startPoint = arc.getStartPoint();
@@ -37,13 +37,13 @@ class GraphicsPath {
     Shape.append(arc, false);
   }
 
-  def AddBezier(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float) {
+  def AddBezier(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float):Unit = {
     _isEmpty = false;
     CheckPen(x1, y1, x4, y4);
     Shape.curveTo(x2, y2, x3, y3, x4, y4);
   }
 
-  def CloseFigure() {
+  def CloseFigure():Unit = {
     if (!_isEmpty)
       Shape.closePath();
   }

@@ -7,7 +7,7 @@ class KeyValuePair[K,V](k:K, v:V)
   
   override def equals(other:Any):Boolean = 
   {
-    if (!other.isInstanceOf[KeyValuePair[K,V]])
+    if (!classOf[KeyValuePair[K, V]].isAssignableFrom(other.getClass()))
       return false;
     
     val o = other.asInstanceOf[KeyValuePair[K,V]];
