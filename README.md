@@ -1,6 +1,6 @@
 # CsScala
 
-CsScala uses Microsoft Roslyn to convert your C# 4.0 code to Scala 2.10 code.  It was primarilly invented to provide a way to run C# on the JVM.
+CsScala uses Microsoft Roslyn to convert your C# 4.0 code to Scala 3.3.5 code.  It was primarilly invented to provide a way to run C# on the JVM.
 
 Check out Test/Tests.cs for examples as well as an overview of what is supported.
 
