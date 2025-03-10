@@ -160,7 +160,7 @@ object Enumerable
   def Last[T](a:Iterable[T], pred:T=>Boolean):T = {
     val rev = a.toBuffer.reverse;
 
-    val it = a.iterator;
+    val it = rev.iterator;
     while (it.hasNext) {
       val c = it.next;
       if (pred(c))
@@ -170,7 +170,7 @@ object Enumerable
   }
   def LastOrDefault[T >: Null](a:Iterable[T], pred:T=>Boolean):T = {
     val rev = a.toBuffer.reverse;
-    val it = a.iterator;
+    val it = rev.iterator;
     
     while (it.hasNext) {
       val c = it.next;

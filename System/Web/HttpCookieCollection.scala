@@ -1,5 +1,6 @@
 package System.Web;
 import java.util.HashMap
+import scala.collection.JavaConverters._
 
 class HttpCookieCollection extends Iterable[String]
 {
@@ -15,11 +16,7 @@ class HttpCookieCollection extends Iterable[String]
     _map.put(cookie.Name, cookie);
   }
   
-  def iterator: Iterator[String] = new Iterator[String] {
-    private val it = _map.entrySet().iterator();
-    override def hasNext: Boolean = it.hasNext()
-    override def next(): String = _map.get(it.next()).Name;
-  }  
+  def iterator: Iterator[String] = _map.keySet.iterator().asScala;
   
   def AllKeys:Array[String] = _map.keySet().toArray(new Array[String](0));
 
