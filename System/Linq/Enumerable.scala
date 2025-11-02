@@ -440,6 +440,10 @@ object Enumerable
   {
     return a.max;
   }
+  def Max(a:Iterable[Long]):Long =
+  {
+    return a.max;
+  }
   def Max(a:Iterable[Double]):Double =
   {
     return a.max;

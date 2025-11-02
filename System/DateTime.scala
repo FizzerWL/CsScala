@@ -20,7 +20,9 @@ object DateTime {
   final val MaxValueMillis = MaxValue._d.getMillis();
 
   //Only these patterns are supported in DateTime.Parse
-  private final val _patterns = Array("M/d/yyyy HH:mm:ss",
+  private final val _patterns = Array(
+    "yyyy-MM-dd HH:mm:ss",
+    "M/d/yyyy HH:mm:ss",
     "M/d/yyyy hh:mm:ss a",
     "yyyy/MM/dd HH:mm:ss",
     "E, d MMM yyyy HH:mm:ss",

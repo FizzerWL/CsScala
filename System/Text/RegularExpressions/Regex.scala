@@ -6,6 +6,7 @@ object Regex {
   def Replace(input: String, pattern: String, eval: Match => String): String = new Regex(pattern).Replace(input, eval);
   def Replace(input: String, pattern: String, replace: String): String = input.replaceAll(pattern, replace);
   def IsMatch(input: String, pattern: String, opts: Int): Boolean = new Regex(pattern, opts).IsMatch(input);
+  def Match(input: String, pattern: String, opts: Int): Match = new Regex(pattern, opts).Match(input);
   def Escape(input: String): String = Pattern.quote(input);
   def Matches(input: String, pattern: String): MatchCollection = new Regex(pattern).Matches(input);
   def Split(input: String, pattern: String): Array[String] = { input.split(pattern) }
