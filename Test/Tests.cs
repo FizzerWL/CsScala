@@ -3397,5 +3397,28 @@ class Foo
 { 
 }");
         }
+
+        [TestMethod]
+        public void ExpressionBodiedMember()
+        {
+
+            TestFramework.TestCode(MethodInfo.GetCurrentMethod().Name, @"
+using System;
+
+namespace Blargh
+{
+    public class Utilities
+    {
+        public int Prop => 404;
+    }
+}", @"
+package Blargh;
+" + WriteImports.StandardImports + @"
+
+class Utilities
+{
+    def Prop:Int = 404;
+}");
+        }
     }
 }

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 class GraphicsPath {
   final val Shape = new GeneralPath();
   final var _isEmpty = true;
-  final var penX = 0f;
-  final var penY = 0f;
+  //Start the pen at values we'll never see, otherwise if we pass 0,0 to CheckPen, it'll think we don't need to move, and we can get the error "missing initial moveto in path definition"
+  final var penX = -99999.12345f;
+  final var penY = -99999.12345f;
 
   final def FillMode: Int = if (Shape.getWindingRule() == Path2D.WIND_EVEN_ODD) System.Drawing.Drawing2D.FillMode.Alternate else System.Drawing.Drawing2D.FillMode.Winding;
   final def FillMode_=(winding: Int):Unit = {

@@ -10,6 +10,8 @@ object Color {
   val Transparent: Color = new Color(0, 0, 0, 0);
   val Gray: Color = new Color(128.toByte, 128.toByte, 128.toByte);
   val White: Color = new Color(255.toByte, 255.toByte, 255.toByte, 255.toByte);
+  val Red: Color = new Color(255.toByte, 0, 0, 255.toByte);
+  val Blue: Color = new Color(0, 0, 255.toByte, 255.toByte);
 }
 
 class Color(a: Byte = 0, r: Byte = 0, g: Byte = 0, b: Byte = 0) {

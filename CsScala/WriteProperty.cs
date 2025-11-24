@@ -12,7 +12,44 @@ namespace CsScala
     {
         public static void Go(ScalaWriter writer, PropertyDeclarationSyntax property)
         {
-            Action<AccessorDeclarationSyntax, bool> writeRegion = (region, get) =>
+
+
+            bool hasGetter, hasSetter;
+            SyntaxNode getterBody, setterBody;
+            bool isAutoProperty;
+
+            if (property.AccessorList != null)
+            {
+                var g = property.AccessorList.Accessors.SingleOrDefault(o => o.Keyword.IsKind(SyntaxKind.GetKeyword));
+                hasGetter = g != null;
+                getterBody = hasGetter ? g.Body : null;
+
+                var s = property.AccessorList.Accessors.SingleOrDefault(o => o.Keyword.IsKind(SyntaxKind.SetKeyword));
+                hasSetter = s != null;
+                setterBody = hasSetter ? s.Body : null;
+
+                isAutoProperty = hasGetter && hasSetter && getterBody == null && setterBody == null && !property.Modifiers.Any(SyntaxKind.AbstractKeyword);
+            }
+            else
+            {
+                //If AccessorList is null, assume it's an expression bodied member
+                hasGetter = true;
+                getterBody = property.ExpressionBody.Expression;
+                hasSetter = false;
+                setterBody = null;
+                isAutoProperty = false;
+            }
+
+
+            if (isAutoProperty)
+            {
+                //For our purposes, this is the equivilant of a field, just write that.
+                WriteField.Go(writer, property.Modifiers, WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText), property.Type);
+                return;
+            }
+
+
+            Action<SyntaxNode, bool> writeRegion = (body, get) =>
             {
                 writer.WriteIndent();
 
@@ -28,12 +65,23 @@ namespace CsScala
                 {
                     writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
 
-                    if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || region.Body == null)
+                    if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || body == null)
                         writer.Write(";\r\n");
                     else
                     {
-                        writer.Write(" =\r\n");
-                        Core.WriteBlock(writer, region.Body.As<BlockSyntax>());
+                        writer.Write(" =");
+
+                        if (body is BlockSyntax)
+                        {
+                            writer.Write("\r\n");
+                            Core.WriteBlock(writer, body.As<BlockSyntax>());
+                        }
+                        else
+                        {
+                            writer.Write(" ");
+                            Core.Write(writer, body);
+                            writer.Write(";\r\n");
+                        }
                     }
 
                 }
@@ -43,12 +91,12 @@ namespace CsScala
                     writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
                     writer.Write(")");
 
-                    if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || region.Body == null)
+                    if (property.Modifiers.Any(SyntaxKind.AbstractKeyword) || body == null)
                         writer.Write(":Unit;\r\n");
                     else
                     {
                         writer.Write(" =\r\n");
-                        Core.WriteBlock(writer, region.Body.As<BlockSyntax>());
+                        Core.Write(writer, body);
                     }
 
                 }
@@ -57,37 +105,22 @@ namespace CsScala
 
             };
 
-            var getter = property.AccessorList.Accessors.SingleOrDefault(o => o.Keyword.Kind() == SyntaxKind.GetKeyword);
-            var setter = property.AccessorList.Accessors.SingleOrDefault(o => o.Keyword.Kind() == SyntaxKind.SetKeyword);
-
-            if (getter == null && setter == null)
-                throw new Exception("Property must have either a get or a set");
-
-            if (getter != null && setter != null && setter.Body == null && getter.Body == null && !property.Modifiers.Any(SyntaxKind.AbstractKeyword))
+            if (hasGetter)
+                writeRegion(getterBody, true);
+            else if (hasSetter)
             {
-                //Both get and set are null, which means this is an automatic property.  For our purposes, this is the equivilant of a field
-                WriteField.Go(writer, property.Modifiers, WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText), property.Type);
+                //Scala does not allow having a setter without a getter. Write out a getter.
+                writer.Write("def ");
+                writer.Write(WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText));
+                writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
+                writer.Write(" =\r\n");
+                writer.WriteOpenBrace();
+                writer.WriteLine("throw new Exception(\"No getter defined\");");
+                writer.WriteCloseBrace();
             }
-            else
-            {
 
-                if (getter != null)
-                    writeRegion(getter, true);
-                else if (setter != null)
-                {
-                    //Scala does not allow having a setter without a getter. Write out a getter.
-                    writer.Write("def ");
-                    writer.Write(WriteIdentifierName.TransformIdentifier(property.Identifier.ValueText));
-                    writer.Write(TypeProcessor.ConvertTypeWithColon(property.Type));
-                    writer.Write(" =\r\n");
-                    writer.WriteOpenBrace();
-                    writer.WriteLine("throw new Exception(\"No getter defined\");");
-                    writer.WriteCloseBrace();
-                }
-
-                if (setter != null)
-                    writeRegion(setter, false);
-            }
+            if (hasSetter)
+                writeRegion(setterBody, false);
         }
     }
 }
