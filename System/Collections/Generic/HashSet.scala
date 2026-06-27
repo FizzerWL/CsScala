@@ -42,6 +42,12 @@ class HashSet[T] extends Iterable[T] {
     _set.clear();
   }
 
+  def Overlaps(other: Iterable[T]): Boolean =
+    other.exists(_set.contains(_))
+
+  def IsSupersetOf(other: Iterable[T]): Boolean =
+    other.forall(_set.contains(_))
+
   override def equals(other: Any): Boolean = {
     if (!classOf[HashSet[T]].isAssignableFrom(other.getClass()))
       return false;

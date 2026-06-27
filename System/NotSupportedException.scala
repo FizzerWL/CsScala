@@ -1,5 +1,6 @@
 package System
 
-class NotSupportedException extends Exception {
+class NotSupportedException(msg:String = "") extends Exception(msg) {
+    
 
 }

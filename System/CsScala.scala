@@ -269,13 +269,14 @@ object CsScala {
       return s.substring(startIndex);
     }
 
+  final val _csharpLike = new java.text.DecimalFormat("0.###############");
   def DoubleToString(d: Double): String = {
-    val ret = d.toString();
-    //JVM adds ".0" to whole numbers, C# leaves it off. Remove it to replicate the C# behavior.
-    if (ret.endsWith(".0"))
-      return ret.substring(0, ret.length - 2);
+    //replicate C#'s ToString behavior for doubles
+    val abs = math.abs(d);
+    if (abs != 0 && (abs < 1e-4 || abs >= 1e15))
+      d.toString();
     else
-      return ret;
+      _csharpLike.format(d);
   }
 
   //Simulates the C# method of returning an empty string for null nullables

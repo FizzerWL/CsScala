@@ -248,8 +248,12 @@ namespace CsScala
 
 
                 //When passing an argument by ref or out, leave off the .Value suffix
-                if (arg.ArgumentOpt != null && arg.ArgumentOpt.RefOrOutKeyword.Kind() != SyntaxKind.None)
+                if (arg.ArgumentOpt != null && !arg.ArgumentOpt.RefOrOutKeyword.IsKind(SyntaxKind.None))
+                {
+                    if (!(arg.ArgumentOpt.Expression is IdentifierNameSyntax))
+                        throw new Exception("Expected IdentifierNameSyntax at " + Utility.Descriptor(arg.ArgumentOpt.Expression));
                     WriteIdentifierName.Go(writer, arg.ArgumentOpt.Expression.As<IdentifierNameSyntax>(), true);
+                }
                 else
                     arg.Write(writer);
 

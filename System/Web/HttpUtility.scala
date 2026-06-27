@@ -38,6 +38,7 @@ object HttpUtility
   
   def HtmlAttributeEncode(s:String):String = 
   {
+    //TODO: Is this right?
     return HtmlEncode(s).replaceAll("'", "&#x27;");
   }
   
